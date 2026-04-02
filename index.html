@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IDU Study Hub — MYP 5 | Identities & Relationships</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0d1b2a;
+      --navy-mid: #1a2e42;
+      --cream: #f5f0e8;
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --teal: #2a9d8f;
+      --teal-light: #3dbfb0;
+      --teal-pale: #d4f0ed;
+      --amber: #e07b39;
+      --amber-pale: #fdebd8;
+      --purple: #6c48b5;
+      --purple-pale: #ede8f8;
+      --border: #d4c9b0;
+      --text-primary: #0d1b2a;
+      --text-secondary: #3a4f63;
+      --text-muted: #6b7d8e;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Source Serif 4', Georgia, serif;
+      background: var(--navy);
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    #pb {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--teal));
+      width: 0%;
+      z-index: 1001;
+    }
+
+    nav {
+      position: fixed;
+      top: 3px;
+      left: 0;
+      right: 0;
+      background: rgba(13, 27, 42, 0.97);
+      backdrop-filter: blur(10px);
+      height: 54px;
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .nb {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+      color: var(--gold-light);
+      text-decoration: none;
+      margin-right: 2rem;
+      letter-spacing: 0.02em;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 0;
+      list-style: none;
+    }
+
+    nav a {
+      color: rgba(255, 255, 255, 0.5);
+      text-decoration: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      padding: 6px 10px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--gold-light);
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    nav a.active {
+      color: var(--gold-light);
+      background: rgba(201, 168, 76, 0.12);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 2rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 15% 50%, rgba(42, 157, 143, 0.09), transparent 55%), radial-gradient(ellipse at 85% 20%, rgba(201, 168, 76, 0.07), transparent 50%), radial-gradient(ellipse at 55% 85%, rgba(108, 72, 181, 0.06), transparent 50%);
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 820px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(201, 168, 76, 0.1);
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      padding: 5px 16px;
+      border-radius: 20px;
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 68px;
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.2rem;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    h1 small {
+      display: block;
+      font-size: 30px;
+      color: rgba(255, 255, 255, 0.45);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin-top: 8px;
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: rgba(255, 255, 255, 0.55);
+      line-height: 1.65;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+      max-width: 580px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 3.5rem;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-n {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--gold-light);
+      line-height: 1;
+    }
+
+    .stat-l {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.3);
+      margin-top: 3px;
+    }
+
+    /* PAGE CARDS */
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .nc {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 1.4rem;
+      text-decoration: none;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nc::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), transparent);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .nc:hover {
+      border-color: rgba(201, 168, 76, 0.3);
+      background: rgba(255, 255, 255, 0.07);
+      transform: translateY(-2px);
+    }
+
+    .nc:hover::after {
+      opacity: 1;
+    }
+
+    .nc-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      margin-bottom: 0.85rem;
+    }
+
+    .nc-n {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .nc h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 5px;
+      line-height: 1.3;
+    }
+
+    .nc p {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.4);
+      line-height: 1.55;
+    }
+
+    .nc-arr {
+      position: absolute;
+      top: 1.4rem;
+      right: 1.4rem;
+      color: rgba(255, 255, 255, 0.18);
+      font-size: 16px;
+      transition: all 0.2s;
+    }
+
+    .nc:hover .nc-arr {
+      color: var(--gold-light);
+      transform: translate(2px, -2px);
+    }
+
+    /* DISCIPLINES */
+    .disc-section {
+      background: var(--cream);
+      padding: 5rem 2rem;
+      color: var(--text-primary);
+    }
+
+    .disc-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .disc-inner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+    }
+
+    .disc-sub {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+    }
+
+    .disc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .dc {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 14px;
+      padding: 2rem;
+    }
+
+    .dc h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .dc-sci h3 {
+      color: var(--teal);
+    }
+
+    .dc-is h3 {
+      color: var(--amber);
+    }
+
+    .dc p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 1rem;
+    }
+
+    .pill {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin: 2px;
+    }
+
+    .dc-sci .pill {
+      background: var(--teal-pale);
+      color: var(--teal);
+    }
+
+    .dc-is .pill {
+      background: var(--amber-pale);
+      color: var(--amber);
+    }
+
+    /* CRITERIA */
+    .crit-section {
+      background: var(--navy);
+      padding: 5rem 2rem;
+    }
+
+    .crit-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .crit-inner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      color: var(--gold-light);
+      margin-bottom: 0.4rem;
+    }
+
+    .crit-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.3);
+      margin-bottom: 2.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .crit-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .cc {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .cc-letter {
+      font-family: 'Playfair Display', serif;
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .cc:nth-child(1) .cc-letter {
+      color: var(--teal-light);
+    }
+
+    .cc:nth-child(2) .cc-letter {
+      color: var(--gold-light);
+    }
+
+    .cc:nth-child(3) .cc-letter {
+      color: #a88edf;
+    }
+
+    .cc-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.35);
+      margin-bottom: 0.75rem;
+    }
+
+    .cc p {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.65;
+    }
+
+    .cc-marks {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.25);
+      margin-top: 10px;
+    }
+
+    /* REF 2 HIGHLIGHT */
+    .r2-section {
+      background: #fff;
+      padding: 4rem 2rem;
+    }
+
+    .r2-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .r2-inner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+    }
+
+    .r2-sub {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    .r2-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .r2c {
+      background: var(--cream);
+      border-radius: 10px;
+      padding: 1.25rem;
+    }
+
+    .r2c h4 {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .r2c-sci h4 {
+      color: var(--teal);
+    }
+
+    .r2c-is h4 {
+      color: var(--amber);
+    }
+
+    .r2c-id h4 {
+      color: var(--purple);
+    }
+
+    .r2c ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .r2c li {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      padding: 4px 0 4px 14px;
+      position: relative;
+    }
+
+    .r2c-sci li::before {
+      content: "◆";
+      position: absolute;
+      left: 0;
+      top: 9px;
+      font-size: 7px;
+      color: var(--teal);
+    }
+
+    .r2c-is li::before {
+      content: "◆";
+      position: absolute;
+      left: 0;
+      top: 9px;
+      font-size: 7px;
+      color: var(--amber);
+    }
+
+    .r2c-id li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      top: 5px;
+      font-size: 12px;
+      color: var(--purple);
+    }
+
+    .r2-summary {
+      background: var(--navy);
+      color: #fff;
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      margin-top: 1.5rem;
+    }
+
+    .r2-summary-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .r2-summary p {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.7;
+    }
+
+    @media(max-width:700px) {
+      h1 {
+        font-size: 40px;
+      }
+
+      h1 small {
+        font-size: 20px;
+      }
+
+      .nav-grid,
+      .disc-grid,
+      .crit-grid,
+      .r2-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="pb"></div>
+  <nav>
+    <a class="nb" href="index.html">IDU Study Hub</a>
+    <ul>
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="sources.html">Sources</a></li>
+      <li><a href="analysis.html">Analysis</a></li>
+      <li><a href="science.html">Science</a></li>
+      <li><a href="humanities.html">Humanities</a></li>
+      <li><a href="quiz.html">Quiz</a></li>
+      <li><a href="questions.html">Question Bank</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="eyebrow">MYP Year 5 · Science + Individuals &amp; Societies</div>
+      <h1>Identities &amp; <em>Relationships</em><small>IDU Study Hub</small></h1>
+      <p class="hero-sub">Your complete A1-standard revision resource. 8 sources fully analysed, all scientific and
+        I&amp;S concepts explained, 50 MCQ practice questions, and a full IB-style exam question bank.</p>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-n">8</div>
+          <div class="stat-l">Sources</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">2</div>
+          <div class="stat-l">Disciplines</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">3</div>
+          <div class="stat-l">Criteria</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">50</div>
+          <div class="stat-l">Quiz Questions</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">9+</div>
+          <div class="stat-l">Exam Questions</div>
+        </div>
+      </div>
+      <div class="nav-grid">
+        <a href="sources.html" class="nc">
+          <div class="nc-icon" style="background:rgba(42,157,143,0.15);">📄</div>
+          <div class="nc-n" style="color:var(--teal-light);">Page 01</div>
+          <h3>Sources</h3>
+          <p>All 8 raw IB sources with stats, credibility ratings, and reference links</p>
+          <div class="nc-arr">↗</div>
+        </a>
+        <a href="analysis.html" class="nc">
+          <div class="nc-icon" style="background:rgba(201,168,76,0.15);">🔍</div>
+          <div class="nc-n" style="color:var(--gold-light);">Page 02</div>
+          <h3>Source Analysis</h3>
+          <p>Deep breakdown of each source — Science &amp; I&S perspectives, data interpretation, GC links</p>
+          <div class="nc-arr">↗</div>
+        </a>
+        <a href="science.html" class="nc">
+          <div class="nc-icon" style="background:rgba(42,157,143,0.15);">🔬</div>
+          <div class="nc-n" style="color:var(--teal-light);">Page 03</div>
+          <h3>Science Concepts</h3>
+          <p>Every scientific concept fully explained — heritability, GEI, epigenetics, NOVA, somatotyping</p>
+          <div class="nc-arr">↗</div>
+        </a>
+        <a href="humanities.html" class="nc">
+          <div class="nc-icon" style="background:rgba(224,123,57,0.15);">🌍</div>
+          <div class="nc-n" style="color:#f0a060;">Page 04</div>
+          <h3>Humanities Concepts</h3>
+          <p>All I&amp;S concepts — identity theories, sociological frameworks, real-world applications</p>
+          <div class="nc-arr">↗</div>
+        </a>
+        <a href="quiz.html" class="nc">
+          <div class="nc-icon" style="background:rgba(108,72,181,0.15);">✅</div>
+          <div class="nc-n" style="color:#a88edf;">Page 05</div>
+          <h3>Quiz — 5 × 10 MCQ</h3>
+          <p>Hard IB-style practice questions with instant scoring and full explanations</p>
+          <div class="nc-arr">↗</div>
+        </a>
+        <a href="questions.html" class="nc">
+          <div class="nc-icon" style="background:rgba(201,168,76,0.15);">📝</div>
+          <div class="nc-n" style="color:var(--gold-light);">Page 06</div>
+          <h3>Question Bank</h3>
+          <p>Full Criterion A, B &amp; C questions with mark schemes and model answer guidance</p>
+          <div class="nc-arr">↗</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- DISCIPLINES -->
+  <section class="disc-section">
+    <div class="disc-inner">
+      <h2>Two Disciplines, One Understanding</h2>
+      <p class="disc-sub">Science and Individuals &amp; Societies each provide a unique lens — combined, they reveal
+        what neither can alone</p>
+      <div class="disc-grid">
+        <div class="dc dc-sci">
+          <h3>🔬 Science</h3>
+          <p>Explores the biological foundations of identity — how DNA, body type, diet, and heritable traits shape who
+            we are at a molecular and physiological level.</p>
+          <span class="pill">Genetics &amp; Heritability</span><span class="pill">Twin Methodology</span><span
+            class="pill">Epigenetics</span><span class="pill">NOVA Food Classification</span><span
+            class="pill">Somatotyping</span><span class="pill">Metabolic Biomarkers</span><span class="pill">Satiety
+            Hormones</span><span class="pill">Dose-Response</span><span class="pill">Gene-Environment Interaction</span>
+        </div>
+        <div class="dc dc-is">
+          <h3>🌍 Individuals &amp; Societies</h3>
+          <p>Examines how social structures, cultural forces, names, labels, access, and relationships construct and
+            constrain identity beyond the biological.</p>
+          <span class="pill">Socialisation</span><span class="pill">Nominative Determinism</span><span
+            class="pill">Self-Fulfilling Prophecy</span><span class="pill">Intersectionality</span><span
+            class="pill">Labelling Theory</span><span class="pill">Social Mobility</span><span class="pill">Food
+            Inequality</span><span class="pill">Cultural Capital</span><span class="pill">Role Conflict</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REF 2 TEACHER NOTES -->
+  <section class="r2-section">
+    <div class="r2-inner">
+      <h2>Reference 2 — Teacher Summary Notes</h2>
+      <p class="r2-sub">Your teacher's official inquiry questions and discipline connections for Nominative Determinism
+      </p>
+      <div class="r2-grid">
+        <div class="r2c r2c-sci">
+          <h4>Science Inquiry Questions</h4>
+          <ul>
+            <li>Can a name directly affect biology, or does it influence behaviour through the environment?</li>
+            <li>How could repeated labels affect a person's behaviour over time?</li>
+          </ul>
+        </div>
+        <div class="r2c r2c-is">
+          <h4>I&amp;S Inquiry Questions</h4>
+          <ul>
+            <li>Do labels and expectations shape identity?</li>
+            <li>Can society influence a person by attaching meaning to their name?</li>
+            <li>How might a name affect confidence, aspiration, or self-image?</li>
+          </ul>
+        </div>
+        <div class="r2c r2c-id">
+          <h4>Interdisciplinary Questions</h4>
+          <ul>
+            <li>Is identity partly shaped by what others expect from us?</li>
+            <li>Can a label become a self-fulfilling prophecy?</li>
+          </ul>
+        </div>
+      </div>
+      <div class="r2-summary">
+        <div class="r2-summary-label">Teacher Summary</div>
+        <p>This resource explores how names may influence how a person is seen — and what they become. From a Science
+          lens, repeated experiences, expectations, and surroundings can influence behaviour and self-perception over
+          time. From an I&amp;S lens, names carry culture, history, class, gender expectations, and social meaning. The
+          resource supports exploring how identity develops through relationships, social interactions, and cultural
+          influences — and raises the key IDU question: is identity shaped by what others expect from us?</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CRITERIA -->
+  <section class="crit-section">
+    <div class="crit-inner">
+      <h2>Assessment Criteria</h2>
+      <div class="crit-sub">MYP IDU · Achievement levels 1–8 · Four bands</div>
+      <div class="crit-grid">
+        <div class="cc">
+          <div class="cc-letter">A</div>
+          <div class="cc-name">Evaluating</div>
+          <p>Analyse and evaluate how Science and I&amp;S each contribute to understanding identity. Compare discipline
+            contributions using source evidence and draw conclusions about what each adds.</p>
+          <div class="cc-marks">Max 8 marks · eAssessment Task 1</div>
+        </div>
+        <div class="cc">
+          <div class="cc-letter">B</div>
+          <div class="cc-name">Synthesizing</div>
+          <p>Integrate knowledge from both disciplines to address a real-world challenge or create a product. Show how
+            combining Science AND I&amp;S produces insight neither achieves alone.</p>
+          <div class="cc-marks">Max 8 marks · eAssessment Task 2</div>
+        </div>
+        <div class="cc">
+          <div class="cc-letter">C</div>
+          <div class="cc-name">Reflecting</div>
+          <p>Reflect on how examining sources through different lenses (scientific, sociological, ethical) deepens or
+            changes understanding. Present arguments using multiple perspectives.</p>
+          <div class="cc-marks">Max 8 marks · Both Tasks</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      const p = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      document.getElementById('pb').style.width = p + '%';
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,1924 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis — IDU Study Hub</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0d1b2a;
+            --cream: #f5f0e8;
+            --cream-dark: #ede6d6;
+            --gold: #c9a84c;
+            --gold-light: #e8c97a;
+            --teal: #2a9d8f;
+            --teal-light: #3dbfb0;
+            --teal-pale: #d4f0ed;
+            --amber: #e07b39;
+            --amber-pale: #fdebd8;
+            --purple: #6c48b5;
+            --purple-pale: #ede8f8;
+            --red: #c0392b;
+            --red-pale: #fde8e6;
+            --green: #2d7d52;
+            --green-pale: #d8f0e4;
+            --border: #d4c9b0;
+            --border-light: #e8e0d0;
+            --text-primary: #0d1b2a;
+            --text-secondary: #3a4f63;
+            --text-muted: #6b7d8e;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Source Serif 4', Georgia, serif;
+            background: var(--cream);
+            color: var(--text-primary);
+        }
+
+        #pb {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--teal));
+            width: 0%;
+            z-index: 1001;
+        }
+
+        nav {
+            position: fixed;
+            top: 3px;
+            left: 0;
+            right: 0;
+            background: var(--navy);
+            height: 54px;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nb {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            color: var(--gold-light);
+            text-decoration: none;
+            margin-right: 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 0;
+            list-style: none;
+        }
+
+        nav a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            padding: 6px 10px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--gold-light);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        nav a.active {
+            color: var(--gold-light);
+            background: rgba(201, 168, 76, 0.12);
+        }
+
+        .wrap {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 80px 2rem 5rem;
+        }
+
+        /* Hero */
+        .hero {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tag {
+            display: inline-flex;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: var(--cream-dark);
+            color: var(--text-muted);
+            padding: 3px 12px;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 44px;
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            color: var(--navy);
+            margin-bottom: 0.75rem;
+        }
+
+        h1 em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 300;
+            max-width: 660px;
+        }
+
+        /* Quick nav */
+        .qnav {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 2.5rem;
+        }
+
+        .qn {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: #fff;
+            text-decoration: none;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .qn:hover {
+            border-color: var(--navy);
+            color: var(--navy);
+        }
+
+        /* Source cards */
+        .sc {
+            background: #fff;
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            margin-bottom: 2.5rem;
+            overflow: hidden;
+            box-shadow: 0 3px 18px rgba(13, 27, 42, 0.06);
+            scroll-margin-top: 68px;
+        }
+
+        .sch {
+            background: var(--navy);
+            color: #fff;
+            padding: 1.5rem 2rem;
+        }
+
+        .sc-num {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 4px;
+        }
+
+        .sch h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .sch .meta {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.45);
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .br {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .b {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .bs {
+            background: rgba(42, 157, 143, 0.2);
+            color: var(--teal-light);
+        }
+
+        .bi {
+            background: rgba(224, 123, 57, 0.2);
+            color: #f0a060;
+        }
+
+        .bg {
+            background: rgba(108, 72, 181, 0.2);
+            color: #a88edf;
+        }
+
+        .bd {
+            background: rgba(201, 168, 76, 0.2);
+            color: var(--gold-light);
+        }
+
+        .bp {
+            background: rgba(45, 125, 82, 0.2);
+            color: #5abf84;
+        }
+
+        .ba {
+            background: rgba(192, 57, 43, 0.2);
+            color: #e88070;
+        }
+
+        .scb {
+            padding: 1.75rem 2rem;
+        }
+
+        /* two col */
+        .tc {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media(max-width:700px) {
+            .tc {
+                grid-template-columns: 1fr;
+            }
+
+            .wrap {
+                padding: 70px 1rem 4rem;
+            }
+        }
+
+        /* analysis blocks */
+        .ab {
+            margin-bottom: 1.25rem;
+        }
+
+        .abt {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding-bottom: 6px;
+            margin-bottom: 0.7rem;
+            border-bottom: 2px solid;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .ab-s .abt {
+            color: var(--teal);
+            border-color: var(--teal-pale);
+        }
+
+        .ab-i .abt {
+            color: var(--amber);
+            border-color: var(--amber-pale);
+        }
+
+        .ab-g .abt {
+            color: var(--purple);
+            border-color: var(--purple-pale);
+        }
+
+        .ab-l .abt {
+            color: var(--red);
+            border-color: var(--red-pale);
+        }
+
+        .ab ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .ab li {
+            position: relative;
+            padding: 5px 0 5px 16px;
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .ab li:last-child {
+            border-bottom: none;
+        }
+
+        .ab-s li::before {
+            content: "◆";
+            position: absolute;
+            left: 0;
+            top: 10px;
+            font-size: 7px;
+            color: var(--teal);
+        }
+
+        .ab-i li::before {
+            content: "◆";
+            position: absolute;
+            left: 0;
+            top: 10px;
+            font-size: 7px;
+            color: var(--amber);
+        }
+
+        .ab-g li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            font-size: 12px;
+            color: var(--purple);
+        }
+
+        .ab-l li::before {
+            content: "!";
+            position: absolute;
+            left: 1px;
+            top: 5px;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--red);
+        }
+
+        /* concept boxes */
+        .cbox {
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .cbox-t {
+            background: var(--teal-pale);
+            border-left: 3px solid var(--teal);
+        }
+
+        .cbox-a {
+            background: var(--amber-pale);
+            border-left: 3px solid var(--amber);
+        }
+
+        .cbox-g {
+            background: var(--purple-pale);
+            border-left: 3px solid var(--purple);
+        }
+
+        .cbox-n {
+            background: var(--navy);
+            border-left: 3px solid var(--gold);
+        }
+
+        .cbox-gold {
+            background: #fef9e7;
+            border-left: 3px solid var(--gold);
+        }
+
+        .cbl {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .cbox-t .cbl {
+            color: var(--teal);
+        }
+
+        .cbox-a .cbl {
+            color: var(--amber);
+        }
+
+        .cbox-g .cbl {
+            color: var(--purple);
+        }
+
+        .cbox-n .cbl {
+            color: var(--gold-light);
+        }
+
+        .cbox-gold .cbl {
+            color: #7a5000;
+        }
+
+        .cbox h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .cbox-t h4 {
+            color: var(--teal);
+        }
+
+        .cbox-a h4 {
+            color: var(--amber);
+        }
+
+        .cbox-g h4 {
+            color: var(--purple);
+        }
+
+        .cbox-n h4 {
+            color: var(--gold-light);
+        }
+
+        .cbox-gold h4 {
+            color: #7a5000;
+        }
+
+        .cbox p,
+        .cbox li {
+            font-size: 13px;
+            line-height: 1.65;
+            color: var(--text-secondary);
+        }
+
+        .cbox-n p,
+        .cbox-n li {
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        /* data sections */
+        .ds {
+            background: var(--navy);
+            color: #fff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .ds-t {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            color: var(--gold-light);
+            margin-bottom: 2px;
+        }
+
+        .ds-s {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .bar-r {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .bar-l {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            width: 150px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .bar-tr {
+            flex: 1;
+            height: 13px;
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .bar-f {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .bar-v {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            width: 36px;
+        }
+
+        .bar-g {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.22);
+            margin: 12px 0 6px 158px;
+        }
+
+        .trend {
+            background: rgba(201, 168, 76, 0.1);
+            border: 1px solid rgba(201, 168, 76, 0.2);
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-top: 12px;
+        }
+
+        .trend-l {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        .trend p {
+            font-size: 12.5px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.65;
+        }
+
+        /* pull quote */
+        .pq {
+            margin: 1.25rem 0;
+            padding: 1.1rem 1.5rem;
+            border-left: 4px solid var(--gold);
+            background: var(--cream);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .pq p {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-style: italic;
+            color: var(--navy);
+            line-height: 1.5;
+        }
+
+        .pq cite {
+            display: block;
+            font-size: 11px;
+            font-family: 'DM Mono', monospace;
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-style: normal;
+        }
+
+        /* stat row */
+        .str {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .stb {
+            flex: 1;
+            min-width: 100px;
+            background: var(--cream);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.85rem;
+            text-align: center;
+        }
+
+        .stn {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1;
+        }
+
+        .stl {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        /* xref */
+        .xr {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .x {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 10px;
+            background: var(--navy);
+            color: var(--gold-light);
+            text-decoration: none;
+            border: 1px solid rgba(201, 168, 76, 0.2);
+            transition: all 0.2s;
+        }
+
+        .x:hover {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        /* athlete grid */
+        .ag {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.85rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .ac {
+            background: var(--cream);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.1rem;
+        }
+
+        .ac.feat {
+            background: var(--navy);
+            border-color: var(--gold);
+            color: #fff;
+        }
+
+        .an {
+            font-family: 'Playfair Display', serif;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .am {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        .ac.feat .am {
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        .asr {
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            font-size: 12px;
+        }
+
+        .ac.feat .asr {
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .ask {
+            color: var(--text-muted);
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+        }
+
+        .ac.feat .ask {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .asv {
+            font-weight: 600;
+            color: var(--navy);
+            font-size: 11px;
+        }
+
+        .ac.feat .asv {
+            color: var(--gold-light);
+        }
+
+        .spt {
+            display: inline-block;
+            margin-top: 8px;
+            background: var(--teal-pale);
+            color: var(--teal);
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .ac.feat .spt {
+            background: rgba(42, 157, 143, 0.2);
+            color: var(--teal-light);
+        }
+
+        .avd {
+            margin-top: 8px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .ac.feat .avd {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ref 2 special panel */
+        .r2p {
+            background: linear-gradient(135deg, var(--purple-pale), #e8e2fb);
+            border: 1px solid rgba(108, 72, 181, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .r2p-t {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--purple);
+            margin-bottom: 1rem;
+        }
+
+        .r2p-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.85rem;
+        }
+
+        @media(max-width:600px) {
+            .r2p-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ag {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .r2pc {
+            background: #fff;
+            border-radius: 8px;
+            padding: 0.85rem;
+        }
+
+        .r2pc h5 {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .r2pc-s h5 {
+            color: var(--teal);
+        }
+
+        .r2pc-i h5 {
+            color: var(--amber);
+        }
+
+        .r2pc-d h5 {
+            color: var(--purple);
+        }
+
+        .r2pc ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .r2pc li {
+            font-size: 12px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            padding: 2px 0 2px 12px;
+            position: relative;
+        }
+
+        .r2pc-s li::before {
+            content: "◆";
+            position: absolute;
+            left: 0;
+            top: 7px;
+            font-size: 6px;
+            color: var(--teal);
+        }
+
+        .r2pc-i li::before {
+            content: "◆";
+            position: absolute;
+            left: 0;
+            top: 7px;
+            font-size: 6px;
+            color: var(--amber);
+        }
+
+        .r2pc-d li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            top: 3px;
+            font-size: 11px;
+            color: var(--purple);
+        }
+
+        /* results compare */
+        .rc {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.85rem;
+            margin: 1rem 0;
+        }
+
+        .rc-bad {
+            background: #fff5f5;
+            border: 1px solid #fcd5d0;
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .rc-good {
+            background: #f0faf5;
+            border: 1px solid #a8dfc0;
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .rc-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 7px;
+        }
+
+        .rc-bad .rc-label {
+            color: var(--red);
+        }
+
+        .rc-good .rc-label {
+            color: var(--green);
+        }
+
+        .rc ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .rc li {
+            font-size: 12.5px;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            color: var(--text-secondary);
+        }
+
+        .rc li:last-child {
+            border-bottom: none;
+        }
+
+        /* synthesis */
+        .synth {
+            background: var(--navy);
+            color: #fff;
+            border-radius: 14px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .synth h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: var(--gold-light);
+            margin-bottom: 4px;
+        }
+
+        .synth-sub {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.35);
+            margin-bottom: 1.5rem;
+        }
+
+        .cg {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.85rem;
+        }
+
+        .cc2 {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 1.25rem;
+        }
+
+        .cc2-t {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.06em;
+            color: var(--gold);
+            margin-bottom: 7px;
+            text-transform: uppercase;
+        }
+
+        .cc2 p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+
+        .cr {
+            display: flex;
+            gap: 5px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .cr span {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 10px;
+            background: rgba(201, 168, 76, 0.15);
+            color: var(--gold-light);
+            border: 1px solid rgba(201, 168, 76, 0.1);
+        }
+
+        footer {
+            background: var(--navy);
+            color: rgba(255, 255, 255, 0.3);
+            text-align: center;
+            padding: 1.5rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="pb"></div>
+    <nav>
+        <a class="nb" href="index.html">IDU Study Hub</a>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="sources.html">Sources</a></li>
+            <li><a href="analysis.html" class="active">Analysis</a></li>
+            <li><a href="science.html">Science</a></li>
+            <li><a href="humanities.html">Humanities</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="questions.html">Question Bank</a></li>
+        </ul>
+    </nav>
+    <div class="wrap">
+        <div class="hero">
+            <div class="tag">Deep Analysis · All 8 Sources</div>
+            <h1>Source <em>Analysis</em></h1>
+            <p>Each source broken down from Science and I&S perspectives, with data interpretation, GC connections, and
+                limitations. Use this page as your essay preparation toolkit.</p>
+        </div>
+
+        <div class="qnav">
+            <a class="qn" href="#r1">Ref 1 — Nature &amp; Nurture</a>
+            <a class="qn" href="#r2">Ref 2 — Nominative Det.</a>
+            <a class="qn" href="#r3">Ref 3 — Twin Meta-Analysis</a>
+            <a class="qn" href="#r4">Ref 4 — Twins Blog</a>
+            <a class="qn" href="#r5">Ref 5 — UPF Data</a>
+            <a class="qn" href="#r6">Ref 6 — UPF Experiment</a>
+            <a class="qn" href="#r7">Ref 7 — Somatotyping</a>
+            <a class="qn" href="#r8">Ref 8 — Athletes</a>
+            <a class="qn" href="#synth">Synthesis</a>
+        </div>
+
+        <!-- REF 1 -->
+        <div class="sc" id="r1">
+            <div class="sch">
+                <div class="sc-num">Reference 01 · Video Script</div>
+                <h2>Nature and Nurture</h2>
+                <div class="meta">IB IDU introductory video — the theoretical framework for the whole unit</div>
+                <div class="br"><span class="b bs">Science</span><span class="b bi">I&S</span><span class="b bg">GC
+                        Connection</span><span class="b ba">Not peer-reviewed</span></div>
+            </div>
+            <div class="scb">
+                <div class="pq">
+                    <p>"Your genes might give you a starting point, but your environment helps shape how these traits
+                        develop."</p><cite>— Reference 1, Nature and Nurture Video Script</cite>
+                </div>
+                <div class="tc">
+                    <div>
+                        <div class="ab ab-s">
+                            <div class="abt">🔬 Science Perspective</div>
+                            <ul>
+                                <li><strong>Nature = genotype:</strong> your complete DNA inherited from parents. Fixed
+                                    at conception. Codes for biological traits — eye colour, potential height, metabolic
+                                    tendencies.</li>
+                                <li><strong>Nurture = environment:</strong> every non-genetic influence from womb
+                                    onwards — diet, schooling, relationships, cultural exposure, socioeconomic context.
+                                </li>
+                                <li><strong>Phenotype = genotype + environment:</strong> what is actually observable.
+                                    Two identical genotypes (MZ twins) can produce different phenotypes in different
+                                    environments — this is the scientific foundation of the whole unit.</li>
+                                <li><strong>Gene-Environment Interaction (GEI):</strong> the basketball analogy. Genetic
+                                    height (nature) only becomes athletic height with training and coaching (nurture).
+                                    The effect of a gene depends on the environment it operates in.</li>
+                                <li>Epigenetics — not covered here but crucial: environment can chemically tag DNA to
+                                    alter gene expression without changing the sequence.</li>
+                            </ul>
+                        </div>
+                        <div class="ab ab-i">
+                            <div class="abt">🌍 Individuals &amp; Societies Perspective</div>
+                            <ul>
+                                <li><strong>Socialisation:</strong> the lifelong process by which individuals learn
+                                    societal norms, values, and behaviours. Primary (family) and secondary (peers,
+                                    school, media) socialisation are both forms of "nurture".</li>
+                                <li><strong>Agency vs determinism:</strong> the nature/nurture debate is fundamentally
+                                    about how much free choice we have. Are we biologically pre-programmed, or socially
+                                    free agents?</li>
+                                <li><strong>Social construction of identity:</strong> the idea that identity is built
+                                    through interactions and cultural practices — not biologically fixed. Culture,
+                                    class, and community all shape who we become.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="ab ab-g">
+                            <div class="abt">→ Global Context Connections</div>
+                            <ul>
+                                <li>Your <strong>theoretical anchor</strong> — use to define nature/nurture in every
+                                    essay before bringing evidence from other sources</li>
+                                <li>Identity is co-produced and dynamic — not fixed at birth but reshaped throughout
+                                    life by relationships</li>
+                                <li>Relationships (coaches, parents, peers) are the nurture mechanism — directly
+                                    connects identity to the GC theme of relationships</li>
+                                <li>Every other source either tests the nature side, the nurture side, or their
+                                    interaction — this source frames what they're testing</li>
+                            </ul>
+                            <div class="xr"><a class="x" href="#r3">→ Ref 3 quantifies this</a><a class="x" href="#r4">→
+                                    Ref 4 illustrates this</a><a class="x" href="#r6">→ Ref 6 experiments on this</a>
+                            </div>
+                        </div>
+                        <div class="ab ab-l">
+                            <div class="abt">! Limitations to Critique</div>
+                            <ul>
+                                <li>Extremely simplified — omits epigenetics, gene-environment correlations (rGE), and
+                                    gene expression</li>
+                                <li>Not peer-reviewed; designed for young learners — lacks scientific rigour</li>
+                                <li>No data, statistics, or citations to support claims</li>
+                                <li>Presents nature and nurture as equal partners — Ref 3 shows genetics often dominate
+                                </li>
+                                <li>Basketball example conflates height potential with skill — two different types of
+                                    genetic advantage</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REF 2 -->
+        <div class="sc" id="r2">
+            <div class="sch">
+                <div class="sc-num">Reference 02 · Video Script</div>
+                <h2>Nominative Determinism</h2>
+                <div class="meta">Hypothesis that people gravitate toward life paths matching their name's meaning</div>
+                <div class="br"><span class="b bi">I&S</span><span class="b bg">GC Connection</span><span
+                        class="b ba">Anecdotal</span></div>
+            </div>
+            <div class="scb">
+                <div class="r2p">
+                    <div class="r2p-t">📋 Teacher's Official Inquiry Questions for This Source</div>
+                    <div class="r2p-grid">
+                        <div class="r2pc r2pc-s">
+                            <h5>Science Questions</h5>
+                            <ul>
+                                <li>Can a name directly affect biology, or does it influence behaviour through
+                                    environment?</li>
+                                <li>How could repeated labels affect a person's behaviour over time?</li>
+                            </ul>
+                        </div>
+                        <div class="r2pc r2pc-i">
+                            <h5>I&S Questions</h5>
+                            <ul>
+                                <li>Do labels and expectations shape identity?</li>
+                                <li>Can society influence a person by attaching meaning to their name?</li>
+                                <li>How might a name affect confidence, aspiration, or self-image?</li>
+                            </ul>
+                        </div>
+                        <div class="r2pc r2pc-d">
+                            <h5>Interdisciplinary Questions</h5>
+                            <ul>
+                                <li>Is identity partly shaped by what others expect from us?</li>
+                                <li>Can a label become a self-fulfilling prophecy?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="tc">
+                    <div>
+                        <div class="cbox cbox-gold">
+                            <div class="cbl">Core Concept Analysis</div>
+                            <h4>The Winner/Loser Paradox — Deep Interpretation</h4>
+                            <p>Brother named "Winner" → long criminal record. Brother named "Loser" → became a police
+                                detective. This directly falsifies the simple nominative determinism claim. From a
+                                Science lens, their identical environment (same family) should produce similar outcomes
+                                — it didn't. From an I&S lens: Labelling Theory (Becker) suggests "Loser" may have been
+                                driven to prove the label wrong — identity resistance. But the name still influenced the
+                                path, just not as expected. This ambiguity makes it the richest case study in the unit.
+                            </p>
+                        </div>
+                        <div class="ab ab-i">
+                            <div class="abt">🌍 I&S Concepts Applied</div>
+                            <ul>
+                                <li><strong>Nominative determinism:</strong> hypothesis (not law) that name meaning
+                                    shapes life path — weak scientific basis but sociologically interesting</li>
+                                <li><strong>Self-fulfilling prophecy (Merton, 1948):</strong> a belief that, by being
+                                    held, causes itself to become true — "Victoria = winner" may generate winning
+                                    behaviour through increased confidence and external validation</li>
+                                <li><strong>Labelling Theory (Becker):</strong> social labels shape self-concept and how
+                                    others treat you — once "Loser" was labelled, it shaped every interaction</li>
+                                <li><strong>Cultural capital (Bourdieu):</strong> a prestigious name may carry subtle
+                                    social advantages — people treat a "Victoria" as a winner from birth</li>
+                                <li><strong>Historical context:</strong> medieval surnames (Baker, Carpenter) were
+                                    caused BY occupation — the modern claim reverses the causal arrow</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="ab ab-s">
+                            <div class="abt">🔬 Science Perspective</div>
+                            <ul>
+                                <li>A name has no direct genetic effect — it does not alter DNA</li>
+                                <li>But behavioural science shows: repeated social expectations shape neural pathways
+                                    over time (neuroplasticity) — the environment of expectations becomes a real
+                                    biological influence</li>
+                                <li>This is the teacher's key science question: names don't change biology directly, but
+                                    they change the social environment, which then changes biology through repeated
+                                    experience</li>
+                                <li>This is an indirect pathway from nurture (name label) → environmental response
+                                    (expectations) → behaviour → potential neurological effect</li>
+                            </ul>
+                        </div>
+                        <div class="ab ab-g">
+                            <div class="abt">→ Global Context Connections</div>
+                            <ul>
+                                <li>A name is the <strong>first identity label</strong> — assigned before any personal
+                                    choice is possible, by parents operating within cultural systems</li>
+                                <li>Cross-reference Ref 8: Akira (brave warrior), Victoria (winner), Cirrus (cloud), Uju
+                                    (plenty) — apply this framework to ask whether names predict athletic outcomes</li>
+                                <li>Cross-reference Ref 4: Baker twins share surname AND both love baking — coincidence,
+                                    genetics, or name influence?</li>
+                                <li>The central GC tension: identity as assigned vs identity as chosen — names are the
+                                    clearest case of assigned identity</li>
+                            </ul>
+                            <div class="xr"><a class="x" href="#r4">→ Baker twins connection</a><a class="x"
+                                    href="#r8">→ Athlete names</a></div>
+                        </div>
+                        <div class="ab ab-l">
+                            <div class="abt">! Limitations</div>
+                            <ul>
+                                <li>N=2 brothers — not statistically meaningful at all</li>
+                                <li>Confirmation bias: we remember name-life matches and forget mismatches</li>
+                                <li>No peer-reviewed studies cited; scientific evidence for nominative determinism is
+                                    weak</li>
+                                <li>Confounding variables: the brothers had different life events beyond just their
+                                    names</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REF 3 -->
+        <div class="sc" id="r3">
+            <div class="sch">
+                <div class="sc-num">Reference 03 · Scientific Data / Bar Chart</div>
+                <h2>Twin Study Meta-Analysis</h2>
+                <div class="meta">Polderman et al. (2015), Nature Genetics 47(7):702–709 — largest twin study ever
+                    conducted</div>
+                <div class="br"><span class="b bs">Science</span><span class="b bd">Quantitative Data</span><span
+                        class="b bp">Peer-Reviewed ★ Most Credible</span></div>
+            </div>
+            <div class="scb">
+                <div class="str">
+                    <div class="stb">
+                        <div class="stn">2,748</div>
+                        <div class="stl">Studies analysed</div>
+                    </div>
+                    <div class="stb">
+                        <div class="stn">14.5M</div>
+                        <div class="stl">Twin pairs</div>
+                    </div>
+                    <div class="stb">
+                        <div class="stn">17,804</div>
+                        <div class="stl">Traits measured</div>
+                    </div>
+                    <div class="stb">
+                        <div class="stn" style="color:var(--teal)">49%</div>
+                        <div class="stl">Avg heritability</div>
+                    </div>
+                </div>
+                <div class="ds">
+                    <div class="ds-t">MZ vs DZ Twin Correlations — All 7 Traits from Ref 3 Chart</div>
+                    <div class="ds-s">Correlation: 0 = no similarity · 1.0 = perfect similarity · MZ = identical · DZ =
+                        non-identical</div>
+                    <div class="bar-g">Physical traits (highest heritability)</div>
+                    <div class="bar-r">
+                        <div class="bar-l">Height — MZ</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:92%;background:#2a9d8f;"></div>
+                        </div>
+                        <div class="bar-v">0.92</div>
+                    </div>
+                    <div class="bar-r">
+                        <div class="bar-l">Height — DZ</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:47%;background:#1a5e56;"></div>
+                        </div>
+                        <div class="bar-v">0.47</div>
+                    </div>
+                    <div class="bar-r">
+                        <div class="bar-l">Weight maint. — MZ</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:87%;background:#2a9d8f;"></div>
+                        </div>
+                        <div class="bar-v">0.87</div>
+                    </div>
+                    <div class="bar-r">
+                        <div class="bar-l">Weight maint. — DZ</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:42%;background:#1a5e56;"></div>
+                        </div>
+                        <div class="bar-v">0.42</div>
+                    </div>
+                    <div class="bar-g">Metabolic &amp; cognitive traits</div>
+                    <div class="bar-r">
+                        <div class="bar-l">Gen. metabolic — MZ</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:78%;background:#c9a84c;"></div>
+                        </div>
+                        <div class="bar-v">0.78</div>
+                    </div>
+                    <div class="bar-r">
+                        <div class="bar-l">Gen. metabolic — DZ</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:45%;background:#7a5000;"></div>
+                        </div>
+                        <div class="bar-v">0.45</div>
+                    </div>
+                    <div class="bar-r">
+                        <div class="bar-l">Higher cog. fn. — MZ</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:69%;background:#c9a84c;"></div>
+                        </div>
+                        <div class="bar-v">0.69</div>
+                    </div>
+                    <div class="bar-r">
+                        <div class="bar-l">Higher cog. fn. — DZ</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:38%;background:#7a5000;"></div>
+                        </div>
+                        <div class="bar-v">0.38</div>
+                    </div>
+                    <div class="bar-g">Internal organ function</div>
+                    <div class="bar-r">
+                        <div class="bar-l">Heart function — MZ</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:55%;background:#e07b39;"></div>
+                        </div>
+                        <div class="bar-v">0.55</div>
+                    </div>
+                    <div class="bar-r">
+                        <div class="bar-l">Heart function — DZ</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:30%;background:#8a3d12;"></div>
+                        </div>
+                        <div class="bar-v">0.30</div>
+                    </div>
+                    <div class="bar-r">
+                        <div class="bar-l">Immune system — MZ</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:70%;background:#e07b39;"></div>
+                        </div>
+                        <div class="bar-v">0.70</div>
+                    </div>
+                    <div class="bar-r">
+                        <div class="bar-l">Immune system — DZ</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:41%;background:#8a3d12;"></div>
+                        </div>
+                        <div class="bar-v">0.41</div>
+                    </div>
+                    <div class="trend">
+                        <div class="trend-l">📊 Trend Analysis</div>
+                        <p><strong>The ≈2× Rule:</strong> MZ correlations are consistently roughly double DZ
+                            correlations. This is the statistical fingerprint of heritability — if traits were purely
+                            environmental, MZ and DZ correlations would be equal. Physical traits (height 0.92, weight
+                            0.87) have the strongest genetic signal. Cognitive function (0.69) shows genes also shape
+                            thinking and personality. No trait reaches 1.0 — environment always plays some role. This is
+                            the scientific proof that identity is never purely nature OR nurture.</p>
+                    </div>
+                </div>
+                <div class="tc">
+                    <div class="ab ab-s">
+                        <div class="abt">🔬 Key Scientific Concepts</div>
+                        <ul>
+                            <li><strong>MZ twins:</strong> 100% shared DNA — any difference must be environmental</li>
+                            <li><strong>DZ twins:</strong> ~50% shared DNA (like siblings) — both share the same home,
+                                so the MZ-DZ gap isolates genetics</li>
+                            <li><strong>Heritability (h²):</strong> proportion of variation between people attributable
+                                to genetic differences. NOT "genes determine X% of you" — it's a population statistic
+                                about variation</li>
+                            <li><strong>Meta-analysis:</strong> combining 2,748 studies = massively higher statistical
+                                power than any single study</li>
+                            <li><strong>Additive genetic variation:</strong> 69% of traits explained by this model —
+                                shared family environment adds very little</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="ab ab-g">
+                            <div class="abt">→ GC Connections</div>
+                            <ul>
+                                <li>Quantifies exactly how much identity is biologically given — the best scientific
+                                    evidence for the nature side</li>
+                                <li>Even cognitive function (how we think and decide) has 0.69 MZ heritability — our
+                                    inner identity has a biological core</li>
+                                <li>No trait = 1.0, so environment always contributes — identity is never purely genetic
+                                </li>
+                                <li>Use specific numbers in essays: "0.92 MZ vs 0.47 DZ for height"</li>
+                            </ul>
+                        </div>
+                        <div class="ab ab-l">
+                            <div class="abt">! Limitations</div>
+                            <ul>
+                                <li><strong>Equal Environments Assumption (EEA):</strong> assumes MZ and DZ are treated
+                                    equally similarly — but MZ twins may be dressed the same, treated identically,
+                                    inflating correlations</li>
+                                <li>Correlation ≠ causation — no specific gene identified</li>
+                                <li>Sample skewed toward Europe/N. America/Australia — limited global representation
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REF 4 -->
+        <div class="sc" id="r4">
+            <div class="sch">
+                <div class="sc-num">Reference 04 · Web Blog</div>
+                <h2>Twins Separated at Birth</h2>
+                <div class="meta">Two case studies: Divia &amp; Lilly (India/South Africa) · Fred &amp; Callum</div>
+                <div class="br"><span class="b bs">Science</span><span class="b bi">I&S</span><span class="b bg">GC
+                        Connection</span><span class="b ba">Anecdotal Blog</span></div>
+            </div>
+            <div class="scb">
+                <div class="tc">
+                    <div>
+                        <div class="cbox cbox-gold">
+                            <div class="cbl">Case 1: Divia (India) &amp; Lilly (South Africa)</div>
+                            <h4>Separated 34 Years — Converged Lives</h4>
+                            <p>Similarities: same hairstyle and hair habit, same shade of lipstick, same laugh, same
+                                degree (Anthropology), same career (museum), same hobby (baking), same nail-biting
+                                habit, same leg-crossing posture. Surname: <strong>Baker</strong> — both love baking (→
+                                Ref 2 connection). Key difference: music taste (rock vs classical). This one difference
+                                is scientifically important — it shows cultural environment diverges outcomes even with
+                                identical genetics.</p>
+                        </div>
+                        <div class="cbox cbox-t">
+                            <div class="cbl">Case 2: Fred &amp; Callum (both meaning: peace)</div>
+                            <h4>When Genetics Shapes Relationships</h4>
+                            <p>Same height, weight, brown curly hair. Both married a woman named Jane. Both divorced
+                                after exactly 12 years. Both love river fishing, both won fishing contests. Same unusual
+                                hammering headache. Both named dog Elvis. Both in law enforcement. The relationship
+                                patterns suggest heritable personality traits drive who we are attracted to and how we
+                                bond — connecting identity directly to the GC theme of relationships.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="ab ab-s">
+                            <div class="abt">🔬 Science Perspective</div>
+                            <ul>
+                                <li><strong>Separated twin design = gold standard:</strong> no shared home environment
+                                    means any similarity = genetic signal</li>
+                                <li>Supports Ref 3 quantitatively: behavioural traits (habits, hobbies) AND physical
+                                    traits show high MZ convergence even without shared environment</li>
+                                <li><strong>Gene-Environment Correlation (rGE):</strong> genetic predispositions may
+                                    have actively led both to seek similar environments (Anthropology degrees, museums)
+                                    independently — genes influence which environments we choose</li>
+                                <li>Music difference = nurture override: cultural exposure (different radio, social
+                                    circles, musical traditions) diverges preferences even with identical DNA</li>
+                            </ul>
+                        </div>
+                        <div class="ab ab-g">
+                            <div class="abt">→ GC Connections</div>
+                            <ul>
+                                <li>Core GC question: if two people raised in entirely different cultures end up nearly
+                                    identical — what is individual identity?</li>
+                                <li>Baker surname + baking hobby = direct Ref 2 essay link</li>
+                                <li>Relationship patterns (married Jane, divorced at 12yr) suggests genetics shapes the
+                                    bonds we form — identity connects to relationships at a biological level</li>
+                                <li>Music difference = cultural identity matters even when biology is fixed</li>
+                            </ul>
+                        </div>
+                        <div class="ab ab-l">
+                            <div class="abt">! Limitations</div>
+                            <ul>
+                                <li>Only two cases — not statistically representative; likely selected for their
+                                    dramatic similarities</li>
+                                <li>Blog format — not peer-reviewed; may exaggerate similarities</li>
+                                <li>Both pairs raised in middle-class families — hidden shared class variable could
+                                    explain career/hobby similarities</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REF 5 -->
+        <div class="sc" id="r5">
+            <div class="sch">
+                <div class="sc-num">Reference 05 · Three Data Charts</div>
+                <h2>UPF Impact on Health</h2>
+                <div class="meta">Statistics Canada CCHS 2015 · N=13,608 adults (19+) and N=20,080 (ages 2+) · NOVA
+                    system</div>
+                <div class="br"><span class="b bs">Science</span><span class="b bi">I&S</span><span class="b bd">3
+                        Charts</span><span class="b bp">Peer-Reviewed</span></div>
+            </div>
+            <div class="scb">
+                <div class="ds">
+                    <div class="ds-t">Chart 2: Health Outcomes by UPF Diet Level (Adults 19+)</div>
+                    <div class="ds-s">N=13,608 · Low vs High UPF groups · Approximate values from chart</div>
+                    <div class="bar-g">Obesity prevalence</div>
+                    <div class="bar-r">
+                        <div class="bar-l">Low UPF</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:42%;background:#2d7d52;"></div>
+                        </div>
+                        <div class="bar-v">~21%</div>
+                    </div>
+                    <div class="bar-r">
+                        <div class="bar-l">High UPF</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:64%;background:#c0392b;"></div>
+                        </div>
+                        <div class="bar-v">~32%</div>
+                    </div>
+                    <div class="bar-g">Diabetes prevalence</div>
+                    <div class="bar-r">
+                        <div class="bar-l">Low UPF</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:14%;background:#2d7d52;"></div>
+                        </div>
+                        <div class="bar-v">~7%</div>
+                    </div>
+                    <div class="bar-r">
+                        <div class="bar-l">High UPF</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:20%;background:#c0392b;"></div>
+                        </div>
+                        <div class="bar-v">~10%</div>
+                    </div>
+                    <div class="bar-g">High blood pressure</div>
+                    <div class="bar-r">
+                        <div class="bar-l">Low UPF</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:32%;background:#2d7d52;"></div>
+                        </div>
+                        <div class="bar-v">~16%</div>
+                    </div>
+                    <div class="bar-r">
+                        <div class="bar-l">High UPF</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:44%;background:#c0392b;"></div>
+                        </div>
+                        <div class="bar-v">~22%</div>
+                    </div>
+                    <div class="trend">
+                        <div class="trend-l">📊 Chart 2 Interpretation — Dose-Response Pattern</div>
+                        <p>Every health condition worsens consistently from low → medium → high UPF. Obesity shows the
+                            largest relative increase: 21% to 32% = +52% higher in the high-UPF group. The consistent
+                            gradient across 4 independent conditions strengthens the case for a real effect. Limitation:
+                            cross-sectional design cannot prove causation — sick people may eat more UPF rather than UPF
+                            making them sick (reverse causation). Ref 6's twin experiment resolves this.</p>
+                    </div>
+                </div>
+                <div class="ds">
+                    <div class="ds-t">Chart 3: UPF Share of Daily Calories by Age Group (All ages 2+)</div>
+                    <div class="ds-s">N=20,080 · Percentage of daily energy from ultra-processed foods</div>
+                    <div class="bar-r">
+                        <div class="bar-l">Young children (2–5)</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:43%;background:#c9a84c;"></div>
+                        </div>
+                        <div class="bar-v">~43%</div>
+                    </div>
+                    <div class="bar-r">
+                        <div class="bar-l">Children (6–12)</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:52%;background:#e07b39;"></div>
+                        </div>
+                        <div class="bar-v">~52%</div>
+                    </div>
+                    <div class="bar-r">
+                        <div class="bar-l">Adolescents (13–18)</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:51%;background:#e07b39;"></div>
+                        </div>
+                        <div class="bar-v">~51%</div>
+                    </div>
+                    <div class="bar-r">
+                        <div class="bar-l">Adults (19–54)</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:44%;background:#c9a84c;"></div>
+                        </div>
+                        <div class="bar-v">~44%</div>
+                    </div>
+                    <div class="bar-r">
+                        <div class="bar-l">Adults (55+)</div>
+                        <div class="bar-tr">
+                            <div class="bar-f" style="width:43%;background:#c9a84c;"></div>
+                        </div>
+                        <div class="bar-v">~43%</div>
+                    </div>
+                    <div class="trend">
+                        <div class="trend-l">📊 Chart 3 Interpretation — The Adolescent Peak</div>
+                        <p>UPF peaks sharply at age 6–18 (over 50%). Young children (2–5) have lower intake — parents
+                            control their food. As children gain independence (6–12), UPF spikes — this maps perfectly
+                            onto peer group socialisation, not genetics. Adolescents (13–18) maintain elevated intake.
+                            Adults regain dietary control and UPF falls. The 55+ group was the only age group increasing
+                            between 2004 and 2015. The IDU insight: this age-based pattern is driven by social life
+                            stage, not biology — it's the clearest chart evidence for nurture shaping dietary identity.
+                        </p>
+                    </div>
+                </div>
+                <div class="tc">
+                    <div class="ab ab-i">
+                        <div class="abt">🌍 I&S Perspective</div>
+                        <ul>
+                            <li><strong>Food systems and inequality:</strong> extended research shows UPF highest in
+                                food-insecure, lower-income households — diet is not just personal choice but a
+                                structural social justice issue</li>
+                            <li><strong>Peer identity formation:</strong> the adolescent UPF spike reflects eating as a
+                                social identity signal — certain brands and foods mark group membership</li>
+                            <li><strong>Health inequality:</strong> Chart 2 outcomes are distributed along socioeconomic
+                                lines — a structural inequality, not individual failure</li>
+                        </ul>
+                    </div>
+                    <div class="ab ab-l">
+                        <div class="abt">! Limitations</div>
+                        <ul>
+                            <li>Cross-sectional — one snapshot in time, cannot prove causation</li>
+                            <li>Self-reported 24-hour dietary recall — people underreport unhealthy foods</li>
+                            <li>Canada only — excludes Indigenous communities, military, remote populations</li>
+                            <li>2015 data — landscape has shifted</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REF 6 -->
+        <div class="sc" id="r6">
+            <div class="sch">
+                <div class="sc-num">Reference 06 · Newsweek Article</div>
+                <h2>"I ate ultra-processed foods, my twin didn't. The results were shocking."</h2>
+                <div class="meta">Aimee Kingston · Newsweek · 27 June 2023 · Study by Prof. Tim Spector, King's College
+                    London</div>
+                <div class="br"><span class="b bs">Science</span><span class="b bi">I&S</span><span class="b bg">GC
+                        Connection</span><span class="b ba">Journalism — Not Peer-Reviewed</span></div>
+            </div>
+            <div class="scb">
+                <div class="pq">
+                    <p>"Neither of us is overweight or unwell in any way, so I was shocked that as a young, healthy
+                        person, it affected my health in as little as two weeks."</p><cite>— Aimee Kingston, Newsweek,
+                        27 June 2023</cite>
+                </div>
+                <div class="cbox cbox-t">
+                    <div class="cbl">Why This is the Most Powerful Source for IDU Integration</div>
+                    <h4>Perfect Experimental Design for Nature vs Nurture</h4>
+                    <p>Identical twins = 100% shared DNA (controls ALL genetic variables). Matching calories, fat,
+                        sugar, fibre (controls macronutrients). Only variable: degree of food processing. Any outcome
+                        difference = caused by processing, not genetics, not calories. This is a near-perfect
+                        experimental isolation of nurture (diet environment) from nature (genetics).</p>
+                </div>
+                <div class="rc">
+                    <div class="rc-bad">
+                        <div class="rc-label">Aimee — 100% UPF Diet</div>
+                        <ul>
+                            <li>Weight gained in 14 days</li>
+                            <li>Blood sugar worsened</li>
+                            <li>Blood fat levels worsened</li>
+                            <li>Constant hunger despite ↑ calories</li>
+                            <li>Mood deteriorated (~1 week)</li>
+                            <li>Severe fatigue — visible to others</li>
+                            <li>Difficulty concentrating at work</li>
+                            <li>Post-study UPF cravings persisted</li>
+                        </ul>
+                    </div>
+                    <div class="rc-good">
+                        <div class="rc-label">Nancy — Non-UPF Diet</div>
+                        <ul>
+                            <li>Lost weight in 14 days</li>
+                            <li>Blood results improved</li>
+                            <li>Blood fat levels improved</li>
+                            <li>Rarely felt hungry</li>
+                            <li>Often couldn't finish meals</li>
+                            <li>Consistently better mood</li>
+                            <li>Expanded food repertoire post-study</li>
+                            <li>No post-study cravings reported</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tc">
+                    <div class="ab ab-s">
+                        <div class="abt">🔬 Science Concepts Applied</div>
+                        <ul>
+                            <li><strong>Satiety hormone disruption:</strong> UPF overrides leptin (fullness) signalling
+                                — Aimee hungry despite more calories than usual</li>
+                            <li><strong>Metabolic biomarkers:</strong> blood sugar and fat worsening in 14 days = rapid
+                                metabolic disruption</li>
+                            <li><strong>Food dependency:</strong> dopamine reward pathway activation — explains
+                                post-study cravings despite not enjoying the food</li>
+                            <li><strong>Gut microbiome:</strong> Spector's ZOE research shows UPF reduces microbial
+                                diversity — one mechanism for metabolic harm</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="ab ab-g">
+                            <div class="abt">→ GC Connections</div>
+                            <ul>
+                                <li>Identical genetics, different diet = measurably different health bodies in 14 days —
+                                    the purest proof nurture reshapes the biological self</li>
+                                <li>Aimee's food identity was unconsciously constructed — diet identity can be shaped by
+                                    marketing without awareness</li>
+                                <li>Post-study identity shift: Aimee now eats "mindfully" — experience transformed her
+                                    self-concept as a food consumer</li>
+                            </ul>
+                            <div class="xr"><a class="x" href="#r5">→ Ref 5 population data</a><a class="x" href="#r3">→
+                                    Twin methodology</a></div>
+                        </div>
+                        <div class="ab ab-l">
+                            <div class="abt">! Limitations</div>
+                            <ul>
+                                <li>N=1 pair — single case, cannot generalise</li>
+                                <li>Newsweek = journalism, not peer-reviewed</li>
+                                <li>14 days too short for long-term conclusions</li>
+                                <li>No blinding — both knew which diet, creating placebo effects on self-reported mood
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REF 7 -->
+        <div class="sc" id="r7">
+            <div class="sch">
+                <div class="sc-num">Reference 07 · Scientific Classification System</div>
+                <h2>Somatotyping</h2>
+                <div class="meta">Heath-Carter method · Endomorph–Mesomorph–Ectomorph (1–7 scale) · Somatoplot diagram
+                </div>
+                <div class="br"><span class="b bs">Science</span><span class="b bi">I&S</span><span class="b bg">GC
+                        Connection</span></div>
+            </div>
+            <div class="scb">
+                <div class="tc">
+                    <div>
+                        <div class="cbox cbox-t">
+                            <div class="cbl">The Three Body Types</div>
+                            <h4>Endomorph · Mesomorph · Ectomorph</h4>
+                            <p><strong>Endomorph:</strong> wide shoulders AND wide hips, higher body fat → Sumo
+                                wrestling (5-5-1)<br><strong>Mesomorph:</strong> wide shoulders, narrow hips, high
+                                muscle mass → Wrestling (4-7-1), Weightlifting (2-7-2), Sprinting
+                                (1-6-3)<br><strong>Ectomorph:</strong> narrow shoulders and hips, lean → High jump
+                                (2-3-5), Volleyball (3-3-6)<br><strong>Balanced:</strong> Swimming (2-4-4), Tennis
+                                (2-5-3)</p>
+                        </div>
+                        <div class="ab ab-s">
+                            <div class="abt">🔬 Science Perspective</div>
+                            <ul>
+                                <li>Body composition is primarily genetically determined — Ref 3 shows weight (0.87) and
+                                    height (0.92) are highly heritable</li>
+                                <li>But somatotype IS modifiable: diet (Refs 5/6) and training alter body composition —
+                                    nurture acting on a genetic baseline</li>
+                                <li>No somatotype guarantees success — Phelps has disproportionate arm length; Kipchoge
+                                    doesn't fit the "ideal" marathon runner profile</li>
+                                <li>Somatotyping is descriptive, not predictive</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="ab ab-i">
+                            <div class="abt">🌍 I&S Perspective</div>
+                            <ul>
+                                <li><strong>Biological determinism in sport:</strong> labelling an athlete's somatotype
+                                    may constrain their self-exploration — "you're built for wrestling" becomes a
+                                    self-fulfilling prophecy (Ref 2 link)</li>
+                                <li><strong>Cultural bias:</strong> sports mapped on the somatoplot are not equally
+                                    accessible globally — sumo is culturally specific; volleyball infrastructure varies
+                                    enormously</li>
+                                <li><strong>Historical critique:</strong> Sheldon's original 1940s system was linked to
+                                    problematic racial typology — modern use is neutral but the history warrants
+                                    critical awareness</li>
+                            </ul>
+                        </div>
+                        <div class="ab ab-g">
+                            <div class="abt">→ GC Connections</div>
+                            <ul>
+                                <li>Physical body = identity marker that shapes athletic identity, social role, and
+                                    group membership</li>
+                                <li>Somatotype label from a coach = nominative determinism applied to the body (Ref 2)
+                                </li>
+                                <li>Diet changes somatotype — environment shapes the nature baseline (Refs 5/6)</li>
+                                <li>Apply directly to Ref 8: which athlete's somatotype best suits their identified
+                                    sport?</li>
+                            </ul>
+                            <div class="xr"><a class="x" href="#r8">→ Apply to Ref 8</a><a class="x" href="#r3">→
+                                    Heritability evidence</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REF 8 -->
+        <div class="sc" id="r8">
+            <div class="sch">
+                <div class="sc-num">Reference 08 · Interactive IB Resource</div>
+                <h2>Profiles of Aspiring Athletes</h2>
+                <div class="meta">Four profiles: Akira Luwi · Uju Ogbonna · Cirrus Rodriguez · Victoria Johnson</div>
+                <div class="br"><span class="b bs">Science</span><span class="b bi">I&S</span><span class="b bg">GC
+                        Connection</span><span class="b bd">Unit Synthesis</span></div>
+            </div>
+            <div class="scb">
+                <div class="ag">
+                    <div class="ac">
+                        <div style="font-size:28px;margin-bottom:8px;">🥋</div>
+                        <div class="an">Akira Luwi</div>
+                        <div class="am">"Brave warrior" · Asia · Age 19 · Male</div>
+                        <div class="asr"><span class="ask">Somatotype</span><span class="asv">3-7-2 (high
+                                mesomorph)</span></div>
+                        <div class="asr"><span class="ask">Facility</span><span class="asv">1 km</span></div>
+                        <div class="asr"><span class="ask">Finances</span><span class="asv">Affluent family</span></div>
+                        <div class="spt">Wrestling · Weightlifting</div>
+                        <div class="avd">Name + body + access all aligned. Highest probability of realising genetic
+                            potential.</div>
+                    </div>
+                    <div class="ac">
+                        <div style="font-size:28px;margin-bottom:8px;">🏊</div>
+                        <div class="an">Uju Ogbonna</div>
+                        <div class="am">"Plenty" · Africa · Age 24 · Female</div>
+                        <div class="asr"><span class="ask">Somatotype</span><span class="asv">2-4-4 (balanced)</span>
+                        </div>
+                        <div class="asr"><span class="ask">Facility</span><span class="asv">4 km</span></div>
+                        <div class="asr"><span class="ask">Finances</span><span class="asv">Solicitor, stable</span>
+                        </div>
+                        <div class="spt">Swimming</div>
+                        <div class="avd">Perfect genetic match. But career, marriage, child, and age create competing
+                            identity demands.</div>
+                    </div>
+                    <div class="ac">
+                        <div style="font-size:28px;margin-bottom:8px;">🏈</div>
+                        <div class="an">Cirrus Rodriguez</div>
+                        <div class="am">"Cloud" · S. America · Age 20 · Male</div>
+                        <div class="asr"><span class="ask">Somatotype</span><span class="asv">5-5-1 (endo+meso)</span>
+                        </div>
+                        <div class="asr"><span class="ask">Facility</span><span class="asv">50 km</span></div>
+                        <div class="asr"><span class="ask">Finances</span><span class="asv">Unemployed, knee
+                                injury</span></div>
+                        <div class="spt">Sumo · Football</div>
+                        <div class="avd">Genetics suit the sport. Environment creates an insurmountable cascade of
+                            barriers. Name = cloud = dream out of reach.</div>
+                    </div>
+                    <div class="ac feat">
+                        <div style="font-size:28px;margin-bottom:8px;">⭐</div>
+                        <div class="an">Victoria Johnson ★</div>
+                        <div class="am">"Winner" · N. America · Age 18 · Female</div>
+                        <div class="asr"><span class="ask">Somatotype</span><span class="asv">1-6-2 (dominant
+                                meso)</span></div>
+                        <div class="asr"><span class="ask">Facility</span><span class="asv">0.5 km</span></div>
+                        <div class="asr"><span class="ask">Finances</span><span class="asv">Sports scholarship</span>
+                        </div>
+                        <div class="spt">Sprinting · Power sports</div>
+                        <div class="avd">Every variable aligned — name, genetics, access, institutional support. Nature
+                            AND nurture in perfect harmony.</div>
+                    </div>
+                </div>
+                <div class="cbox cbox-n">
+                    <div class="cbl">Applied Analysis: Akira vs Cirrus — The Core Nature/Nurture Comparison</div>
+                    <h4>Same life stage. Similar genetic potential. Completely different outcomes.</h4>
+                    <p>Both are young males in prime athletic years. Both have high-mesomorph somatotypes suited to
+                        power sports. The genetic difference (3-7-2 vs 5-5-1) is real but not enormous — both have
+                        athletic potential. Yet: Akira = 1km to facilities, affluent family, name means "brave warrior".
+                        Cirrus = 50km barrier, unemployed, knee injury, name means "cloud". This comparison is the
+                        living proof of Ref 1's core claim — genes set the starting point, but environment determines
+                        whether potential is ever realised.</p>
+                </div>
+                <div class="tc">
+                    <div class="ab ab-i">
+                        <div class="abt">🌍 I&S Concepts Applied</div>
+                        <ul>
+                            <li><strong>Intersectionality (Crenshaw):</strong> Uju faces compounding disadvantages —
+                                female, African, married, child, age 24 narrowing athletic window</li>
+                            <li><strong>Social mobility through sport:</strong> Cirrus's knee injury didn't just end
+                                sport — it ended his primary economic strategy, reinforcing pre-existing inequality</li>
+                            <li><strong>Role conflict:</strong> Uju holds professional, family, and athletic identities
+                                simultaneously — all demand incompatible time commitments</li>
+                            <li><strong>Nominative determinism applied:</strong> Victoria (winner) has everything
+                                aligned; Cirrus (cloud) is adrift — does name predict fate, or do social structures
+                                explain the pattern?</li>
+                        </ul>
+                    </div>
+                    <div class="ab ab-g">
+                        <div class="abt">→ GC — Unit Synthesis</div>
+                        <ul>
+                            <li>This source synthesises the entire unit: names (Ref 2), heritability (Ref 3), twin
+                                parallels (Ref 4), diet (Refs 5/6), body type (Ref 7)</li>
+                            <li>Victoria = the ultimate question: is her success due to name, genes, or social
+                                privilege? All three?</li>
+                            <li>Best exam question: "Which athlete is most likely to realise their potential — and is
+                                that nature or nurture?"</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SYNTHESIS -->
+        <div class="synth" id="synth">
+            <h3>Cross-Source Synthesis</h3>
+            <div class="synth-sub">How all 8 references connect to answer the central inquiry</div>
+            <div class="cg">
+                <div class="cc2">
+                    <div class="cc2-t">Theory → Data → Human Story</div>
+                    <p>Ref 1 frames the theory. Ref 3 quantifies it (49% heritability). Ref 4 gives the human stories.
+                        Ref 6 experiments on it with identical twins.</p>
+                    <div class="cr"><span>Ref 1</span><span>Ref 3</span><span>Ref 4</span><span>Ref 6</span></div>
+                </div>
+                <div class="cc2">
+                    <div class="cc2-t">Names Shape Identity</div>
+                    <p>Ref 2 introduces the theory. Ref 4's Baker twins test it. Ref 8's athlete names (Victoria,
+                        Cirrus, Akira) apply it to real profiles.</p>
+                    <div class="cr"><span>Ref 2</span><span>Ref 4</span><span>Ref 8</span></div>
+                </div>
+                <div class="cc2">
+                    <div class="cc2-t">Population Data Meets Individual Body</div>
+                    <p>Ref 5 shows population-level health associations. Ref 6 provides experimental proof using
+                        identical twins. Macro statistics meets lived micro experience.</p>
+                    <div class="cr"><span>Ref 5</span><span>Ref 6</span></div>
+                </div>
+                <div class="cc2">
+                    <div class="cc2-t">Genetics Shapes Body that Society Judges</div>
+                    <p>Ref 3 proves body traits are heritable. Ref 7 maps types to sports. Ref 8 applies somatotypes to
+                        profiles whose social contexts enable or block potential. Ref 5 shows diet modifies the body
+                        genetics built.</p>
+                    <div class="cr"><span>Ref 3</span><span>Ref 7</span><span>Ref 8</span><span>Ref 5</span></div>
+                </div>
+            </div>
+        </div>
+
+        <footer>IDU Study Hub · Source Analysis · MYP Year 5 · Science + I&amp;S</footer>
+    </div>
+    <script>window.addEventListener('scroll', () => { const p = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100; document.getElementById('pb').style.width = p + '%'; });</script>
+</body>
+
+</html>

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science Concepts — IDU Study Hub</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0d1b2a;
+            --cream: #f5f0e8;
+            --cream-dark: #ede6d6;
+            --gold: #c9a84c;
+            --gold-light: #e8c97a;
+            --teal: #2a9d8f;
+            --teal-light: #3dbfb0;
+            --teal-pale: #d4f0ed;
+            --amber: #e07b39;
+            --amber-pale: #fdebd8;
+            --purple: #6c48b5;
+            --border: #d4c9b0;
+            --border-light: #e8e0d0;
+            --text-primary: #0d1b2a;
+            --text-secondary: #3a4f63;
+            --text-muted: #6b7d8e;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Source Serif 4', Georgia, serif;
+            background: var(--cream);
+            color: var(--text-primary);
+        }
+
+        #pb {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--teal));
+            width: 0%;
+            z-index: 1001;
+        }
+
+        nav {
+            position: fixed;
+            top: 3px;
+            left: 0;
+            right: 0;
+            background: var(--navy);
+            height: 54px;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nb {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            color: var(--gold-light);
+            text-decoration: none;
+            margin-right: 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 0;
+            list-style: none;
+        }
+
+        nav a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            padding: 6px 10px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--gold-light);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        nav a.active {
+            color: var(--gold-light);
+            background: rgba(201, 168, 76, 0.12);
+        }
+
+        .wrap {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 80px 2rem 5rem;
+        }
+
+        .hero {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tag {
+            display: inline-flex;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: var(--teal-pale);
+            color: var(--teal);
+            padding: 3px 12px;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 44px;
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            color: var(--navy);
+            margin-bottom: 0.75rem;
+        }
+
+        h1 em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .sec-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 0.25rem;
+            margin-top: 3rem;
+        }
+
+        .sec-sub {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-family: 'DM Mono', monospace;
+            letter-spacing: 0.04em;
+            margin-bottom: 1.5rem;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        @media(max-width:700px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .wrap {
+                padding: 70px 1rem 4rem;
+            }
+        }
+
+        .cc {
+            background: #fff;
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 1.4rem;
+            scroll-margin-top: 68px;
+        }
+
+        .cc-num {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .cc h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--teal);
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        .cc-src {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 10px;
+            background: var(--teal-pale);
+            color: var(--teal);
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .cc p {
+            font-size: 13.5px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .cc-example {
+            background: var(--cream);
+            border-left: 3px solid var(--teal);
+            border-radius: 0 6px 6px 0;
+            padding: 8px 12px;
+            margin-top: 10px;
+        }
+
+        .cc-example-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 4px;
+        }
+
+        .cc-example p {
+            font-size: 12.5px;
+            color: var(--text-secondary);
+        }
+
+        .cc-idu {
+            background: linear-gradient(135deg, #f0eefe, #e8e2fb);
+            border-radius: 6px;
+            padding: 8px 11px;
+            margin-top: 8px;
+        }
+
+        .cc-idu-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--purple);
+            margin-bottom: 4px;
+        }
+
+        .cc-idu p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .formula {
+            background: var(--navy);
+            color: var(--gold-light);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-family: 'DM Mono', monospace;
+            font-size: 14px;
+            text-align: center;
+            margin: 10px 0;
+            letter-spacing: 0.04em;
+        }
+
+        footer {
+            background: var(--navy);
+            color: rgba(255, 255, 255, 0.3);
+            text-align: center;
+            padding: 1.5rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="pb"></div>
+    <nav>
+        <a class="nb" href="index.html">IDU Study Hub</a>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="sources.html">Sources</a></li>
+            <li><a href="analysis.html">Analysis</a></li>
+            <li><a href="science.html" class="active">Science</a></li>
+            <li><a href="humanities.html">Humanities</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="questions.html">Question Bank</a></li>
+        </ul>
+    </nav>
+    <div class="wrap">
+        <div class="hero">
+            <div class="tag">🔬 Science Concepts</div>
+            <h1>Science <em>Concepts</em></h1>
+            <p>Every scientific concept used across all 8 sources — fully explained with definitions, IDU application,
+                and cross-references to where each concept appears.</p>
+        </div>
+
+        <div class="sec-title">Genetics &amp; Heredity</div>
+        <div class="sec-sub">Refs 1, 3, 4 · The biological foundation of identity</div>
+        <div class="concept-grid">
+
+            <div class="cc" id="genotype">
+                <div class="cc-num">Concept 01</div>
+                <h3>Genotype vs Phenotype</h3><span class="cc-src">Refs 1, 3, 4</span>
+                <div class="formula">Phenotype = Genotype + Environment</div>
+                <p><strong>Genotype</strong> is your complete DNA sequence — fixed at conception, inherited from both
+                    parents. It contains every gene that codes for proteins, traits, and biological
+                    tendencies.<br><br><strong>Phenotype</strong> is everything observable: height, weight, eye colour,
+                    metabolism, behaviour, disease susceptibility. Phenotype is not just your genes — it is the result
+                    of genes interacting with every environmental input from womb onwards.</p>
+                <div class="cc-example">
+                    <div class="cc-example-label">IDU Application</div>
+                    <p>Divia and Lilly (Ref 4) have identical genotypes but diverge in music taste — a phenotypic
+                        difference caused by different cultural environments. Their shared behavioural habits
+                        (nail-biting, leg-crossing) are genotype expressing consistently despite different environments.
+                    </p>
+                </div>
+            </div>
+
+            <div class="cc" id="herit">
+                <div class="cc-num">Concept 02</div>
+                <h3>Heritability (h²)</h3><span class="cc-src">Ref 3</span>
+                <div class="formula">h² = 2(rMZ − rDZ)</div>
+                <p>Heritability is the proportion of observed variation in a trait between people in a population that
+                    is attributable to genetic differences. Scale: 0.0 (entirely environmental) to 1.0 (entirely
+                    genetic).<br><br><strong>Critical misconception:</strong> h²=0.92 for height does NOT mean "92% of
+                    your height is determined by genes." It means "in this population, 92% of the differences in height
+                    between people can be explained by genetic variation." In a population where everyone has identical
+                    diets, heritability would be higher. In a famine, it would be lower.</p>
+                <div class="cc-example">
+                    <div class="cc-example-label">IDU Numbers to Quote</div>
+                    <p>Height: 0.92 MZ vs 0.47 DZ. Weight maintenance: 0.87 MZ vs 0.42 DZ. Higher cognitive function:
+                        0.69 MZ vs 0.38 DZ. Average across all 17,804 traits: ~49%.</p>
+                </div>
+            </div>
+
+            <div class="cc" id="mzdz">
+                <div class="cc-num">Concept 03</div>
+                <h3>MZ vs DZ Twin Studies</h3><span class="cc-src">Refs 3, 4, 6</span>
+                <p><strong>Monozygotic (MZ) twins:</strong> one fertilised egg splits into two embryos. Share 100% DNA.
+                    Any difference between MZ twins must be environmental.<br><br><strong>Dizygotic (DZ) twins:</strong>
+                    two separately fertilised eggs. Share ~50% DNA (same as any siblings). Both typically share the same
+                    home environment as MZ twins.<br><br>The MZ–DZ comparison is powerful because: same home environment
+                    for both, but MZ have twice the genetic overlap. The gap between MZ and DZ correlations isolates
+                    genetic effects from shared environment.</p>
+                <div class="cc-idu">
+                    <div class="cc-idu-label">IDU Link</div>
+                    <p>Ref 3's entire dataset uses this logic. Ref 4's separated twins strengthen it further — no shared
+                        environment at all. Ref 6's experiment controls it perfectly: 100% shared DNA, only diet
+                        differs.</p>
+                </div>
+            </div>
+
+            <div class="cc" id="meta">
+                <div class="cc-num">Concept 04</div>
+                <h3>Meta-Analysis</h3><span class="cc-src">Ref 3</span>
+                <p>A statistical technique that combines data from multiple independent studies to produce one more
+                    powerful conclusion. Polderman et al. (2015) pooled 2,748 studies and 14.5 million twin pairs — far
+                    greater statistical certainty than any single study could achieve.<br><br>Meta-analysis reduces the
+                    risk that one unusual study skews the conclusion. It also allows comparison across different
+                    populations and time periods (1958–2012 in Ref 3).</p>
+                <div class="cc-example">
+                    <div class="cc-example-label">Why This Matters for Credibility</div>
+                    <p>Ref 3 is your highest credibility source precisely because it IS a meta-analysis. When writing
+                        about nature/nurture, "a 2015 meta-analysis of 2,748 studies" is far stronger than citing a
+                        single twin pair (Ref 4) or a journalist's account (Ref 6).</p>
+                </div>
+            </div>
+
+            <div class="cc" id="gei">
+                <div class="cc-num">Concept 05</div>
+                <h3>Gene-Environment Interaction (GEI)</h3><span class="cc-src">Refs 1, 3, 4</span>
+                <p>The phenomenon where the effect of a gene depends on the environment, and the effect of an
+                    environment depends on the genotype. Neither operates independently.<br><br>Example: a gene linked
+                    to height potential only produces tall stature if nutrition is adequate during childhood. The gene's
+                    effect is modified by the environmental input. Conversely, the effect of malnutrition on height
+                    depends on the individual's genetic potential.</p>
+                <div class="cc-example">
+                    <div class="cc-example-label">IDU Application (Ref 1 Basketball)</div>
+                    <p>Genetic height = the nature component. Coaching, practice, and strategy = the nurture component.
+                        The athletic outcome requires both — elite basketball performance is the GEI product, not height
+                        alone nor training alone.</p>
+                </div>
+                <div class="cc-idu">
+                    <div class="cc-idu-label">IDU Link</div>
+                    <p>This concept is the scientific translation of the core IDU argument: genes and environment
+                        co-produce outcomes. Victoria's athletic success = her 1-6-2 somatotype (GEI) interacting with
+                        scholarship access and training environment.</p>
+                </div>
+            </div>
+
+            <div class="cc" id="epigen">
+                <div class="cc-num">Concept 06</div>
+                <h3>Epigenetics</h3><span class="cc-src">Advanced — not directly in sources</span>
+                <p>Mechanisms by which environmental factors switch genes "on" or "off" without changing the DNA
+                    sequence. Chemical tags (methyl groups) added to DNA or histones alter whether genes are expressed.
+                    Diet, stress, trauma, and toxic exposure can all trigger epigenetic changes.<br><br>Why it matters
+                    for this IDU: epigenetics is the molecular mechanism by which nurture modifies nature. It blurs the
+                    nature/nurture boundary — the environment literally writes on your DNA (without changing the
+                    sequence). Aimee Kingston's rapid metabolic changes in Ref 6 may partially involve epigenetic
+                    mechanisms.</p>
+                <div class="cc-example">
+                    <div class="cc-example-label">IDU Link</div>
+                    <p>Use in essays to show Ref 1's framework is an oversimplification: it's not just that environment
+                        shapes how genes express — it can epigenetically alter gene expression itself. Nature is not as
+                        fixed as Ref 1 implies.</p>
+                </div>
+            </div>
+
+        </div><!-- end genetics grid -->
+
+        <div class="sec-title">Nutrition Science</div>
+        <div class="sec-sub">Refs 5, 6 · Diet as an environmental identity-shaper</div>
+        <div class="concept-grid">
+
+            <div class="cc">
+                <div class="cc-num">Concept 07</div>
+                <h3>NOVA Food Classification</h3><span class="cc-src">Ref 5</span>
+                <p>A system classifying foods by the nature, extent, and purpose of industrial processing — not by
+                    nutrients. Four groups:<br><br><strong>Group 1:</strong> Unprocessed/minimally processed (fresh
+                    vegetables, plain meat, milk)<br><strong>Group 2:</strong> Processed culinary ingredients (sugar,
+                    salt, oil, butter)<br><strong>Group 3:</strong> Processed foods (canned vegetables, artisan bread,
+                    cheeses)<br><strong>Group 4:</strong> Ultra-processed foods (UPF) — industrial formulations with
+                    additives, emulsifiers, artificial flavours: chips, mass-produced cereal, instant noodles</p>
+                <div class="cc-example">
+                    <div class="cc-example-label">Key Insight</div>
+                    <p>NOVA does NOT classify by nutrients. A food can be nutritionally similar to an unprocessed
+                        equivalent but still be Group 4 if it uses industrial additives. This is why fruity yogurts,
+                        breakfast cereals, and "whole grain" sliced bread can be UPF — not because they're nutritionally
+                        empty, but because they're industrially formulated.</p>
+                </div>
+            </div>
+
+            <div class="cc">
+                <div class="cc-num">Concept 08</div>
+                <h3>Dose-Response Relationship</h3><span class="cc-src">Ref 5 Chart 2</span>
+                <p>A fundamental epidemiological concept: as the dose (exposure) increases, so does the response
+                    (effect). In Ref 5's Chart 2, every health condition (obesity, diabetes, hypertension, heart
+                    disease) worsens consistently from low → medium → high UPF groups.<br><br>A dose-response gradient
+                    is stronger evidence of causation than a simple binary comparison because it shows a consistent
+                    pattern across the full exposure range — making it less likely to be explained by chance or a single
+                    confounding variable.</p>
+                <div class="cc-idu">
+                    <div class="cc-idu-label">Limitation to Note</div>
+                    <p>Dose-response strengthens the case but does not prove causation alone — the study is still
+                        cross-sectional. Ref 6's experimental design is required to establish the causal direction.</p>
+                </div>
+            </div>
+
+            <div class="cc">
+                <div class="cc-num">Concept 09</div>
+                <h3>Satiety Hormone Disruption</h3><span class="cc-src">Ref 6</span>
+                <p><strong>Leptin:</strong> the "fullness" hormone, secreted by fat cells to signal satiety to the
+                    brain. High protein and fibre intake strongly triggers leptin
+                    release.<br><br><strong>Ghrelin:</strong> the "hunger" hormone, produced in the stomach — signals
+                    hunger to the brain. UPFs are low in fibre and protein, leaving ghrelin elevated even after
+                    eating.<br><br>UPFs are engineered to be hyperpalatable and energy-dense while bypassing satiety
+                    signals. This explains why Aimee Kingston (Ref 6) was "hungry all the time despite eating more
+                    calories than usual" — her hormonal feedback system was circumvented by UPF's food engineering.</p>
+                <div class="cc-example">
+                    <div class="cc-example-label">IDU Application</div>
+                    <p>This is the biological mechanism behind Chart 2's obesity association (Ref 5). It also explains
+                        why Ref 6's results changed in just 14 days — hormonal disruption is rapid.</p>
+                </div>
+            </div>
+
+            <div class="cc">
+                <div class="cc-num">Concept 10</div>
+                <h3>Cross-Sectional vs Experimental Design</h3><span class="cc-src">Refs 5, 6</span>
+                <p><strong>Cross-sectional study (Ref 5):</strong> collects data from a population at one point in time.
+                    Can identify associations but cannot establish causation. Ref 5 shows UPF intake correlates with
+                    worse health — but sick people may eat more UPF (reverse causation), or low income causes both
+                    (confounding).<br><br><strong>Controlled experiment (Ref 6):</strong> manipulates one variable (diet
+                    type) while controlling all others (genetics via twin design, calories, macronutrients). Any outcome
+                    difference must be caused by the manipulated variable. Establishes causation.</p>
+                <div class="cc-idu">
+                    <div class="cc-idu-label">Why Use Both Together</div>
+                    <p>Ref 5's large sample (13,608 adults) gives statistical power and real-world generalisability. Ref
+                        6's experimental design provides causal proof. Together they form a complete argument: the
+                        association exists at population scale (Ref 5) and has a causal mechanism (Ref 6).</p>
+                </div>
+            </div>
+
+            <div class="cc">
+                <div class="cc-num">Concept 11</div>
+                <h3>Metabolic Biomarkers</h3><span class="cc-src">Ref 6</span>
+                <p>Measurable substances in the blood indicating metabolic health status. Key biomarkers in Ref
+                    6:<br><br><strong>Blood glucose:</strong> indicates how well the body regulates blood sugar.
+                    Elevated = insulin resistance risk.<br><strong>Triglycerides/cholesterol:</strong> blood fat levels
+                    associated with cardiovascular risk.<br><br>Aimee's blood glucose and fat levels worsened in just 14
+                    days. This rapid change confirms that metabolic disruption from UPF is fast-acting — not a gradual
+                    years-long process. It supports Ref 5's associations with diabetes and heart disease.</p>
+            </div>
+
+            <div class="cc">
+                <div class="cc-num">Concept 12</div>
+                <h3>Gut Microbiome</h3><span class="cc-src">Ref 6 — Spector/ZOE research</span>
+                <p>The gut microbiome is the community of trillions of microorganisms (bacteria, fungi, viruses) living
+                    in the digestive system. It plays a critical role in immune function, metabolism, mood regulation,
+                    and nutrient absorption.<br><br>Prof. Spector's ZOE research (referenced in Ref 6's context) shows
+                    UPFs tend to reduce microbiome diversity and beneficial bacteria populations. This is one proposed
+                    mechanism for why UPF causes the health outcomes seen in Ref 5 — reduced microbiome diversity may
+                    impair metabolic signalling, immune function, and inflammation regulation.</p>
+                <div class="cc-idu">
+                    <div class="cc-idu-label">IDU Interest</div>
+                    <p>The microbiome is partially inherited (genetically) but heavily shaped by diet (nurture). This is
+                        another example of nature and nurture intersecting — your genetic microbiome baseline is then
+                        modified by every meal you eat.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="sec-title">Body Composition &amp; Sport Science</div>
+        <div class="sec-sub">Refs 7, 8 · Physical identity and athletic potential</div>
+        <div class="concept-grid">
+
+            <div class="cc">
+                <div class="cc-num">Concept 13</div>
+                <h3>Somatotyping (Heath-Carter)</h3><span class="cc-src">Refs 7, 8</span>
+                <div class="formula">Rating: Endomorphy — Mesomorphy — Ectomorphy (1–7 each)</div>
+                <p>A three-dimensional body composition classification system. Each component rated
+                    1–7:<br><br><strong>Endomorphy:</strong> relative fatness/roundness — wide hips, tendency to store
+                    fat<br><strong>Mesomorphy:</strong> relative musculoskeletal robustness — muscle mass, bone density,
+                    wide shoulders<br><strong>Ectomorphy:</strong> relative linearity and leanness — long limbs, narrow
+                    build, low fat<br><br>A somatotype like 3-7-2 = moderate fat, dominant muscle, low lean. This maps
+                    onto the somatoplot to suggest wrestling and weightlifting as ideal sports.</p>
+                <div class="cc-example">
+                    <div class="cc-example-label">Apply to Ref 8</div>
+                    <p>Akira 3-7-2 → Wrestling/Weightlifting. Uju 2-4-4 → Swimming. Cirrus 5-5-1 → Sumo/Football.
+                        Victoria 1-6-2 → Sprinting. The somatotype analysis is the scientific contribution to Ref 8 —
+                        the I&S contribution is asking why only some athletes get to pursue their ideal sport.</p>
+                </div>
+            </div>
+
+            <div class="cc">
+                <div class="cc-num">Concept 14</div>
+                <h3>Body Composition vs BMI</h3><span class="cc-src">Ref 7</span>
+                <p>BMI (Body Mass Index = weight ÷ height²) is a crude population health indicator. It does not
+                    distinguish between fat mass and muscle mass — a highly muscular mesomorph and an overweight
+                    individual can have the same BMI.<br><br>Somatotyping captures the structure of the body in three
+                    dimensions. A rugby player (high mesomorphy) and a distance runner (high ectomorphy) may have
+                    similar BMIs but radically different somatotypes and athletic capabilities.<br><br>This is why
+                    somatotyping is more useful than BMI for athletic assessment — it reveals the body's actual
+                    composition, not just its total mass relative to height.</p>
+            </div>
+
+            <div class="cc">
+                <div class="cc-num">Concept 15</div>
+                <h3>Neuroplasticity &amp; Behaviour</h3><span class="cc-src">Ref 2 — Teacher's Science Lens</span>
+                <p>Neuroplasticity is the brain's ability to reorganise itself by forming new neural connections
+                    throughout life. It is the biological mechanism by which experience and environment alter the brain
+                    itself.<br><br>This is the teacher's key science question for Ref 2: "How could repeated labels
+                    affect a person's behaviour over time?" The answer is neuroplasticity — repeated social expectations
+                    (like a name that means "winner") can reshape neural pathways for confidence, risk-taking, and
+                    aspiration over years of development.</p>
+                <div class="cc-idu">
+                    <div class="cc-idu-label">IDU Bridge Concept</div>
+                    <p>Neuroplasticity bridges the gap between Ref 2 (I&S: name labels shape identity) and Science: the
+                        mechanism is biological — repeated social inputs literally rewire the brain. This is how nurture
+                        (social labels) modifies nature (brain structure) at a cellular level.</p>
+                </div>
+            </div>
+
+            <div class="cc">
+                <div class="cc-num">Concept 16</div>
+                <h3>Dopamine Reward Pathway &amp; Food</h3><span class="cc-src">Ref 6</span>
+                <p>The mesolimbic dopamine system is the brain's reward pathway. Highly palatable foods (high fat + high
+                    sugar combinations, characteristic of UPF) trigger dopamine release — the same pathway activated by
+                    addictive substances.<br><br>Repeated activation desensitises dopamine receptors — requiring more
+                    stimulation to produce the same pleasure signal. This creates habitual seeking behaviour. Aimee
+                    Kingston noted she "didn't really enjoy the food but finished everything I was given and was always
+                    left wanting more" — a description consistent with dopamine desensitisation and habitual
+                    reward-seeking.</p>
+                <div class="cc-example">
+                    <div class="cc-example-label">IDU Link</div>
+                    <p>Post-study UPF cravings = neurological dependency formation in 14 days. This adds a biological
+                        dimension to why UPF consumption is so persistent — it's not just social convenience but
+                        neurochemical conditioning.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <footer>IDU Study Hub · Science Concepts · MYP Year 5 · 16 Concepts Explained</footer>
+    </div>
+    <script>window.addEventListener('scroll', () => { const p = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100; document.getElementById('pb').style.width = p + '%'; });</script>
+</body>
+
+</html>

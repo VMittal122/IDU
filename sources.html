@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sources — IDU Study Hub</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0d1b2a;
+            --cream: #f5f0e8;
+            --cream-dark: #ede6d6;
+            --gold: #c9a84c;
+            --gold-light: #e8c97a;
+            --teal: #2a9d8f;
+            --teal-pale: #d4f0ed;
+            --amber: #e07b39;
+            --amber-pale: #fdebd8;
+            --purple: #6c48b5;
+            --purple-pale: #ede8f8;
+            --red: #c0392b;
+            --border: #d4c9b0;
+            --border-light: #e8e0d0;
+            --text-primary: #0d1b2a;
+            --text-secondary: #3a4f63;
+            --text-muted: #6b7d8e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Source Serif 4', Georgia, serif;
+            background: var(--cream);
+            color: var(--text-primary);
+        }
+
+        #pb {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--teal));
+            width: 0%;
+            z-index: 1001;
+        }
+
+        nav {
+            position: fixed;
+            top: 3px;
+            left: 0;
+            right: 0;
+            background: var(--navy);
+            height: 54px;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nb {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            color: var(--gold-light);
+            text-decoration: none;
+            margin-right: 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 0;
+            list-style: none;
+        }
+
+        nav a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            padding: 6px 11px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--gold-light);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        nav a.active {
+            color: var(--gold-light);
+            background: rgba(201, 168, 76, 0.12);
+        }
+
+        .wrap {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 80px 2rem 5rem;
+        }
+
+        .hero {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tag {
+            display: inline-flex;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: var(--teal-pale);
+            color: var(--teal);
+            padding: 3px 12px;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 44px;
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            color: var(--navy);
+            margin-bottom: 0.75rem;
+        }
+
+        h1 em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media(max-width:700px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .sc {
+            background: #fff;
+            border: 1px solid var(--border-light);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 3px 16px rgba(13, 27, 42, 0.06);
+        }
+
+        .sc-banner {
+            height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sc-icon {
+            font-size: 38px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sc-n {
+            position: absolute;
+            bottom: 8px;
+            right: 12px;
+            font-family: 'Playfair Display', serif;
+            font-size: 56px;
+            font-weight: 900;
+            opacity: 0.08;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .sc-body {
+            padding: 1.2rem 1.4rem;
+        }
+
+        .sc-ref {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 3px;
+        }
+
+        .sc-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 3px;
+            line-height: 1.3;
+        }
+
+        .sc-type {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        .br {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .b {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .bs {
+            background: rgba(42, 157, 143, 0.15);
+            color: var(--teal);
+        }
+
+        .bi {
+            background: rgba(224, 123, 57, 0.15);
+            color: var(--amber);
+        }
+
+        .bd {
+            background: rgba(201, 168, 76, 0.15);
+            color: #7a5000;
+        }
+
+        .bp {
+            background: rgba(45, 125, 82, 0.15);
+            color: #1a5a30;
+        }
+
+        .ba {
+            background: rgba(192, 57, 43, 0.15);
+            color: var(--red);
+        }
+
+        .ki {
+            background: var(--cream);
+            border-radius: 8px;
+            padding: 9px 11px;
+            margin-bottom: 9px;
+        }
+
+        .kil {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .kir {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 12.5px;
+        }
+
+        .kir:last-child {
+            border-bottom: none;
+        }
+
+        .kik {
+            color: var(--text-muted);
+        }
+
+        .kiv {
+            font-weight: 600;
+            color: var(--navy);
+            text-align: right;
+            max-width: 160px;
+            font-size: 12px;
+        }
+
+        .sum {
+            font-size: 13px;
+            line-height: 1.65;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .rl {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 11px;
+            background: var(--cream);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s;
+            margin-bottom: 6px;
+        }
+
+        .rl:hover {
+            border-color: var(--teal);
+            background: var(--teal-pale);
+        }
+
+        .rli {
+            width: 26px;
+            height: 26px;
+            background: var(--navy);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+
+        .rlt {
+            flex: 1;
+        }
+
+        .rln {
+            font-weight: 600;
+            color: var(--navy);
+            display: block;
+            font-size: 11.5px;
+        }
+
+        .rlu {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .xr {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .x {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 10px;
+            background: var(--navy);
+            color: var(--gold-light);
+            text-decoration: none;
+            border: 1px solid rgba(201, 168, 76, 0.2);
+            transition: all 0.2s;
+        }
+
+        .x:hover {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        footer {
+            background: var(--navy);
+            color: rgba(255, 255, 255, 0.3);
+            text-align: center;
+            padding: 1.5rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="pb"></div>
+    <nav>
+        <a class="nb" href="index.html">IDU Study Hub</a>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="sources.html" class="active">Sources</a></li>
+            <li><a href="analysis.html">Analysis</a></li>
+            <li><a href="science.html">Science</a></li>
+            <li><a href="humanities.html">Humanities</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="questions.html">Question Bank</a></li>
+        </ul>
+    </nav>
+    <div class="wrap">
+        <div class="hero">
+            <div class="tag">8 IB Sources</div>
+            <h1>Raw <em>Sources</em></h1>
+            <p>All 8 IB IDU reference sources — key stats, credibility ratings, and direct reference links for each.</p>
+        </div>
+        <div class="grid">
+
+            <div class="sc" id="r1">
+                <div class="sc-banner" style="background:linear-gradient(135deg,#0d2a1a,#1a5c38);">
+                    <div class="sc-icon">🎬</div>
+                    <div class="sc-n">1</div>
+                </div>
+                <div class="sc-body">
+                    <div class="sc-ref">Reference 01</div>
+                    <div class="sc-title">Nature and Nurture</div>
+                    <div class="sc-type">Explainer video script · IB IDU resource</div>
+                    <div class="br"><span class="b bs">Science</span><span class="b bi">I&S</span><span class="b ba">Not
+                            peer-reviewed</span></div>
+                    <div class="ki">
+                        <div class="kil">Key Information</div>
+                        <div class="kir"><span class="kik">Type</span><span class="kiv">Video script</span></div>
+                        <div class="kir"><span class="kik">Core concept</span><span class="kiv">Nature vs nurture
+                                framework</span></div>
+                        <div class="kir"><span class="kik">Key analogy</span><span class="kiv">Basketball (height +
+                                coaching)</span></div>
+                        <div class="kir"><span class="kik">Credibility</span><span class="kiv">Low — simplified, no data
+                                cited</span></div>
+                    </div>
+                    <div class="sum">Introduces the foundational nature/nurture framework. Nature = genetics; nurture =
+                        environment. The two interact through gene-environment interaction (GEI). Your theoretical
+                        anchor — use to define terms in any essay.</div>
+                    <a class="rl" href="https://idprm.ibo.org/index.html#/English" target="_blank">
+                        <div class="rli">🔗</div>
+                        <div class="rlt"><span class="rln">IB IDU Resource Portal</span><span
+                                class="rlu">idprm.ibo.org/index.html</span></div>
+                    </a>
+                    <div class="xr"><a class="x" href="analysis.html">→ Full Analysis</a><a class="x"
+                            href="science.html">→ GEI Concept</a></div>
+                </div>
+            </div>
+
+            <div class="sc" id="r2">
+                <div class="sc-banner" style="background:linear-gradient(135deg,#2a0a4a,#4a1a7a);">
+                    <div class="sc-icon">🏷️</div>
+                    <div class="sc-n">2</div>
+                </div>
+                <div class="sc-body">
+                    <div class="sc-ref">Reference 02</div>
+                    <div class="sc-title">Nominative Determinism</div>
+                    <div class="sc-type">Explainer video script · Chicago Tribune case study</div>
+                    <div class="br"><span class="b bi">I&S</span><span class="b ba">Anecdotal only</span></div>
+                    <div class="ki">
+                        <div class="kil">Key Information</div>
+                        <div class="kir"><span class="kik">Core concept</span><span class="kiv">Names shape life
+                                paths</span></div>
+                        <div class="kir"><span class="kik">Key case</span><span class="kiv">Winner Lane vs Loser
+                                Lane</span></div>
+                        <div class="kir"><span class="kik">Historical origin</span><span class="kiv">Medieval
+                                occupational surnames</span></div>
+                        <div class="kir"><span class="kik">Credibility</span><span class="kiv">Low — anecdotal, no
+                                data</span></div>
+                    </div>
+                    <div class="sum">Nominative determinism hypothesis — people gravitate toward paths matching their
+                        name. The Winner/Loser paradox shows identity can resist imposed labels. Connects directly to
+                        Ref 8's athlete names (Victoria = winner, Cirrus = cloud).</div>
+                    <a class="rl" href="https://www.chicagotribune.com" target="_blank">
+                        <div class="rli">📰</div>
+                        <div class="rlt"><span class="rln">Chicago Tribune — Winner/Loser article</span><span
+                                class="rlu">chicagotribune.com</span></div>
+                    </a>
+                    <div class="xr"><a class="x" href="analysis.html">→ Full Analysis</a><a class="x"
+                            href="humanities.html">→ I&S Concepts</a></div>
+                </div>
+            </div>
+
+            <div class="sc" id="r3">
+                <div class="sc-banner" style="background:linear-gradient(135deg,#0a2a1a,#0f4a2a);">
+                    <div class="sc-icon">📊</div>
+                    <div class="sc-n">3</div>
+                </div>
+                <div class="sc-body">
+                    <div class="sc-ref">Reference 03</div>
+                    <div class="sc-title">Twin Study Meta-Analysis</div>
+                    <div class="sc-type">Scientific data / bar chart · Polderman et al., Nature Genetics 2015</div>
+                    <div class="br"><span class="b bs">Science</span><span class="b bd">Quantitative Data</span><span
+                            class="b bp">Peer-Reviewed ★</span></div>
+                    <div class="ki">
+                        <div class="kil">Key Statistics</div>
+                        <div class="kir"><span class="kik">Studies analysed</span><span class="kiv">2,748</span></div>
+                        <div class="kir"><span class="kik">Twin pairs</span><span class="kiv">14.5 million</span></div>
+                        <div class="kir"><span class="kik">Traits measured</span><span class="kiv">17,804</span></div>
+                        <div class="kir"><span class="kik">Avg heritability</span><span class="kiv">~49%</span></div>
+                        <div class="kir"><span class="kik">Height MZ corr.</span><span class="kiv">0.92 (DZ:
+                                0.47)</span></div>
+                    </div>
+                    <div class="sum">Most credible source in the unit. Largest twin study ever. MZ correlations
+                        consistently ~double DZ = statistical fingerprint of heritability. Published in Nature Genetics.
+                        Use specific numbers in all essays.</div>
+                    <a class="rl" href="https://www.nature.com/articles/ng.3285" target="_blank">
+                        <div class="rli">🔬</div>
+                        <div class="rlt"><span class="rln">Polderman et al. (2015) — Nature Genetics
+                                47(7):702–709</span><span class="rlu">nature.com/articles/ng.3285</span></div>
+                    </a>
+                    <div class="xr"><a class="x" href="analysis.html">→ Full Analysis</a><a class="x"
+                            href="science.html">→ Heritability Explained</a></div>
+                </div>
+            </div>
+
+            <div class="sc" id="r4">
+                <div class="sc-banner" style="background:linear-gradient(135deg,#1a0a2a,#2a103f);">
+                    <div class="sc-icon">👯</div>
+                    <div class="sc-n">4</div>
+                </div>
+                <div class="sc-body">
+                    <div class="sc-ref">Reference 04</div>
+                    <div class="sc-title">Twins Separated at Birth</div>
+                    <div class="sc-type">Web blog · Two case studies — Divia/Lilly + Fred/Callum</div>
+                    <div class="br"><span class="b bs">Science</span><span class="b bi">I&S</span><span
+                            class="b ba">Blog — not peer-reviewed</span></div>
+                    <div class="ki">
+                        <div class="kil">Key Cases</div>
+                        <div class="kir"><span class="kik">Pair 1</span><span class="kiv">Divia (India) + Lilly (S.
+                                Africa)</span></div>
+                        <div class="kir"><span class="kik">Shared surname</span><span class="kiv">Baker — both love
+                                baking</span></div>
+                        <div class="kir"><span class="kik">Key difference</span><span class="kiv">Music taste (rock vs
+                                classical)</span></div>
+                        <div class="kir"><span class="kik">Pair 2</span><span class="kik">Fred + Callum — both married
+                                "Jane"</span></div>
+                    </div>
+                    <div class="sum">Gold-standard separated twin design. Any similarity = genetic signal. Music
+                        difference = cultural nurture overriding genetics in one domain. Baker surname + baking hobby =
+                        direct Ref 2 link.</div>
+                    <div class="xr"><a class="x" href="analysis.html">→ Full Analysis</a><a class="x" href="r2">→ Ref 2
+                            Names Link</a></div>
+                </div>
+            </div>
+
+            <div class="sc" id="r5">
+                <div class="sc-banner" style="background:linear-gradient(135deg,#0a1a0a,#0f3a15);">
+                    <div class="sc-icon">📈</div>
+                    <div class="sc-n">5</div>
+                </div>
+                <div class="sc-body">
+                    <div class="sc-ref">Reference 05</div>
+                    <div class="sc-title">UPF Impact on Health — Data Charts</div>
+                    <div class="sc-type">3 bar charts · Statistics Canada CCHS 2015</div>
+                    <div class="br"><span class="b bs">Science</span><span class="b bi">I&S</span><span class="b bd">3
+                            Charts</span><span class="b bp">Peer-Reviewed</span></div>
+                    <div class="ki">
+                        <div class="kil">Key Statistics</div>
+                        <div class="kir"><span class="kik">Sample (adults 19+)</span><span class="kiv">N=13,608</span>
+                        </div>
+                        <div class="kir"><span class="kik">Sample (all ages 2+)</span><span class="kiv">N=20,080</span>
+                        </div>
+                        <div class="kir"><span class="kik">Highest UPF age group</span><span class="kiv">Children 6–12
+                                (~52%)</span></div>
+                        <div class="kir"><span class="kik">High UPF obesity rate</span><span class="kiv">~32% vs ~21%
+                                (low UPF)</span></div>
+                    </div>
+                    <div class="sum">Three charts: (1) diet displacement, (2) dose-response health outcomes, (3) UPF by
+                        age. Limitation: cross-sectional design — association not causation. Ref 6 provides the
+                        experimental causal evidence.</div>
+                    <a class="rl" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8076355/" target="_blank">
+                        <div class="rli">📊</div>
+                        <div class="rlt"><span class="rln">Full study — Canadian Journal of Public Health
+                                2021</span><span class="rlu">pmc.ncbi.nlm.nih.gov/articles/PMC8076355</span></div>
+                    </a>
+                    <a class="rl" href="https://www150.statcan.gc.ca/n1/pub/82-003-x/2020011/article/00001-eng.htm"
+                        target="_blank">
+                        <div class="rli">🇨🇦</div>
+                        <div class="rlt"><span class="rln">Statistics Canada CCHS 2015 original data</span><span
+                                class="rlu">www150.statcan.gc.ca</span></div>
+                    </a>
+                    <div class="xr"><a class="x" href="analysis.html">→ Full Analysis + Charts</a></div>
+                </div>
+            </div>
+
+            <div class="sc" id="r6">
+                <div class="sc-banner" style="background:linear-gradient(135deg,#1a0a0a,#3a1010);">
+                    <div class="sc-icon">🥗</div>
+                    <div class="sc-n">6</div>
+                </div>
+                <div class="sc-body">
+                    <div class="sc-ref">Reference 06</div>
+                    <div class="sc-title">"I ate UPF, my twin didn't. The results were shocking."</div>
+                    <div class="sc-type">Newsweek article · Aimee Kingston · 27 June 2023</div>
+                    <div class="br"><span class="b bs">Science</span><span class="b bi">I&S</span><span
+                            class="b ba">Journalism — not peer-reviewed</span></div>
+                    <div class="ki">
+                        <div class="kil">Key Information</div>
+                        <div class="kir"><span class="kik">Study design</span><span class="kiv">Identical twins, 2-week
+                                diet</span></div>
+                        <div class="kir"><span class="kik">Researcher</span><span class="kiv">Prof. Tim Spector,
+                                KCL</span></div>
+                        <div class="kir"><span class="kik">UPF twin (Aimee)</span><span class="kiv">Weight gain, worse
+                                markers</span></div>
+                        <div class="kir"><span class="kik">Non-UPF twin (Nancy)</span><span class="kiv">Weight loss,
+                                better markers</span></div>
+                    </div>
+                    <div class="sum">Most powerful source for interdisciplinary synthesis. Controls genetics (100%
+                        shared DNA) while isolating diet (nurture). Any outcome difference = caused by food processing.
+                        Aimee's identity shift post-study = environment reshaping the self.</div>
+                    <a class="rl" href="https://www.newsweek.com/ultra-processed-foods-twin-results-shocking-1809031"
+                        target="_blank">
+                        <div class="rli">📰</div>
+                        <div class="rlt"><span class="rln">Newsweek — Aimee Kingston, June 2023</span><span
+                                class="rlu">newsweek.com</span></div>
+                    </a>
+                    <a class="rl" href="https://www.twinsuk.ac.uk" target="_blank">
+                        <div class="rli">🔬</div>
+                        <div class="rlt"><span class="rln">TwinsUK Registry — King's College London</span><span
+                                class="rlu">twinsuk.ac.uk</span></div>
+                    </a>
+                    <div class="xr"><a class="x" href="analysis.html">→ Full Analysis</a></div>
+                </div>
+            </div>
+
+            <div class="sc" id="r7">
+                <div class="sc-banner" style="background:linear-gradient(135deg,#0a0a2a,#101040);">
+                    <div class="sc-icon">💪</div>
+                    <div class="sc-n">7</div>
+                </div>
+                <div class="sc-body">
+                    <div class="sc-ref">Reference 07</div>
+                    <div class="sc-title">Somatotyping</div>
+                    <div class="sc-type">Scientific classification system · Somatoplot diagram (Heath-Carter method)
+                    </div>
+                    <div class="br"><span class="b bs">Science</span><span class="b bi">I&S</span></div>
+                    <div class="ki">
+                        <div class="kil">Somatotype → Sport Mappings</div>
+                        <div class="kir"><span class="kik">2-7-2</span><span class="kiv">Weightlifting</span></div>
+                        <div class="kir"><span class="kik">4-7-1</span><span class="kiv">Wrestling</span></div>
+                        <div class="kir"><span class="kik">1-6-3</span><span class="kiv">Sprinting</span></div>
+                        <div class="kir"><span class="kik">2-4-4</span><span class="kiv">Swimming</span></div>
+                        <div class="kir"><span class="kik">5-5-1</span><span class="kiv">Sumo Wrestling</span></div>
+                    </div>
+                    <div class="sum">Endomorph-Mesomorph-Ectomorph system (1–7 scale). Primarily genetically determined
+                        (Ref 3: weight 0.87 heritability) but modifiable by diet and training. Apply directly to Ref 8's
+                        four athletes.</div>
+                    <div class="xr"><a class="x" href="analysis.html">→ Full Analysis</a><a class="x"
+                            href="science.html">→ Body Composition Science</a></div>
+                </div>
+            </div>
+
+            <div class="sc" id="r8">
+                <div class="sc-banner" style="background:linear-gradient(135deg,#0a1a0a,#1a3a10);">
+                    <div class="sc-icon">🏅</div>
+                    <div class="sc-n">8</div>
+                </div>
+                <div class="sc-body">
+                    <div class="sc-ref">Reference 08</div>
+                    <div class="sc-title">Profiles of Aspiring Athletes</div>
+                    <div class="sc-type">Interactive IB resource · 4 fictional athlete profiles</div>
+                    <div class="br"><span class="b bs">Science</span><span class="b bi">I&S</span><span
+                            class="b bd">Applied Synthesis</span></div>
+                    <div class="ki">
+                        <div class="kil">The Four Athletes</div>
+                        <div class="kir"><span class="kik">Akira Luwi (3-7-2)</span><span class="kiv">Brave warrior ·
+                                1km · Affluent</span></div>
+                        <div class="kir"><span class="kik">Uju Ogbonna (2-4-4)</span><span class="kiv">Plenty · 4km ·
+                                Solicitor</span></div>
+                        <div class="kir"><span class="kik">Cirrus Rodriguez (5-5-1)</span><span class="kiv">Cloud · 50km
+                                · Unemployed</span></div>
+                        <div class="kir"><span class="kik">Victoria Johnson (1-6-2)</span><span class="kiv">Winner ·
+                                0.5km · Scholarship</span></div>
+                    </div>
+                    <div class="sum">The unit synthesis. Applies names (Ref 2), genetics/somatotypes (Refs 3+7),
+                        diet-health (Refs 5+6), and social access to four profiles. Akira vs Cirrus = the clearest
+                        nature vs nurture illustration.</div>
+                    <a class="rl" href="https://idprm.ibo.org/index.html#/English" target="_blank">
+                        <div class="rli">🔗</div>
+                        <div class="rlt"><span class="rln">IB IDU Portal — interactive profiles</span><span
+                                class="rlu">idprm.ibo.org</span></div>
+                    </a>
+                    <div class="xr"><a class="x" href="analysis.html">→ Full Analysis</a></div>
+                </div>
+            </div>
+
+        </div>
+        <footer>IDU Study Hub · Sources · MYP Year 5 · Science + Individuals &amp; Societies</footer>
+    </div>
+    <script>window.addEventListener('scroll', () => { const p = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100; document.getElementById('pb').style.width = p + '%'; });</script>
+</body>
+
+</html>

@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Bank — IDU Study Hub</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0d1b2a;
+            --navy-mid: #1a2e42;
+            --cream: #f5f0e8;
+            --cream-dark: #ede6d6;
+            --gold: #c9a84c;
+            --gold-light: #e8c97a;
+            --teal: #2a9d8f;
+            --teal-light: #3dbfb0;
+            --teal-pale: #d4f0ed;
+            --amber: #e07b39;
+            --amber-pale: #fdebd8;
+            --purple: #6c48b5;
+            --purple-pale: #ede8f8;
+            --red: #c0392b;
+            --red-pale: #fde8e6;
+            --border: #d4c9b0;
+            --border-light: #e8e0d0;
+            --text-primary: #0d1b2a;
+            --text-secondary: #3a4f63;
+            --text-muted: #6b7d8e;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Source Serif 4', Georgia, serif;
+            background: var(--cream);
+            color: var(--text-primary);
+        }
+
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--teal));
+            width: 0%;
+            z-index: 1001;
+        }
+
+        .topnav {
+            position: fixed;
+            top: 3px;
+            left: 0;
+            right: 0;
+            background: var(--navy);
+            height: 54px;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .topnav-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            color: var(--gold-light);
+            text-decoration: none;
+            margin-right: 2rem;
+        }
+
+        .topnav-links {
+            display: flex;
+            gap: 0;
+            list-style: none;
+        }
+
+        .topnav-links a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            padding: 6px 11px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .topnav-links a:hover {
+            color: var(--gold-light);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .topnav-links a.active {
+            color: var(--gold-light);
+            background: rgba(201, 168, 76, 0.12);
+        }
+
+        .page-wrap {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 2rem 5rem;
+        }
+
+        .hero {
+            margin-bottom: 3rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: var(--cream-dark);
+            color: var(--text-muted);
+            padding: 3px 12px;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 44px;
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            color: var(--navy);
+            margin-bottom: 0.75rem;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 300;
+            max-width: 640px;
+        }
+
+        /* Filter tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .ftab {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.05em;
+            padding: 7px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+        }
+
+        .ftab:hover {
+            border-color: var(--navy);
+        }
+
+        .ftab.active-a {
+            background: var(--teal);
+            color: #fff;
+            border-color: var(--teal);
+        }
+
+        .ftab.active-b {
+            background: var(--gold);
+            color: var(--navy);
+            border-color: var(--gold);
+        }
+
+        .ftab.active-c {
+            background: var(--purple);
+            color: #fff;
+            border-color: var(--purple);
+        }
+
+        .ftab.active-all {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
+        }
+
+        /* Question cards */
+        .qcard {
+            background: #fff;
+            border: 1px solid var(--border-light);
+            border-radius: 14px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(13, 27, 42, 0.05);
+        }
+
+        .qcard[data-crit="A"] {
+            border-left: 4px solid var(--teal);
+        }
+
+        .qcard[data-crit="B"] {
+            border-left: 4px solid var(--gold);
+        }
+
+        .qcard[data-crit="C"] {
+            border-left: 4px solid var(--purple);
+        }
+
+        .qcard-header {
+            padding: 1.25rem 1.5rem;
+            background: var(--cream);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .qcard-header:hover {
+            background: var(--cream-dark);
+        }
+
+        .qcard-meta {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+
+        .crit-badge {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .cb-a {
+            background: var(--teal-pale);
+            color: var(--teal);
+        }
+
+        .cb-b {
+            background: #fef3cd;
+            color: #7a5000;
+        }
+
+        .cb-c {
+            background: var(--purple-pale);
+            color: var(--purple);
+        }
+
+        .marks-badge {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: var(--cream-dark);
+            color: var(--text-muted);
+        }
+
+        .qcard-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.35;
+        }
+
+        .qcard-sources {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .toggle-icon {
+            font-size: 18px;
+            color: var(--text-muted);
+            transition: transform 0.2s;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+
+        .qcard.open .toggle-icon {
+            transform: rotate(45deg);
+        }
+
+        .qcard-body {
+            display: none;
+            padding: 1.5rem;
+        }
+
+        .qcard.open .qcard-body {
+            display: block;
+        }
+
+        /* Question content */
+        .q-scenario {
+            background: var(--navy);
+            color: #fff;
+            border-radius: 10px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .q-scenario-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 6px;
+        }
+
+        .q-scenario p {
+            font-size: 13.5px;
+            line-height: 1.65;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .q-task {
+            margin-bottom: 1.25rem;
+        }
+
+        .q-task-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .q-task p {
+            font-size: 14.5px;
+            line-height: 1.65;
+            color: var(--navy);
+            font-weight: 400;
+        }
+
+        .q-requirements {
+            margin-top: 10px;
+            padding: 10px 14px;
+            background: var(--cream);
+            border-radius: 8px;
+        }
+
+        .q-requirements ul {
+            padding-left: 16px;
+        }
+
+        .q-requirements li {
+            font-size: 13px;
+            line-height: 1.65;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .q-requirements li::marker {
+            color: var(--text-muted);
+        }
+
+        /* Mark scheme */
+        .mark-scheme {
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .ms-toggle {
+            background: var(--cream-dark);
+            padding: 10px 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .ms-toggle:hover {
+            background: var(--cream);
+        }
+
+        .ms-body {
+            display: none;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .ms-body.show {
+            display: block;
+        }
+
+        .band-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-bottom: 1rem;
+        }
+
+        .band-table th {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 8px 12px;
+            background: var(--navy);
+            color: rgba(255, 255, 255, 0.6);
+            text-align: left;
+        }
+
+        .band-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            vertical-align: top;
+            line-height: 1.55;
+        }
+
+        .band-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .band-table tr:nth-child(even) td {
+            background: var(--cream);
+        }
+
+        .band-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--navy);
+            white-space: nowrap;
+        }
+
+        .band-table tr.band-top td {
+            background: var(--green-pale);
+        }
+
+        .band-table tr.band-top .band-label {
+            color: var(--teal);
+        }
+
+        .model-hint {
+            background: var(--teal-pale);
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-top: 10px;
+        }
+
+        .model-hint-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 6px;
+        }
+
+        .model-hint p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        footer {
+            background: var(--navy);
+            color: rgba(255, 255, 255, 0.3);
+            text-align: center;
+            padding: 1.5rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+
+        @media(max-width:600px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="progress-bar"></div>
+    <nav class="topnav">
+        <a class="topnav-brand" href="index.html">IDU Study Hub</a>
+        <ul class="topnav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="sources.html">Sources</a></li>
+            <li><a href="analysis.html">Analysis</a></li>
+            <li><a href="science.html">Science</a></li>
+            <li><a href="humanities.html">Humanities</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="questions.html" class="active">Question Bank</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-wrap">
+        <div class="hero">
+            <div class="hero-tag">IB MYP IDU · Criteria A, B, C</div>
+            <h1>Question <em>Bank</em></h1>
+            <p>Full IB-style exam questions with mark schemes and model answer guidance. Organised by criterion. Click
+                any question to expand it fully.</p>
+        </div>
+
+        <div class="filter-tabs">
+            <div class="ftab active-all" onclick="filterQuestions('all',this)">All Questions</div>
+            <div class="ftab" onclick="filterQuestions('A',this)">Criterion A — Evaluating</div>
+            <div class="ftab" onclick="filterQuestions('B',this)">Criterion B — Synthesizing</div>
+            <div class="ftab" onclick="filterQuestions('C',this)">Criterion C — Reflecting</div>
+        </div>
+
+        <div id="questionList">
+
+            <!-- ===== CRITERION A ===== -->
+
+            <div class="qcard" data-crit="A" id="qa1">
+                <div class="qcard-header" onclick="toggleCard('qa1')">
+                    <div>
+                        <div class="qcard-meta">
+                            <span class="crit-badge cb-a">Criterion A — Evaluating</span>
+                            <span class="marks-badge">8 marks</span>
+                        </div>
+                        <div class="qcard-title">Compare and contrast how Science and Individuals &amp; Societies each
+                            contribute to understanding the relationship between genetics and identity.</div>
+                        <div class="qcard-sources">Sources: Refs 1, 3, 4 · Nature/nurture, twin studies, separated twins
+                        </div>
+                    </div>
+                    <div class="toggle-icon">+</div>
+                </div>
+                <div class="qcard-body">
+                    <div class="q-scenario">
+                        <div class="q-scenario-label">Context</div>
+                        <p>The question of whether our identity is determined by our genes (nature) or our environment
+                            (nurture) has been examined through both scientific research and sociological theory.
+                            References 1, 3, and 4 draw on both Science and Individuals &amp; Societies to explore this
+                            question.</p>
+                    </div>
+                    <div class="q-task">
+                        <div class="q-task-label">Task</div>
+                        <p>With reference to at least two of References 1, 3, and 4, compare and contrast how Science
+                            and Individuals &amp; Societies each contribute to understanding the relationship between
+                            genetics and identity. In your answer, you must:</p>
+                        <div class="q-requirements">
+                            <ul>
+                                <li>Explain two ways in which Science contributes to understanding this relationship
+                                </li>
+                                <li>Explain two ways in which Individuals &amp; Societies contributes to understanding
+                                    this relationship</li>
+                                <li>Explain one limitation of relying on Science alone to understand identity</li>
+                                <li>Explain one limitation of relying on I&amp;S alone to understand identity</li>
+                                <li>In your conclusion, evaluate which discipline contributes more completely to
+                                    understanding identity, and justify your answer</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mark-scheme">
+                        <div class="ms-toggle" onclick="toggleMS(this)">▸ Show mark scheme &amp; model guidance</div>
+                        <div class="ms-body">
+                            <table class="band-table">
+                                <tr>
+                                    <th>Band</th>
+                                    <th>Marks</th>
+                                    <th>Descriptor</th>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">0</td>
+                                    <td>0</td>
+                                    <td>No achievement at any level</td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">1–2</td>
+                                    <td>1–2</td>
+                                    <td>Describes how one or both disciplines relate to identity in a general way. Does
+                                        not use sources as evidence. No comparison made.</td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">3–4</td>
+                                    <td>3–4</td>
+                                    <td>Explains how each discipline contributes to understanding identity with
+                                        reference to at least one source. Some comparison attempted but not developed.
+                                        Limitations may be mentioned without explanation.</td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">5–6</td>
+                                    <td>5–6</td>
+                                    <td>Clearly explains two contributions from each discipline, citing specific
+                                        evidence from sources (e.g. 0.92 MZ height correlation from Ref 3; socialisation
+                                        concept from Ref 1). Limitations explained. Conclusion present but evaluation
+                                        not fully justified.</td>
+                                </tr>
+                                <tr class="band-top">
+                                    <td class="band-label">7–8</td>
+                                    <td>7–8</td>
+                                    <td>Thorough analysis of how both disciplines contribute to, and are limited in,
+                                        understanding identity. Uses specific source evidence (data values, case
+                                        examples, concepts). Clear evaluation in conclusion with a justified position on
+                                        which discipline contributes more completely, acknowledging complexity. Shows
+                                        genuine interdisciplinary insight.</td>
+                                </tr>
+                            </table>
+                            <div class="model-hint">
+                                <div class="model-hint-label">Model Answer Guidance (Band 7–8)</div>
+                                <p><strong>Science contributions:</strong> (1) Ref 3 quantifies genetic contribution —
+                                    0.92 MZ vs 0.47 DZ for height proves a strong heritable component to physical
+                                    identity. (2) Ref 4's separated twins (Divia/Lilly) show behavioural traits
+                                    (nail-biting, leg-crossing) persist across radically different environments,
+                                    confirming genetic behavioural basis.<br><br>
+                                    <strong>I&amp;S contributions:</strong> (1) Ref 1 introduces socialisation — the
+                                    process by which cultural environment, peer groups, and family shape identity beyond
+                                    biology. (2) Ref 4's music difference (rock vs classical) shows cultural environment
+                                    diverges outcomes even with identical genetics.<br><br>
+                                    <strong>Conclusion:</strong> Neither discipline alone is sufficient — Science
+                                    without I&amp;S cannot explain why twins with identical genes diverge in music
+                                    preference; I&amp;S without Science cannot explain why they converge on the same
+                                    career, habits, and posture across different cultures. A strong answer notes that
+                                    heritability averages 49% (Ref 3) — literally suggesting equal contributions —
+                                    supporting the conclusion that both disciplines are necessary and complementary.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="qcard" data-crit="A" id="qa2">
+                <div class="qcard-header" onclick="toggleCard('qa2')">
+                    <div>
+                        <div class="qcard-meta">
+                            <span class="crit-badge cb-a">Criterion A — Evaluating</span>
+                            <span class="marks-badge">8 marks</span>
+                        </div>
+                        <div class="qcard-title">To what extent does reference to both Science and Individuals &amp;
+                            Societies provide a more complete understanding of ultra-processed food's impact on identity
+                            than either discipline alone?</div>
+                        <div class="qcard-sources">Sources: Refs 5, 6 · UPF health data, twin experiment</div>
+                    </div>
+                    <div class="toggle-icon">+</div>
+                </div>
+                <div class="qcard-body">
+                    <div class="q-task">
+                        <div class="q-task-label">Task</div>
+                        <p>With reference to References 5 and 6, evaluate the extent to which combining Science and
+                            Individuals &amp; Societies produces a more complete understanding of how diet shapes
+                            identity. In your answer, you must:</p>
+                        <div class="q-requirements">
+                            <ul>
+                                <li>Explain what Science alone reveals about UPF's effect on the body (use data from Ref
+                                    5 and/or Ref 6)</li>
+                                <li>Explain what I&amp;S alone reveals about the social factors shaping dietary identity
+                                </li>
+                                <li>Explain what insight can ONLY be achieved by combining both disciplines</li>
+                                <li>Evaluate one significant limitation of the evidence used in your argument</li>
+                                <li>In conclusion, state and justify the extent to which interdisciplinary analysis adds
+                                    value beyond single-discipline analysis</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mark-scheme">
+                        <div class="ms-toggle" onclick="toggleMS(this)">▸ Show mark scheme &amp; model guidance</div>
+                        <div class="ms-body">
+                            <table class="band-table">
+                                <tr>
+                                    <th>Band</th>
+                                    <th>Marks</th>
+                                    <th>Descriptor</th>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">1–2</td>
+                                    <td>1–2</td>
+                                    <td>General description of what UPF does. No source data cited. No discipline
+                                        analysis.</td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">3–4</td>
+                                    <td>3–4</td>
+                                    <td>Explains Science or I&amp;S contribution but not both. Some source reference.
+                                        Conclusion not evaluative.</td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">5–6</td>
+                                    <td>5–6</td>
+                                    <td>Both contributions explained with source evidence. One limitation noted.
+                                        Conclusion present. Does not fully articulate what combining the disciplines
+                                        adds.</td>
+                                </tr>
+                                <tr class="band-top">
+                                    <td class="band-label">7–8</td>
+                                    <td>7–8</td>
+                                    <td>Clear explanation of both disciplinary contributions with specific data (e.g.
+                                        52% obesity increase in high-UPF group; Aimee's blood marker changes in 14
+                                        days). Articulates an insight that neither discipline produces alone. Limitation
+                                        evaluated (e.g. cross-sectional design or N=1 pair). Conclusion evaluates the
+                                        extent with a justified position.</td>
+                                </tr>
+                            </table>
+                            <div class="model-hint">
+                                <div class="model-hint-label">Model Answer Guidance (Band 7–8)</div>
+                                <p><strong>Science alone:</strong> Ref 5 shows dose-response — obesity rate ~21% (low
+                                    UPF) vs ~32% (high UPF). Ref 6 shows blood sugar and fat markers worsen in 14 days.
+                                    Science explains the biological mechanism: satiety hormone disruption, rapid
+                                    metabolic change.<br><br>
+                                    <strong>I&amp;S alone:</strong> Explains why people eat UPF — food insecurity,
+                                    marketing of UPF as 'healthy,' peer social environments, convenience culture.
+                                    Aimee's case shows food identity can be unconsciously constructed by social
+                                    marketing.<br><br>
+                                    <strong>Combined insight:</strong> Only interdisciplinary analysis reveals that diet
+                                    inequality is simultaneously a biological health issue AND a structural social
+                                    justice issue. Poor communities have both higher UPF consumption (I&amp;S: food
+                                    insecurity) AND worse health outcomes (Science: dose-response). Neither discipline
+                                    alone captures this loop.<br><br>
+                                    <strong>Limitation:</strong> Ref 6 is N=1 pair — Newsweek, not peer-reviewed. Ref 5
+                                    is cross-sectional — cannot prove causation. A sophisticated answer acknowledges
+                                    this while arguing the twin design still provides strong causal evidence despite the
+                                    small sample.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="qcard" data-crit="A" id="qa3">
+                <div class="qcard-header" onclick="toggleCard('qa3')">
+                    <div>
+                        <div class="qcard-meta">
+                            <span class="crit-badge cb-a">Criterion A — Evaluating</span>
+                            <span class="marks-badge">8 marks</span>
+                        </div>
+                        <div class="qcard-title">Compare and contrast how Science (somatotyping) and Individuals &amp;
+                            Societies (social access) explain the different athletic prospects of Akira Luwi and Cirrus
+                            Rodriguez.</div>
+                        <div class="qcard-sources">Sources: Refs 7, 8 · Somatotyping, athlete profiles</div>
+                    </div>
+                    <div class="toggle-icon">+</div>
+                </div>
+                <div class="qcard-body">
+                    <div class="q-task">
+                        <div class="q-task-label">Task</div>
+                        <p>With reference to References 7 and 8, compare and contrast how Science and Individuals &amp;
+                            Societies each contribute to explaining the different athletic prospects of Akira Luwi and
+                            Cirrus Rodriguez. In your answer, you must:</p>
+                        <div class="q-requirements">
+                            <ul>
+                                <li>Explain two similarities between Akira and Cirrus from a scientific perspective
+                                    (somatotype/genetics)</li>
+                                <li>Explain two differences from an Individuals &amp; Societies perspective (social
+                                    structures, access, resources)</li>
+                                <li>Provide specific details from the profiles to support each point</li>
+                                <li>In conclusion, evaluate whether Science or I&amp;S better explains the gap in their
+                                    athletic prospects, and justify your answer</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mark-scheme">
+                        <div class="ms-toggle" onclick="toggleMS(this)">▸ Show mark scheme &amp; model guidance</div>
+                        <div class="ms-body">
+                            <table class="band-table">
+                                <tr>
+                                    <th>Band</th>
+                                    <th>Marks</th>
+                                    <th>Descriptor</th>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">1–2</td>
+                                    <td>1–2</td>
+                                    <td>General comparison without using somatotype data or specific profile details.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">3–4</td>
+                                    <td>3–4</td>
+                                    <td>Uses some profile data. One or two points from each discipline. Conclusion
+                                        descriptive rather than evaluative.</td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">5–6</td>
+                                    <td>5–6</td>
+                                    <td>Clear use of somatotype numbers and access data. Both disciplines addressed.
+                                        Conclusion offers a position but justification underdeveloped.</td>
+                                </tr>
+                                <tr class="band-top">
+                                    <td class="band-label">7–8</td>
+                                    <td>7–8</td>
+                                    <td>Specific data throughout (3-7-2 vs 5-5-1 somatotypes; 1km vs 50km; affluent vs
+                                        unemployed). Evaluative conclusion with clear justification: I&amp;S better
+                                        explains the gap because both athletes have appropriate genetic potential — what
+                                        differs is entirely social/environmental.</td>
+                                </tr>
+                            </table>
+                            <div class="model-hint">
+                                <div class="model-hint-label">Model Answer Guidance (Band 7–8)</div>
+                                <p><strong>Similarities (Science):</strong> Both Akira (3-7-2) and Cirrus (5-5-1) have
+                                    dominant mesomorph components suited to power sports. Both are young males (19 and
+                                    20) in peak physical developmental years. Scientifically, both have appropriate
+                                    genetic potential for elite sport.<br><br>
+                                    <strong>Differences (I&amp;S):</strong> (1) Access — Akira's facilities are 1km
+                                    away; Cirrus's are 50km. (2) Socioeconomic status — Akira comes from an affluent
+                                    family; Cirrus is unemployed following a failed professional contract. Additionally
+                                    Cirrus has a knee injury — a physical setback with social consequences (no income
+                                    for rehabilitation).<br><br>
+                                    <strong>Conclusion:</strong> I&amp;S better explains the gap because scientifically
+                                    both athletes have appropriate potential. The entire difference in prospects is
+                                    social and environmental — income, geography, injury support structures. This
+                                    supports the IDU core argument that nature provides potential; nurture determines
+                                    realisation.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== CRITERION B ===== -->
+
+            <div class="qcard" data-crit="B" id="qb1">
+                <div class="qcard-header" onclick="toggleCard('qb1')">
+                    <div>
+                        <div class="qcard-meta">
+                            <span class="crit-badge cb-b">Criterion B — Synthesizing</span>
+                            <span class="marks-badge">8 marks</span>
+                        </div>
+                        <div class="qcard-title">As a sports development officer, design an athlete support programme
+                            for Cirrus Rodriguez that integrates scientific and social solutions to maximise his
+                            athletic potential.</div>
+                        <div class="qcard-sources">Sources: Refs 5, 6, 7, 8 · Somatotyping, diet, athlete access</div>
+                    </div>
+                    <div class="toggle-icon">+</div>
+                </div>
+                <div class="qcard-body">
+                    <div class="q-scenario">
+                        <div class="q-scenario-label">Scenario</div>
+                        <p>You are a sports development officer working with the National Sports Council of South
+                            America. Cirrus Rodriguez (Ref 8) has been identified as a genetically promising athlete
+                            (somatotype 5-5-1) whose development has been blocked by socioeconomic and geographic
+                            barriers. Your brief is to design a support programme that addresses both the scientific
+                            dimensions (body type optimisation, nutrition) and the social dimensions (access, financial
+                            support) of his development.</p>
+                    </div>
+                    <div class="q-task">
+                        <div class="q-task-label">Task</div>
+                        <p>Using References 5, 6, 7, and 8, design an athlete support programme for Cirrus Rodriguez.
+                            Your programme must justify:</p>
+                        <div class="q-requirements">
+                            <ul>
+                                <li>Scientific recommendations: how Cirrus's somatotype (Ref 7) informs the specific
+                                    sport and training approach, and how dietary guidance (Refs 5/6) should address body
+                                    composition</li>
+                                <li>Social recommendations: how to address the geographic (50km), financial
+                                    (unemployed), and physical (knee injury) barriers using I&amp;S concepts (access,
+                                    social mobility, intersectionality)</li>
+                                <li>How the integration of Science and I&amp;S produces a more effective programme than
+                                    either discipline alone could design</li>
+                                <li>One potential challenge to implementing this programme, from both a scientific and
+                                    social perspective</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mark-scheme">
+                        <div class="ms-toggle" onclick="toggleMS(this)">▸ Show mark scheme &amp; model guidance</div>
+                        <div class="ms-body">
+                            <table class="band-table">
+                                <tr>
+                                    <th>Band</th>
+                                    <th>Marks</th>
+                                    <th>Descriptor</th>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">1–2</td>
+                                    <td>1–2</td>
+                                    <td>General suggestions without reference to sources. No integration of disciplines.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">3–4</td>
+                                    <td>3–4</td>
+                                    <td>Addresses either Science or I&amp;S but not both. Some source reference.
+                                        Programme lacks specificity.</td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">5–6</td>
+                                    <td>5–6</td>
+                                    <td>Both disciplines addressed with specific source references. Integration
+                                        attempted. Challenges mentioned without depth.</td>
+                                </tr>
+                                <tr class="band-top">
+                                    <td class="band-label">7–8</td>
+                                    <td>7–8</td>
+                                    <td>Specific scientific recommendations (somatotype match, dietary guidance using
+                                        NOVA/Ref 6 findings). Specific social recommendations (transport subsidy,
+                                        rehabilitation access, income support). Clear articulation of how integration
+                                        produces better outcomes. Challenge analysed from both disciplinary
+                                        perspectives.</td>
+                                </tr>
+                            </table>
+                            <div class="model-hint">
+                                <div class="model-hint-label">Model Answer Guidance (Band 7–8)</div>
+                                <p><strong>Science:</strong> Cirrus's 5-5-1 somatotype (endo-mesomorph) suggests
+                                    football or rugby as appropriate sports. Training programme should target
+                                    maintaining mesomorphic strength while reducing endomorphic excess through aerobic
+                                    conditioning. Dietary guidance: reduce UPF (Ref 5 shows dose-response with obesity
+                                    risk) — crucial because excess endomorphy reduces athletic efficiency. Ref 6 shows
+                                    even 14 days of dietary change produces measurable metabolic shifts — short-term
+                                    intervention is viable.<br><br>
+                                    <strong>I&amp;S:</strong> Relocate Cirrus to a sports residential facility near
+                                    training centres (addresses 50km barrier). Provide a sports scholarship equivalent
+                                    to Victoria's (Ref 8) — institutional support transforms access. Knee rehabilitation
+                                    funded publicly — using social mobility through sport as economic justification for
+                                    investment.<br><br>
+                                    <strong>Integration insight:</strong> Science alone produces a training programme
+                                    Cirrus cannot access. I&amp;S alone provides access without optimising the training.
+                                    Combined: access to facilities + somatotype-appropriate training + dietary
+                                    intervention = the full programme.<br><br>
+                                    <strong>Challenge:</strong> Scientific: knee rehabilitation timelines are uncertain
+                                    — training load must be managed carefully. Social: public sports funding in South
+                                    America may be limited — political will required.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="qcard" data-crit="B" id="qb2">
+                <div class="qcard-header" onclick="toggleCard('qb2')">
+                    <div>
+                        <div class="qcard-meta">
+                            <span class="crit-badge cb-b">Criterion B — Synthesizing</span>
+                            <span class="marks-badge">8 marks</span>
+                        </div>
+                        <div class="qcard-title">Create a public health campaign targeting adolescent UPF consumption
+                            that integrates scientific evidence and sociological understanding of peer identity
+                            formation.</div>
+                        <div class="qcard-sources">Sources: Refs 5, 6 · UPF health data, twin experiment, adolescent
+                            peak</div>
+                    </div>
+                    <div class="toggle-icon">+</div>
+                </div>
+                <div class="qcard-body">
+                    <div class="q-scenario">
+                        <div class="q-scenario-label">Scenario</div>
+                        <p>Health Canada has commissioned a campaign to reduce ultra-processed food (UPF) consumption
+                            among adolescents aged 13–18, following the data in Reference 5 which shows this age group
+                            consumes over 50% of daily calories from UPF — the highest of any age group. You are leading
+                            the campaign design team.</p>
+                    </div>
+                    <div class="q-task">
+                        <div class="q-task-label">Task</div>
+                        <p>Using References 5 and 6, design and justify a public health campaign targeting adolescent
+                            UPF consumption. Your campaign must integrate:</p>
+                        <div class="q-requirements">
+                            <ul>
+                                <li>Scientific evidence: specific data from Ref 5 and/or Ref 6 that justifies the
+                                    urgency of the campaign</li>
+                                <li>Social insight: an I&amp;S explanation of WHY adolescents consume so much UPF (peer
+                                    identity, socialisation, marketing) — and how your campaign addresses this social
+                                    mechanism</li>
+                                <li>A specific campaign element that could only have been designed by combining both
+                                    disciplines</li>
+                                <li>Justify how mathematical precision (using the data) and social communication
+                                    (targeting peer identity) together make the campaign more effective</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mark-scheme">
+                        <div class="ms-toggle" onclick="toggleMS(this)">▸ Show mark scheme &amp; model guidance</div>
+                        <div class="ms-body">
+                            <table class="band-table">
+                                <tr>
+                                    <th>Band</th>
+                                    <th>Marks</th>
+                                    <th>Descriptor</th>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">1–2</td>
+                                    <td>1–2</td>
+                                    <td>Generic campaign without source evidence or discipline integration.</td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">3–4</td>
+                                    <td>3–4</td>
+                                    <td>Uses either the data OR the social insight but not both. Campaign plausible but
+                                        not interdisciplinary.</td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">5–6</td>
+                                    <td>5–6</td>
+                                    <td>Both disciplines used. Specific data cited. Social mechanism identified.
+                                        Campaign element described.</td>
+                                </tr>
+                                <tr class="band-top">
+                                    <td class="band-label">7–8</td>
+                                    <td>7–8</td>
+                                    <td>Specific data used (52% UPF, 14-day blood marker changes from Ref 6). Social
+                                        mechanism explained (peer identity, secondary socialisation). Campaign element
+                                        that only works through integration (e.g. using peers as ambassadors — social
+                                        trust + biological evidence). Clear articulation of why integration matters.
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="model-hint">
+                                <div class="model-hint-label">Model Answer Guidance (Band 7–8)</div>
+                                <p><strong>Scientific evidence:</strong> Ref 5 shows children 6–12 and adolescents 13–18
+                                    consume over 50% of daily calories from UPF — significantly above adults. Ref 6
+                                    shows blood markers worsened in just 14 days on a UPF diet in a young, healthy
+                                    person (Aimee's shock finding). These data points provide specific, compelling
+                                    urgency.<br><br>
+                                    <strong>Social insight:</strong> Adolescent UPF spike is not genetic — it maps onto
+                                    secondary socialisation (peer groups). Eating patterns become identity signals: UPF
+                                    brands are marketed as social belonging markers. The campaign must work WITH social
+                                    identity formation, not against it.<br><br>
+                                    <strong>Integrated element:</strong> A peer-ambassador programme where popular
+                                    adolescents share their own Aimee Kingston-style 14-day dietary experiment on social
+                                    media. The Science provides credibility (real biomarkers, real data). The I&amp;S
+                                    provides the channel (peer influence, identity re-framing: healthy eating as the new
+                                    social identity). Neither discipline alone designs this — Science without social
+                                    insight produces a pamphlet no one reads; I&amp;S without Science lacks the
+                                    biological urgency that makes the message compelling.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="qcard" data-crit="B" id="qb3">
+                <div class="qcard-header" onclick="toggleCard('qb3')">
+                    <div>
+                        <div class="qcard-meta">
+                            <span class="crit-badge cb-b">Criterion B — Synthesizing</span>
+                            <span class="marks-badge">8 marks</span>
+                        </div>
+                        <div class="qcard-title">Write a briefing document for a school's pastoral team explaining how a
+                            student's name, body type, and socioeconomic background interact to shape their academic and
+                            sporting identity — and what the school can do about it.</div>
+                        <div class="qcard-sources">Sources: Refs 2, 3, 7, 8 · Nominative determinism, heritability,
+                            somatotyping, athlete profiles</div>
+                    </div>
+                    <div class="toggle-icon">+</div>
+                </div>
+                <div class="qcard-body">
+                    <div class="q-task">
+                        <div class="q-task-label">Task</div>
+                        <p>Using References 2, 3, 7, and 8, write a briefing document for school pastoral staff. Your
+                            document must synthesize Science and I&amp;S to explain:</p>
+                        <div class="q-requirements">
+                            <ul>
+                                <li>What Science tells us about the genetic basis of physical and cognitive traits that
+                                    shape student identity (Refs 3 and 7)</li>
+                                <li>What I&amp;S tells us about how names, social labels, and access structures shape
+                                    how students see themselves and are treated (Refs 2 and 8)</li>
+                                <li>Two specific, evidence-based recommendations for the school that draw on BOTH
+                                    disciplines</li>
+                                <li>How combining Science and I&amp;S allows the school to support students more
+                                    effectively than a single-discipline approach</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mark-scheme">
+                        <div class="ms-toggle" onclick="toggleMS(this)">▸ Show mark scheme &amp; model guidance</div>
+                        <div class="ms-body">
+                            <table class="band-table">
+                                <tr>
+                                    <th>Band</th>
+                                    <th>Marks</th>
+                                    <th>Descriptor</th>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">1–2</td>
+                                    <td>1–2</td>
+                                    <td>General advice without source evidence. No discipline distinction.</td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">3–4</td>
+                                    <td>3–4</td>
+                                    <td>One discipline used well, the other superficially. Recommendations present but
+                                        not evidence-based.</td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">5–6</td>
+                                    <td>5–6</td>
+                                    <td>Both disciplines addressed with source evidence. Recommendations clear and
+                                        linked to sources. Integration attempted.</td>
+                                </tr>
+                                <tr class="band-top">
+                                    <td class="band-label">7–8</td>
+                                    <td>7–8</td>
+                                    <td>Specific evidence throughout (heritability values, somatotype numbers, name
+                                        meaning examples). Recommendations are genuinely interdisciplinary — not just
+                                        one from each discipline. Integration articulated: explains why both lenses
+                                        together produce better pastoral support than either alone.</td>
+                                </tr>
+                            </table>
+                            <div class="model-hint">
+                                <div class="model-hint-label">Model Answer Guidance (Band 7–8)</div>
+                                <p><strong>Science contribution:</strong> Ref 3 shows higher cognitive function has 0.69
+                                    MZ heritability — students inherit cognitive tendencies. Ref 7: body type is largely
+                                    heritable (0.87–0.92) — physical identity in sport has a genetic foundation teachers
+                                    should understand rather than punish or ignore.<br><br>
+                                    <strong>I&amp;S contribution:</strong> Ref 2's labelling theory and self-fulfilling
+                                    prophecy: teacher labels ('gifted,' 'struggling') function like names — they shape
+                                    student self-concept. Ref 8: Akira's affluent background vs Cirrus's unemployment
+                                    mirrors socioeconomic inequality in schools — some students' potential is blocked by
+                                    structural factors, not individual failure.<br><br>
+                                    <strong>Recommendations:</strong> (1) Sport matching based on somatotype assessment
+                                    (Science) + structured access support for economically disadvantaged students
+                                    (I&amp;S). (2) Conscious positive labelling practices that acknowledge genetic
+                                    tendencies without biological determinism — recognise a student's genetic starting
+                                    point while providing social scaffolding to help them exceed it.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== CRITERION C ===== -->
+
+            <div class="qcard" data-crit="C" id="qc1">
+                <div class="qcard-header" onclick="toggleCard('qc1')">
+                    <div>
+                        <div class="qcard-meta">
+                            <span class="crit-badge cb-c">Criterion C — Reflecting</span>
+                            <span class="marks-badge">8 marks</span>
+                        </div>
+                        <div class="qcard-title">Using the scientific lens and the sociological lens, discuss how
+                            examining identity through both perspectives changes or deepens your understanding of
+                            whether identity is 'given' or 'chosen.'</div>
+                        <div class="qcard-sources">Sources: All references · Core IDU question</div>
+                    </div>
+                    <div class="toggle-icon">+</div>
+                </div>
+                <div class="qcard-body">
+                    <div class="q-task">
+                        <div class="q-task-label">Task</div>
+                        <p>The central question of this IDU is whether identity is determined for us (by genetics,
+                            names, body type) or constructed by us (through choices, relationships, culture). Using the
+                            scientific lens and the sociological lens as informed by the sources, discuss how examining
+                            this question through both perspectives shapes your understanding. In your answer, you must:
+                        </p>
+                        <div class="q-requirements">
+                            <ul>
+                                <li>Present an argument from the scientific perspective on whether identity is given or
+                                    chosen (with source evidence)</li>
+                                <li>Present an argument from the sociological perspective on whether identity is given
+                                    or chosen (with source evidence)</li>
+                                <li>Present a third argument that can only emerge from combining both perspectives</li>
+                                <li>Use specific details from at least three sources to support your points</li>
+                                <li>Reflect on how examining this question through both lenses has changed or deepened
+                                    your thinking</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mark-scheme">
+                        <div class="ms-toggle" onclick="toggleMS(this)">▸ Show mark scheme &amp; model guidance</div>
+                        <div class="ms-body">
+                            <table class="band-table">
+                                <tr>
+                                    <th>Band</th>
+                                    <th>Marks</th>
+                                    <th>Descriptor</th>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">1–2</td>
+                                    <td>1–2</td>
+                                    <td>Personal opinion only. No source use. No lens analysis.</td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">3–4</td>
+                                    <td>3–4</td>
+                                    <td>One or two perspectives presented with limited source evidence. Does not
+                                        articulate what combining perspectives adds.</td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">5–6</td>
+                                    <td>5–6</td>
+                                    <td>Both perspectives presented with source evidence. Third combined argument
+                                        attempted. Reflection is superficial.</td>
+                                </tr>
+                                <tr class="band-top">
+                                    <td class="band-label">7–8</td>
+                                    <td>7–8</td>
+                                    <td>Three distinct arguments, each citing specific evidence. Combined argument
+                                        clearly articulates an insight that neither perspective produces alone.
+                                        Reflection is genuinely analytical — identifies a specific way thinking has
+                                        changed, not just 'I learned a lot.'</td>
+                                </tr>
+                            </table>
+                            <div class="model-hint">
+                                <div class="model-hint-label">Model Answer Guidance (Band 7–8)</div>
+                                <p><strong>Scientific perspective (given):</strong> Ref 3's average heritability of 49%
+                                    — and up to 0.92 for height — shows core identity traits are biologically given. Ref
+                                    4's separated twins (Fred/Callum, same headache, both married Jane) suggest even
+                                    relationship patterns may have heritable roots. From a scientific lens, a
+                                    substantial part of identity is given before any choice is made.<br><br>
+                                    <strong>Sociological perspective (given AND chosen, but socially):</strong> Ref 2
+                                    shows names are socially given — assigned by cultural practices. Ref 8 shows that
+                                    social access (Victoria's scholarship vs Cirrus's unemployment) gives or denies
+                                    opportunities — identity is constrained by structures outside individual control.
+                                    I&amp;S shows identity is given not just biologically but socially — the society
+                                    you're born into assigns labels and life chances.<br><br>
+                                    <strong>Combined insight:</strong> Combining Science and I&amp;S reveals that
+                                    identity is neither simply given nor simply chosen — it is a co-production. Ref 6 is
+                                    the clearest example: Aimee and Nancy have identical genetics (given), but Aimee's
+                                    post-study decision to eat more mindfully (chosen) — enabled by the knowledge she
+                                    gained (social/educational experience) — changed her health identity in 14 days. The
+                                    biological and the social are inseparable in constructing who we are.<br><br>
+                                    <strong>Reflection:</strong> Before this IDU, I assumed identity was mostly about
+                                    personal choice. Science showed me how much is genetically pre-set. But I&amp;S
+                                    showed me that the social environment — income, name, access — also 'sets' identity
+                                    beyond individual control. The deepest insight is that even what seems like a
+                                    'choice' (what we eat, what sport we play) is heavily structured by forces neither
+                                    genetic nor volitional.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="qcard" data-crit="C" id="qc2">
+                <div class="qcard-header" onclick="toggleCard('qc2')">
+                    <div>
+                        <div class="qcard-meta">
+                            <span class="crit-badge cb-c">Criterion C — Reflecting</span>
+                            <span class="marks-badge">8 marks</span>
+                        </div>
+                        <div class="qcard-title">Using the scientific lens and the sociological lens, discuss how these
+                            two perspectives change or deepen our understanding of whether sporting success is
+                            meritocratic — achieved by talent and effort alone.</div>
+                        <div class="qcard-sources">Sources: Refs 3, 7, 8 · Heritability, somatotyping, athlete profiles
+                        </div>
+                    </div>
+                    <div class="toggle-icon">+</div>
+                </div>
+                <div class="qcard-body">
+                    <div class="q-task">
+                        <div class="q-task-label">Task</div>
+                        <p>The common belief is that sport is a meritocracy — those with talent and who work hardest
+                            succeed. Using the scientific and sociological perspectives from References 3, 7, and 8,
+                            discuss how these two lenses reshape or deepen understanding of whether sporting success is
+                            truly meritocratic. In your answer, you must:</p>
+                        <div class="q-requirements">
+                            <ul>
+                                <li>Present three arguments on how using these two lenses changes or deepens our
+                                    understanding of sporting meritocracy</li>
+                                <li>Use specific details from at least two sources to support your points</li>
+                                <li>In your conclusion, reflect on how your understanding of sporting success has been
+                                    changed by examining it through both lenses</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mark-scheme">
+                        <div class="ms-toggle" onclick="toggleMS(this)">▸ Show mark scheme &amp; model guidance</div>
+                        <div class="ms-body">
+                            <table class="band-table">
+                                <tr>
+                                    <th>Band</th>
+                                    <th>Marks</th>
+                                    <th>Descriptor</th>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">1–2</td>
+                                    <td>1–2</td>
+                                    <td>States sport is or is not meritocratic without lens analysis or source evidence.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">3–4</td>
+                                    <td>3–4</td>
+                                    <td>Uses one lens. Some source reference. Arguments lack development.</td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">5–6</td>
+                                    <td>5–6</td>
+                                    <td>Both lenses used. Three arguments present but some lack specific evidence.
+                                        Conclusion reflective but not deeply analytical.</td>
+                                </tr>
+                                <tr class="band-top">
+                                    <td class="band-label">7–8</td>
+                                    <td>7–8</td>
+                                    <td>Three distinct arguments each from or combining both lenses. Specific evidence
+                                        (somatotype numbers, access data, heritability values). Conclusion genuinely
+                                        reflects how both lenses together challenge meritocracy more thoroughly than
+                                        either alone.</td>
+                                </tr>
+                            </table>
+                            <div class="model-hint">
+                                <div class="model-hint-label">Model Answer Guidance (Band 7–8)</div>
+                                <p><strong>Argument 1 (Science lens):</strong> Somatotype is largely heritable (Ref 3:
+                                    weight/height ~0.87–0.92 MZ). Sport favours certain body types (Ref 7). This means
+                                    sporting advantage begins at conception — an athlete is partly 'born' to their
+                                    sport, not purely earning it through effort. The meritocracy narrative ignores this
+                                    biological pre-selection.<br><br>
+                                    <strong>Argument 2 (I&amp;S lens):</strong> Ref 8 shows Akira and Cirrus have
+                                    comparable somatotypic potential but radically different social access. The
+                                    meritocracy narrative ('work hard and you'll succeed') fails to account for
+                                    geographic and financial barriers that prevent effort from translating into
+                                    opportunity. The 50km barrier cannot be overcome by talent alone.<br><br>
+                                    <strong>Argument 3 (Combined):</strong> Victoria Johnson (Ref 8) is the case that
+                                    most challenges meritocracy — she has genetic advantage (1-6-2 somatotype), social
+                                    advantage (scholarship), and even nominative advantage (Ref 2: name = 'winner'). If
+                                    she succeeds, is it merit or accumulated advantage? Combining Science and I&amp;S
+                                    reveals that what looks like individual meritocratic achievement is often the result
+                                    of compounding genetic and social privilege that pre-selects certain individuals for
+                                    success before effort is even applied.<br><br>
+                                    <strong>Reflection:</strong> Through Science alone, I would have concluded sport is
+                                    partly unfair due to genetic luck. Through I&amp;S alone, I would have focused on
+                                    socioeconomic barriers. But combining them revealed a more disturbing insight:
+                                    genetic and social advantages often coincide and compound (as in Victoria's case),
+                                    making the illusion of meritocracy most powerful for those who need it least.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="qcard" data-crit="C" id="qc3">
+                <div class="qcard-header" onclick="toggleCard('qc3')">
+                    <div>
+                        <div class="qcard-meta">
+                            <span class="crit-badge cb-c">Criterion C — Reflecting</span>
+                            <span class="marks-badge">8 marks</span>
+                        </div>
+                        <div class="qcard-title">Using the biological lens and the sociological lens, discuss how
+                            examining nominative determinism through both perspectives deepens understanding of the role
+                            of names in shaping identity.</div>
+                        <div class="qcard-sources">Sources: Refs 2, 3, 4, 8 · Names, genetics, twins, athlete profiles
+                        </div>
+                    </div>
+                    <div class="toggle-icon">+</div>
+                </div>
+                <div class="qcard-body">
+                    <div class="q-task">
+                        <div class="q-task-label">Task</div>
+                        <p>Using the biological (scientific) and sociological lenses as evidenced in References 2, 3, 4,
+                            and 8, discuss how examining the role of names in shaping identity through both perspectives
+                            deepens our understanding. In your answer you must:</p>
+                        <div class="q-requirements">
+                            <ul>
+                                <li>Present three arguments on how these two lenses change or deepen understanding of
+                                    names and identity</li>
+                                <li>Use specific details from the sources to support each argument</li>
+                                <li>In your conclusion, reflect on what understanding the interaction between biological
+                                    and social forces adds to our analysis of names and identity</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mark-scheme">
+                        <div class="ms-toggle" onclick="toggleMS(this)">▸ Show mark scheme &amp; model guidance</div>
+                        <div class="ms-body">
+                            <table class="band-table">
+                                <tr>
+                                    <th>Band</th>
+                                    <th>Marks</th>
+                                    <th>Descriptor</th>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">1–2</td>
+                                    <td>1–2</td>
+                                    <td>General description of nominative determinism. No lens analysis.</td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">3–4</td>
+                                    <td>3–4</td>
+                                    <td>One or two arguments with source evidence. One lens dominant.</td>
+                                </tr>
+                                <tr>
+                                    <td class="band-label">5–6</td>
+                                    <td>5–6</td>
+                                    <td>Three arguments present. Both lenses used. Evidence cited. Conclusion reflects
+                                        on learning.</td>
+                                </tr>
+                                <tr class="band-top">
+                                    <td class="band-label">7–8</td>
+                                    <td>7–8</td>
+                                    <td>Three fully developed arguments. Biological lens challenges or complicates the
+                                        sociological claim of nominative determinism. Combined insight emerges.
+                                        Reflection genuinely analytical.</td>
+                                </tr>
+                            </table>
+                            <div class="model-hint">
+                                <div class="model-hint-label">Model Answer Guidance (Band 7–8)</div>
+                                <p><strong>Argument 1 (Social lens — names shape identity):</strong> Ref 2's labelling
+                                    theory: names assigned by parents create social expectations that shape
+                                    self-concept. Victoria (winner) receives different social treatment from birth —
+                                    teachers expect more, coaches invest more. Ref 8 shows Victoria has every advantage
+                                    compounding — name, scholarship, access. The social mechanism of nominative
+                                    determinism is plausible.<br><br>
+                                    <strong>Argument 2 (Biological lens — challenges nominative determinism):</strong>
+                                    Ref 3 shows 49% average heritability across traits. Ref 4's Baker twins share
+                                    surname AND hobby — but both have genetics predisposing them to similar interests
+                                    (gene-environment correlation). The biological lens suggests the Baker/baking
+                                    coincidence may reflect genetic predisposition, not name influence. The sociological
+                                    explanation may be a confound.<br><br>
+                                    <strong>Argument 3 (Combined — most nuanced):</strong> The Winner/Loser paradox (Ref
+                                    2) is only fully explained by combining lenses. Social lens: the name 'Loser'
+                                    triggered identity resistance (labelling theory + agency). Biological lens: Ref 3
+                                    shows cognitive function has 0.69 heritability — 'Loser' Lane may have been
+                                    genetically predisposed to the intellectual determination required to become a
+                                    detective despite the label. The interaction of genetic resilience and social label
+                                    resistance produced his outcome — neither lens alone explains it.<br><br>
+                                    <strong>Reflection:</strong> Names matter — but less because they change who we
+                                    biologically are, and more because they shape how the social world treats us, and
+                                    therefore what opportunities our biology gets to express.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- end questionList -->
+        <footer>IDU Study Hub · Question Bank · MYP Year 5 · Science + Individuals &amp; Societies</footer>
+    </div>
+
+    <script>
+        function toggleCard(id) {
+            const card = document.getElementById(id);
+            card.classList.toggle('open');
+        }
+
+        function toggleMS(btn) {
+            const body = btn.nextElementSibling;
+            body.classList.toggle('show');
+            btn.textContent = body.classList.contains('show') ? '▾ Hide mark scheme' : '▸ Show mark scheme & model guidance';
+        }
+
+        function filterQuestions(crit, el) {
+            document.querySelectorAll('.ftab').forEach(t => t.className = 'ftab');
+            if (crit === 'all') el.classList.add('active-all');
+            else if (crit === 'A') el.classList.add('active-a');
+            else if (crit === 'B') el.classList.add('active-b');
+            else if (crit === 'C') el.classList.add('active-c');
+
+            document.querySelectorAll('.qcard').forEach(card => {
+                if (crit === 'all' || card.dataset.crit === crit) card.style.display = 'block';
+                else card.style.display = 'none';
+            });
+        }
+
+        window.addEventListener('scroll', () => {
+            const p = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.getElementById('progress-bar').style.width = p + '%';
+        });
+    </script>
+</body>
+
+</html>
