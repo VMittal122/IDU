@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz — IDU Study Hub</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0d1b2a;
+            --navy-mid: #1a2e42;
+            --cream: #f5f0e8;
+            --cream-dark: #ede6d6;
+            --gold: #c9a84c;
+            --gold-light: #e8c97a;
+            --teal: #2a9d8f;
+            --teal-light: #3dbfb0;
+            --teal-pale: #d4f0ed;
+            --amber: #e07b39;
+            --amber-pale: #fdebd8;
+            --purple: #6c48b5;
+            --purple-pale: #ede8f8;
+            --red: #c0392b;
+            --red-pale: #fde8e6;
+            --green: #2d7d52;
+            --green-pale: #d8f0e4;
+            --border: #d4c9b0;
+            --border-light: #e8e0d0;
+            --text-primary: #0d1b2a;
+            --text-secondary: #3a4f63;
+            --text-muted: #6b7d8e;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Source Serif 4', Georgia, serif;
+            background: var(--cream);
+            color: var(--text-primary);
+        }
+
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--teal));
+            width: 0%;
+            z-index: 1001;
+        }
+
+        .topnav {
+            position: fixed;
+            top: 3px;
+            left: 0;
+            right: 0;
+            background: var(--navy);
+            height: 54px;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .topnav-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            color: var(--gold-light);
+            text-decoration: none;
+            margin-right: 2rem;
+        }
+
+        .topnav-links {
+            display: flex;
+            gap: 0;
+            list-style: none;
+        }
+
+        .topnav-links a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            padding: 6px 11px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .topnav-links a:hover {
+            color: var(--gold-light);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .topnav-links a.active {
+            color: var(--gold-light);
+            background: rgba(201, 168, 76, 0.12);
+        }
+
+        .page-wrap {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 80px 2rem 5rem;
+        }
+
+        /* Hero */
+        .hero {
+            margin-bottom: 3rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: var(--purple-pale);
+            color: var(--purple);
+            padding: 3px 12px;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 44px;
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            color: var(--navy);
+            margin-bottom: 0.75rem;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 300;
+            max-width: 600px;
+        }
+
+        /* Quiz selector */
+        .quiz-selector {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .quiz-btn {
+            background: #fff;
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            padding: 1rem 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'DM Mono', monospace;
+        }
+
+        .quiz-btn:hover {
+            border-color: var(--gold);
+            background: var(--cream-dark);
+        }
+
+        .quiz-btn.selected {
+            border-color: var(--navy);
+            background: var(--navy);
+            color: #fff;
+        }
+
+        .quiz-btn .qb-num {
+            font-size: 22px;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            line-height: 1;
+            margin-bottom: 4px;
+            color: var(--gold-light);
+        }
+
+        .quiz-btn.selected .qb-num {
+            color: var(--gold-light);
+        }
+
+        .quiz-btn:not(.selected) .qb-num {
+            color: var(--navy);
+        }
+
+        .quiz-btn .qb-lbl {
+            font-size: 10px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .quiz-btn.selected .qb-lbl {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .quiz-btn .qb-title {
+            font-size: 11px;
+            margin-top: 4px;
+            color: var(--text-secondary);
+        }
+
+        .quiz-btn.selected .qb-title {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .quiz-btn.done .qb-score {
+            font-size: 11px;
+            color: var(--teal);
+            font-family: 'DM Mono', monospace;
+            margin-top: 4px;
+        }
+
+        /* Quiz container */
+        .quiz-container {
+            background: #fff;
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(13, 27, 42, 0.07);
+        }
+
+        .quiz-header {
+            background: var(--navy);
+            padding: 1.5rem 2rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .quiz-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: var(--gold-light);
+        }
+
+        .quiz-header .qh-meta {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .quiz-progress-wrap {
+            padding: 1.25rem 2rem 0;
+            background: var(--cream);
+        }
+
+        .quiz-progress-bar {
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .quiz-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--teal));
+            border-radius: 2px;
+            transition: width 0.4s;
+        }
+
+        .quiz-progress-lbl {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+            letter-spacing: 0.06em;
+            margin-top: 6px;
+            padding-bottom: 1rem;
+        }
+
+        /* Question */
+        .question-block {
+            padding: 2rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .q-num {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .q-source {
+            display: inline-block;
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: var(--cream-dark);
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .q-text {
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.55;
+            color: var(--navy);
+            margin-bottom: 1.25rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--cream);
+        }
+
+        .option:hover:not(.disabled) {
+            border-color: var(--navy);
+            background: #fff;
+        }
+
+        .option.selected {
+            border-color: var(--navy);
+            background: var(--navy);
+            color: #fff;
+        }
+
+        .option.correct {
+            border-color: var(--green);
+            background: var(--green-pale);
+        }
+
+        .option.incorrect {
+            border-color: var(--red);
+            background: var(--red-pale);
+        }
+
+        .option.reveal-correct {
+            border-color: var(--green);
+            background: var(--green-pale);
+        }
+
+        .opt-letter {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            margin-top: 1px;
+        }
+
+        .option.selected .opt-letter {
+            border-color: rgba(255, 255, 255, 0.4);
+            color: #fff;
+        }
+
+        .option.correct .opt-letter {
+            border-color: var(--green);
+            background: var(--green);
+            color: #fff;
+        }
+
+        .option.incorrect .opt-letter {
+            border-color: var(--red);
+            background: var(--red);
+            color: #fff;
+        }
+
+        .option.reveal-correct .opt-letter {
+            border-color: var(--green);
+            background: var(--green);
+            color: #fff;
+        }
+
+        .opt-text {
+            font-size: 13.5px;
+            line-height: 1.55;
+        }
+
+        .option.selected .opt-text {
+            color: #fff;
+        }
+
+        .explanation {
+            margin-top: 12px;
+            padding: 10px 14px;
+            background: var(--cream);
+            border-radius: 8px;
+            border-left: 3px solid var(--teal);
+            display: none;
+        }
+
+        .explanation.show {
+            display: block;
+        }
+
+        .explanation p {
+            font-size: 12.5px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .explanation strong {
+            color: var(--teal);
+        }
+
+        /* Submit / results */
+        .quiz-footer {
+            padding: 1.5rem 2rem;
+            background: var(--cream);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .submit-btn {
+            background: var(--navy);
+            color: var(--gold-light);
+            border: none;
+            padding: 10px 28px;
+            border-radius: 8px;
+            font-family: 'DM Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.06em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: var(--navy-mid);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .reset-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'DM Mono', monospace;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .reset-btn:hover {
+            border-color: var(--navy);
+            color: var(--navy);
+        }
+
+        .score-display {
+            display: none;
+            background: #fff;
+            border: 1px solid var(--border-light);
+            border-radius: 14px;
+            margin: 1.5rem 2rem;
+            padding: 1.75rem 2rem;
+        }
+
+        .score-display.show {
+            display: block;
+        }
+
+        .score-big {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px;
+            font-weight: 900;
+            color: var(--navy);
+            line-height: 1;
+        }
+
+        .score-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 0.06em;
+            margin-bottom: 0.75rem;
+        }
+
+        .score-bar-wrap {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .score-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        .score-msg {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 0.75rem;
+        }
+
+        footer {
+            background: var(--navy);
+            color: rgba(255, 255, 255, 0.3);
+            text-align: center;
+            padding: 1.5rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+
+        @media(max-width:600px) {
+            .quiz-selector {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="progress-bar"></div>
+    <nav class="topnav">
+        <a class="topnav-brand" href="index.html">IDU Study Hub</a>
+        <ul class="topnav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="sources.html">Sources</a></li>
+            <li><a href="analysis.html">Analysis</a></li>
+            <li><a href="science.html">Science</a></li>
+            <li><a href="humanities.html">Humanities</a></li>
+            <li><a href="quiz.html" class="active">Quiz</a></li>
+            <li><a href="questions.html">Question Bank</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-wrap">
+        <div class="hero">
+            <div class="hero-tag">5 Quizzes · 50 Questions Total</div>
+            <h1>Practice <em>Quizzes</em></h1>
+            <p>IB-style MCQ practice. Each quiz targets a different area. Questions are hard — designed to push your
+                understanding beyond surface recall.</p>
+        </div>
+
+        <div class="quiz-selector" id="quizSelector">
+            <div class="quiz-btn selected" onclick="loadQuiz(0)" id="qbtn0">
+                <div class="qb-num">1</div>
+                <div class="qb-lbl">Quiz</div>
+                <div class="qb-title">Sources 1–4</div>
+            </div>
+            <div class="quiz-btn" onclick="loadQuiz(1)" id="qbtn1">
+                <div class="qb-num">2</div>
+                <div class="qb-lbl">Quiz</div>
+                <div class="qb-title">Sources 5–8</div>
+            </div>
+            <div class="quiz-btn" onclick="loadQuiz(2)" id="qbtn2">
+                <div class="qb-num">3</div>
+                <div class="qb-lbl">Quiz</div>
+                <div class="qb-title">Science Concepts</div>
+            </div>
+            <div class="quiz-btn" onclick="loadQuiz(3)" id="qbtn3">
+                <div class="qb-num">4</div>
+                <div class="qb-lbl">Quiz</div>
+                <div class="qb-title">I&amp;S Concepts</div>
+            </div>
+            <div class="quiz-btn" onclick="loadQuiz(4)" id="qbtn4">
+                <div class="qb-num">5</div>
+                <div class="qb-lbl">Quiz</div>
+                <div class="qb-title">Integration</div>
+            </div>
+        </div>
+
+        <div class="quiz-container" id="quizContainer"></div>
+        <footer>IDU Study Hub · Quiz Section · MYP Year 5</footer>
+    </div>
+
+    <script>
+        const QUIZZES = [
+            {
+                title: "Sources 1–4: Nature, Names & Twin Studies",
+                subtitle: "References 1, 2, 3 & 4 · 10 questions",
+                questions: [
+                    {
+                        src: "Ref 1",
+                        q: "According to Reference 1, which best describes the relationship between nature and nurture in shaping identity?",
+                        opts: ["Nature is the dominant force; environment plays a minor corrective role", "They operate independently and produce separate outcomes", "They interact — genes provide a starting point and environment shapes how traits develop", "Nurture is more important because genes are fixed at birth"],
+                        ans: 2,
+                        exp: "Ref 1 explicitly states genes give a 'starting point' but environment shapes how traits develop. Neither is dominant — they interact through a process called gene-environment interaction (GEI)."
+                    },
+                    {
+                        src: "Ref 1",
+                        q: "In Ref 1's basketball example, which aspect of athletic performance is attributed to NATURE?",
+                        opts: ["Hours of practice and discipline", "Strategic learning from a coach", "Natural height and athletic ability", "Peer encouragement and team culture"],
+                        ans: 2,
+                        exp: "The video uses basketball to illustrate nature = genetic gifts (height, natural ability). The environmental (nurture) contribution is practice, coaching, and strategy."
+                    },
+                    {
+                        src: "Ref 2",
+                        q: "Nominative determinism is BEST defined as:",
+                        opts: ["The idea that only your given name determines your entire life outcome", "The hypothesis that people tend to be drawn toward life paths that reflect the meaning of their name", "The sociological law that occupational names always predict career choices", "The genetic theory that names trigger specific DNA expression"],
+                        ans: 1,
+                        exp: "Nominative determinism is a hypothesis (not a law or theory) that people gravitate toward paths matching their name's meaning. It's weak scientific evidence — mostly anecdotal — but sociologically interesting."
+                    },
+                    {
+                        src: "Ref 2",
+                        q: "The story of the brothers 'Winner' and 'Loser' in Ref 2 is most useful for which argument?",
+                        opts: ["Proving that nominative determinism is scientifically valid", "Showing that identical environments always produce identical outcomes", "Demonstrating that identity can resist and subvert imposed labels, challenging simple determinism", "Confirming that names are the strongest predictor of life success"],
+                        ans: 2,
+                        exp: "Winner ended up in prison; Loser became a successful detective. This paradox shows identity is not simply determined by labels — humans can resist or even react against imposed names, supporting the concept of agency."
+                    },
+                    {
+                        src: "Ref 3",
+                        q: "In Ref 3's twin study meta-analysis, why is the MZ vs DZ comparison so scientifically powerful?",
+                        opts: ["Because MZ twins are always raised in different countries, removing environmental influence", "Because MZ twins share 100% DNA while DZ share ~50%, so the correlation gap isolates genetic influence", "Because DZ twins have identical environments, making genetic differences clear", "Because the study used only separated twins, removing shared environment entirely"],
+                        ans: 1,
+                        exp: "MZ twins share 100% DNA; DZ share ~50% (like regular siblings). Both typically share the same home environment. The gap between MZ and DZ correlations is therefore caused by the extra genetic similarity in MZ twins — it's the purest measure of heritability."
+                    },
+                    {
+                        src: "Ref 3",
+                        q: "Which trait showed the HIGHEST MZ twin correlation in Ref 3's bar chart, indicating the greatest genetic influence?",
+                        opts: ["Higher cognitive function (0.69)", "Immune system function (0.70)", "Heart function (0.55)", "Height (0.92)"],
+                        ans: 3,
+                        exp: "Height showed the highest MZ correlation at 0.92, compared to 0.47 for DZ twins. This ~2× gap is the statistical 'fingerprint' of heritability. Physical traits generally show higher heritability than internal organ functions."
+                    },
+                    {
+                        src: "Ref 3",
+                        q: "The overall finding of Ref 3's meta-analysis was that average heritability across all 17,804 human traits is approximately:",
+                        opts: ["25% — environment dominates identity", "49% — roughly equal contributions from genes and environment", "75% — genes are the primary driver of identity", "100% — all traits are genetically determined"],
+                        ans: 1,
+                        exp: "49% average heritability. This is often misunderstood — it does NOT mean 'genes determine 49% of you.' It means ~49% of variation between people on any trait can be attributed to genetic differences in the population studied."
+                    },
+                    {
+                        src: "Ref 4",
+                        q: "Twins Divia and Lilly in Ref 4 were raised in India and South Africa respectively. Which similarity is MOST scientifically significant?",
+                        opts: ["They both had the same music preferences", "They both had the same leg-crossing posture and nail-biting habits", "They both moved to the same country as adults", "They both had similar socioeconomic backgrounds"],
+                        ans: 1,
+                        exp: "Behavioural habits like nail-biting and leg-crossing posture are not obviously taught or culturally transmitted — their presence in both twins raised in different cultures on different continents is a powerful indicator of genetic behavioural predisposition."
+                    },
+                    {
+                        src: "Ref 4",
+                        q: "The one key DIFFERENCE between Divia and Lilly (Ref 4) was their taste in music. From an interdisciplinary perspective, this difference is significant because:",
+                        opts: ["It proves genetics determines all preferences except music", "It suggests cultural environment can diverge outcomes even with identical genetics", "It shows that separated twins eventually become completely different people", "It disproves the separated twins study design"],
+                        ans: 1,
+                        exp: "Music preference is heavily influenced by cultural exposure — different radio stations, social circles, and musical traditions in India vs South Africa. This shows nurture (cultural environment) can override genetic predisposition in the domain of aesthetic preference."
+                    },
+                    {
+                        src: "Refs 1–4",
+                        q: "Which combination of sources provides the STRONGEST interdisciplinary argument that both nature AND nurture are essential to identity?",
+                        opts: ["Ref 2 (names) + Ref 4 (twins blog) — both show social influence", "Ref 1 (framework) + Ref 3 (heritability data) + Ref 6 (twin experiment) — theory, quantitative data, and experimental proof", "Ref 2 (names) alone — it shows social forces override biology", "Ref 4 alone — separated twins prove only nature matters"],
+                        ans: 1,
+                        exp: "Ref 1 provides the theoretical GEI framework. Ref 3 quantifies heritability at ~49%. Ref 6 experimentally shows identical twins diverge in health after 14 days of different diet. Together they prove both sides."
+                    }
+                ]
+            },
+            {
+                title: "Sources 5–8: Diet, Body Type & Athletes",
+                subtitle: "References 5, 6, 7 & 8 · 10 questions",
+                questions: [
+                    {
+                        src: "Ref 5",
+                        q: "According to Ref 5's Chart 3 (UPF by age group), which age group had the HIGHEST proportion of daily calories from ultra-processed foods?",
+                        opts: ["Young children aged 2–5 (~43%)", "Adults aged 19–54 (~44%)", "Children aged 6–12 (~52%)", "Adults aged 55+ (~43%)"],
+                        ans: 2,
+                        exp: "Children aged 6–12 had the highest UPF intake at ~52% of daily calories. This corresponds to the transition from parental food control to peer influence and school environment — a classic nurture-driven dietary shift."
+                    },
+                    {
+                        src: "Ref 5",
+                        q: "Ref 5's Chart 2 shows health outcomes for three UPF diet groups. The pattern across all four conditions (obesity, diabetes, hypertension, heart disease) is BEST described as:",
+                        opts: ["Random variation with no clear trend", "A dose-response relationship — outcomes worsen consistently as UPF increases", "Obesity worsens but other conditions improve", "Only high-UPF diets show negative outcomes; medium-UPF is safe"],
+                        ans: 1,
+                        exp: "A dose-response pattern is present — all four conditions worsen consistently from low to medium to high UPF. This is stronger evidence than a simple association because it shows a gradient, making reverse causation less likely to explain the entire pattern."
+                    },
+                    {
+                        src: "Ref 5",
+                        q: "Ref 5 uses the NOVA food classification system. Which of the following is classified as an Ultra-Processed Food (Group 4)?",
+                        opts: ["Fresh frozen vegetables", "Canned tomatoes", "Artisan sourdough bread", "Mass-produced breakfast cereal with added sweeteners"],
+                        ans: 3,
+                        exp: "NOVA Group 4 = industrial formulations with multiple additives. Mass-produced cereal fits this — it's heavily processed, contains emulsifiers, flavourings, and sweeteners. Frozen vegetables = Group 1; canned tomatoes = Group 3; artisan bread = Group 3."
+                    },
+                    {
+                        src: "Ref 6",
+                        q: "Why is the Kingston twins study in Ref 6 considered a stronger design than Ref 5's population study?",
+                        opts: ["It has a larger sample size of thousands of participants", "Because identical twins share 100% DNA, any outcome difference must be caused by the dietary difference — not genetics", "It was conducted over many years, showing long-term effects", "It was published in a peer-reviewed journal unlike Ref 5"],
+                        ans: 1,
+                        exp: "The twin design controls for ALL genetic variables. Ref 5 is cross-sectional and cannot rule out that sick people eat more UPF (reverse causation). Ref 6 isolates diet as the only changing variable because genetics are identical between Aimee and Nancy."
+                    },
+                    {
+                        src: "Ref 6",
+                        q: "Aimee Kingston (the UPF twin) reported being 'hungry all the time despite eating more calories than usual.' The scientific explanation for this is:",
+                        opts: ["She had a pre-existing metabolic disorder unrelated to UPF", "UPF disrupts leptin and ghrelin satiety hormone signalling, overriding the body's fullness system", "She was not actually eating more calories — her food diary was inaccurate", "Hunger is purely psychological and unrelated to food processing type"],
+                        ans: 1,
+                        exp: "UPFs are engineered to be hyperpalatable while being low in fibre and protein — the two macronutrients that most strongly trigger leptin (fullness hormone). Ghrelin (hunger hormone) remains elevated. The satiety feedback system is circumvented by UPF's design."
+                    },
+                    {
+                        src: "Ref 7",
+                        q: "In the somatotyping system (Ref 7), a person rated 2-7-2 would BEST suit which sport?",
+                        opts: ["Volleyball — requires height and lean build", "High jump — requires low body fat and ectomorph traits", "Weightlifting — dominant mesomorph profile suits explosive power sports", "Marathon running — endurance requires high ectomorph component"],
+                        ans: 2,
+                        exp: "2-7-2 = low endomorph, dominant mesomorph (7), low ectomorph. The somatoplot in Ref 7 directly maps 2-7-2 to weightlifting. Dominant mesomorphs have the muscle mass-to-weight ratio ideal for explosive, strength-based sports."
+                    },
+                    {
+                        src: "Ref 7",
+                        q: "Which statement BEST captures the limitation of using somatotyping to predict athletic success?",
+                        opts: ["Somatotyping is perfectly predictive — all elite athletes match their sport's ideal somatotype", "It is a descriptive tool, not a predictive one — many elite athletes defy their 'ideal' somatotype", "It only works for male athletes", "The system is only valid for European body types"],
+                        ans: 1,
+                        exp: "Somatotyping describes body composition but cannot predict success. Michael Phelps has disproportionate arm length for his height; Eliud Kipchoge runs marathons with an atypical lean physique. Genetic potential requires environmental enablement to be realised."
+                    },
+                    {
+                        src: "Ref 8",
+                        q: "Cirrus Rodriguez (Ref 8) has a somatotype of 5-5-1 but faces a 50km journey to sporting facilities and is unemployed. This case BEST illustrates:",
+                        opts: ["That somatotype is irrelevant to athletic success", "That nature (genetics) alone cannot guarantee athletic achievement without environmental support", "That South American athletes are naturally disadvantaged", "That financial wealth is the only factor in athletic success"],
+                        ans: 1,
+                        exp: "Cirrus has a genetically appropriate body type for sumo/football (5-5-1 = endo-mesomorph). But 50km distance, unemployment, and a knee injury create cascading environmental barriers. His case is the strongest single example in the unit that nature without nurture is not enough."
+                    },
+                    {
+                        src: "Ref 8",
+                        q: "Victoria Johnson (Ref 8) is described as having a somatotype of 1-6-2, the name meaning 'winner', a sports scholarship, and facilities 0.5km away. From an IDU perspective, she represents:",
+                        opts: ["A case where only nurture explains success — her environment is entirely responsible", "A case where only nature explains success — her genes are ideal", "The convergence of nature (ideal somatotype) AND nurture (name, access, scholarship) — the most advantaged athlete in the unit", "Confirmation that nominative determinism is scientifically proven"],
+                        ans: 2,
+                        exp: "Victoria is the synthesis case — her somatotype (1-6-2 ≈ sprinting 1-6-3), her name ('winner'), her institutional support (scholarship), and her geographic access (0.5km) all align. It's impossible to separate nature from nurture in her case — they reinforce each other."
+                    },
+                    {
+                        src: "Refs 5–8",
+                        q: "Which two references, used TOGETHER, provide the best interdisciplinary evidence that environmental factors can modify the genetically-determined body?",
+                        opts: ["Refs 5 and 6 — population diet data + individual twin experiment both show diet (environment) changing body composition and health", "Refs 7 and 8 — somatotype + athlete profiles show body types exist", "Refs 3 and 4 — heritability data + separated twins show genetic influence", "Refs 1 and 2 — conceptual framework + nominative determinism"],
+                        ans: 0,
+                        exp: "Refs 5 and 6 together show that diet (a purely environmental input) can measurably change body health markers. Ref 5 shows population-level associations; Ref 6 provides experimental proof using identical twins — where genetics are controlled. Together they prove environment shapes the biological body."
+                    }
+                ]
+            },
+            {
+                title: "Science Concepts Deep Dive",
+                subtitle: "Genetics, heritability, metabolism, somatotyping · 10 questions",
+                questions: [
+                    {
+                        src: "Science",
+                        q: "Heritability (h²) of 0.92 for height (Ref 3) means that:",
+                        opts: ["92% of your height is fixed by genes regardless of environment", "92% of the variation in height between people in the studied population is explained by genetic differences", "Environment explains 92% of height differences", "Height is 92% predictable from parental height"],
+                        ans: 1,
+                        exp: "Heritability is a population statistic about variation — not a statement about individuals. h²=0.92 means 92% of the differences in height between people in that specific population can be attributed to genetic variation. In a population with identical diets, this could be higher; in one with severe malnutrition affecting some, lower."
+                    },
+                    {
+                        src: "Science",
+                        q: "What is the key difference between GENOTYPE and PHENOTYPE?",
+                        opts: ["Genotype is what you look like; phenotype is your DNA sequence", "Genotype is your complete DNA sequence; phenotype is the observable expression of genes + environment", "They are the same thing — genotype is just another word for phenotype", "Phenotype is inherited; genotype is not"],
+                        ans: 1,
+                        exp: "Genotype = the genetic code you carry (fixed). Phenotype = what is actually observable — height, weight, behaviour, disease susceptibility. Phenotype = Genotype + Environment. Two identical genotypes (MZ twins) can produce different phenotypes in different environments."
+                    },
+                    {
+                        src: "Science",
+                        q: "Epigenetics is relevant to the IDU because:",
+                        opts: ["It explains how genetics and environment are completely separate systems", "It shows how environmental factors (diet, stress, trauma) can switch genes on or off without changing the DNA sequence — blurring the nature/nurture boundary", "It proves that environment is more important than genetics", "It explains why twins always have different phenotypes"],
+                        ans: 1,
+                        exp: "Epigenetics is the molecular mechanism by which nurture modifies nature. Chemical tags (methylation) added by environmental experiences change gene expression without altering the DNA sequence itself. This means the nature/nurture distinction is less clear-cut than Ref 1 suggests."
+                    },
+                    {
+                        src: "Science",
+                        q: "The NOVA classification system groups foods into 4 categories based on:",
+                        opts: ["Caloric content and macronutrient ratios", "The country of origin and traditional use", "The nature, extent, and purpose of industrial food processing", "Nutritional density and vitamin content"],
+                        ans: 2,
+                        exp: "NOVA classifies foods by how much industrial processing they have undergone and why. Not by nutrients — a food can be nutritionally similar to an unprocessed equivalent but still be Group 4 if it contains industrial additives, emulsifiers, and flavourings."
+                    },
+                    {
+                        src: "Science",
+                        q: "A dose-response relationship in Ref 5's health data is significant because:",
+                        opts: ["It proves that UPF causes disease beyond any doubt", "It shows a consistent gradient — more exposure, worse outcome — which is stronger evidence than a binary association and reduces the likelihood of confounding", "It means the study is definitely free from bias", "It confirms that all health conditions are equally affected by UPF"],
+                        ans: 1,
+                        exp: "A dose-response gradient (low→medium→high UPF = progressively worse outcomes across all 4 conditions) is one of Bradford Hill's criteria for causation. It doesn't prove causation alone (cross-sectional design still has limitations) but is much stronger than finding a difference only between 'UPF eaters' and 'non-UPF eaters.'"
+                    },
+                    {
+                        src: "Science",
+                        q: "Why did Aimee Kingston (Ref 6) experience weight gain and worsened blood markers in just 14 days, despite Aimee and Nancy consuming the same number of calories?",
+                        opts: ["She secretly ate more than recorded", "The type of food processing affects how calories are metabolised — UPF disrupts insulin response, satiety signalling, and fat storage pathways", "Calories from different foods are absorbed equally — the result must be measurement error", "Weight gain requires months, not two weeks, to become measurable"],
+                        ans: 1,
+                        exp: "'A calorie is a calorie' is an oversimplification. UPF causes rapid insulin spikes (from refined carbohydrates), disrupts leptin/ghrelin signalling, and may alter gut microbiome composition — all affecting how the body stores energy. Blood sugar and fat levels worsening in 14 days confirms rapid metabolic disruption independent of caloric quantity."
+                    },
+                    {
+                        src: "Science",
+                        q: "In the somatotype notation 3-7-2, what do the three numbers represent in order?",
+                        opts: ["Height-Weight-Muscle mass", "Endomorphy-Mesomorphy-Ectomorphy", "Ectomorphy-Mesomorphy-Endomorphy", "Muscle-Fat-Bone density"],
+                        ans: 1,
+                        exp: "The Heath-Carter somatotype system always reads: Endomorph (fat/roundness) - Mesomorph (muscularity) - Ectomorph (linearity/leanness). So 3-7-2 = moderate fat, dominant muscle, low lean build. This maps onto the somatoplot to suggest wrestling and weightlifting."
+                    },
+                    {
+                        src: "Science",
+                        q: "What does a cross-sectional study design (like Ref 5's CCHS data) CANNOT tell us that Ref 6's experimental design CAN?",
+                        opts: ["The size of the population being studied", "Whether the relationship between UPF and health outcomes is causal or merely associational", "The average caloric intake of participants", "Which food groups are most commonly consumed"],
+                        ans: 1,
+                        exp: "Cross-sectional studies observe populations at one time point — they cannot distinguish whether high UPF causes disease or whether sick people choose more UPF (reverse causation). Ref 6's experimental twin design controls genetics and manipulates only diet — any health outcome change must be caused by the diet, establishing causation."
+                    },
+                    {
+                        src: "Science",
+                        q: "The 'Equal Environments Assumption' (EEA) is a limitation of Ref 3's twin study methodology. It states that:",
+                        opts: ["All twins experience identical environments because they are genetically similar", "MZ and DZ twins are assumed to experience equally similar environments — if MZ twins are treated more alike because they look identical, this could inflate MZ correlations and overestimate heritability", "Environmental similarity doesn't matter because genetics override it", "All twin studies assume identical upbringings for all participants"],
+                        ans: 1,
+                        exp: "The EEA is a genuine challenge to twin study methodology. If MZ twins (who look identical) are dressed the same, treated the same, and share more experiences than DZ twins (who may look different), then the higher MZ correlation reflects not just shared DNA but also more shared environment — inflating heritability estimates."
+                    },
+                    {
+                        src: "Science",
+                        q: "Gene-Environment Correlation (rGE) is a concept that goes beyond Ref 1's simple nature/nurture framework. Active rGE means:",
+                        opts: ["Genes and environment are completely independent of each other", "Your genetic predispositions actively lead you to seek out specific environments that match those predispositions", "Environment determines which genes are switched on", "There is no relationship between genes and environment"],
+                        ans: 1,
+                        exp: "Active rGE = people with particular genetic traits seek environments that reinforce those traits. Both Divia and Lilly (Ref 4) independently sought degrees in Anthropology and museum careers — possibly because a genetic predisposition toward curiosity and intellectual engagement led them to similar environments. This blurs the nature/nurture line."
+                    }
+                ]
+            },
+            {
+                title: "Individuals & Societies Concepts",
+                subtitle: "Sociology, identity theory, social structures · 10 questions",
+                questions: [
+                    {
+                        src: "I&S",
+                        q: "Howard Becker's 'Labelling Theory' is most relevant to Ref 2 because:",
+                        opts: ["It explains the genetic basis of name preference", "Once a label (like a name) is assigned, it shapes how others treat the person and how the person sees themselves — creating self-fulfilling or self-defying patterns", "It proves nominative determinism is scientifically valid", "It shows that all labels are always inaccurate"],
+                        ans: 1,
+                        exp: "Labelling Theory (Becker, 1963): social labels shape identity. Applied to Ref 2 — 'Winner' and 'Loser' as names are labels. 'Loser' Lane may have been driven to prove the label wrong (identity resistance), while 'Winner' may have experienced perverse effects from the pressure of the label. The label still influenced the path, just not in the expected direction."
+                    },
+                    {
+                        src: "I&S",
+                        q: "Pierre Bourdieu's concept of 'Cultural Capital' is relevant to the IDU athlete profiles (Ref 8) because:",
+                        opts: ["Athletes with more muscle mass (mesomorphs) automatically have more cultural capital", "Victoria's sports scholarship and institutional support give her access to social resources that Cirrus lacks — these non-financial advantages translate into sporting opportunity", "Cultural capital only applies to academic achievements, not sport", "All four athletes have equal cultural capital because sport is meritocratic"],
+                        ans: 1,
+                        exp: "Bourdieu's cultural capital includes embodied (skills), institutionalised (credentials), and objectified (resources) forms. Victoria's scholarship is institutionalised cultural capital. Her proximity to facilities is objectified capital. Cirrus lacks both — 50km distance and unemployment create a cultural capital deficit that blocks genetic potential."
+                    },
+                    {
+                        src: "I&S",
+                        q: "Kimberlé Crenshaw's concept of 'Intersectionality' is BEST applied to which athlete in Ref 8?",
+                        opts: ["Akira — who faces no intersecting disadvantages", "Victoria — whose intersecting advantages (name, body, access, scholarship) all compound positively", "Uju — who faces compounding disadvantages: female, African, family responsibilities, and aging athletic window", "Cirrus — who only faces one disadvantage: distance from facilities"],
+                        ans: 2,
+                        exp: "Intersectionality shows how multiple social identities interact to produce unique experiences. Uju faces: being female in a potentially male-dominated sporting culture, being based in Africa with different sports infrastructure, having family responsibilities (married, child), and being 24 — with a narrowing athletic window. No single factor alone explains her position; their intersection compounds the challenge."
+                    },
+                    {
+                        src: "I&S",
+                        q: "The sociological concept that BEST explains why adolescent UPF consumption peaks (Ref 5, Chart 3) is:",
+                        opts: ["Biological determinism — adolescent brains are genetically programmed to crave UPF", "Peer group socialisation — adolescents adopt eating patterns as identity markers of group membership", "Reverse causation — obesity causes adolescents to eat more UPF", "Genetic predisposition — adolescents have UPF-specific taste genes"],
+                        ans: 1,
+                        exp: "Adolescence is the critical period of secondary socialisation — identity formation through peer groups. Eating patterns become social signals: eating certain brands, sharing fast food, and avoiding 'uncool' foods all signal group identity. This is nurture-driven, not genetic — it explains why UPF drops again in adulthood as peer identity pressure decreases."
+                    },
+                    {
+                        src: "I&S",
+                        q: "The idea that Aimee Kingston (Ref 6) didn't realise how much UPF she was consuming because foods were marketed as 'whole foods' relates to which sociological concept?",
+                        opts: ["Biological determinism — she was genetically predisposed to consume UPF", "False consciousness — the food industry's marketing constructs a false identity as a 'healthy eater' that masks actual consumption patterns", "Self-fulfilling prophecy — believing she ate healthily made her eat healthily", "Nominative determinism — her name influenced her food choices"],
+                        ans: 1,
+                        exp: "False consciousness (Marx-adjacent concept): when people are unaware of how social/economic systems are influencing their behaviour. Food companies label UPF as 'whole grain,' 'natural,' or 'high fibre' — constructing a false healthy-eater identity in consumers who are actually consuming industrially processed products. Aimee's 'shocking results' came partly from this false identity."
+                    },
+                    {
+                        src: "I&S",
+                        q: "'Social Construction of Identity' (relevant to Ref 1) means that identity is:",
+                        opts: ["Entirely determined by genetic inheritance", "Fixed at birth through both genetic and environmental inputs combined", "Not fixed or biological, but built through social interactions, cultural practices, and historical context", "Identical in individuals raised in the same culture"],
+                        ans: 2,
+                        exp: "Social constructivism holds that identity is not a biological essence but is built through social experience. Names (Ref 2), cultural exposure (Ref 4's music preference difference), social eating environments (Ref 6), and sport access inequality (Ref 8) all show how social structures construct identity beyond biology."
+                    },
+                    {
+                        src: "I&S",
+                        q: "From Ref 4, Fred and Callum (separated twins) both married a woman named Jane and both divorced after 12 years. The sociological interpretation that CHALLENGES genetic determinism would be:",
+                        opts: ["Their identical genetics directly programmed them to choose women named Jane", "This proves that all life decisions are genetically determined", "The similarities could reflect shared cultural tendencies in what men of a certain era and class background found attractive — shared zeitgeist rather than shared genes", "It is impossible for coincidence to explain this"],
+                        ans: 2,
+                        exp: "A sociological counter-argument: both men were raised in similar socioeconomic class environments (both middle-class). The name 'Jane' was common in their generation. Similar class backgrounds produce similar social circles and dating pools. The similarity may reflect shared cultural context rather than genetic programming — a legitimate limitation to acknowledge."
+                    },
+                    {
+                        src: "I&S",
+                        q: "The concept of 'Role Conflict' from sociology is most relevant to which Ref 8 athlete profile?",
+                        opts: ["Akira — who has clear social support for one role: athlete", "Victoria — whose scholarship clearly defines her social role", "Uju — who simultaneously holds professional, family, and athletic identities that demand incompatible time and energy commitments", "Cirrus — who has no active role conflicts because he is unemployed"],
+                        ans: 2,
+                        exp: "Role conflict occurs when different social roles demand incompatible behaviours. Uju is simultaneously: a solicitor (9–5 professional demands), a wife and mother (family time demands), and an aspiring athlete (training time demands). These three roles compete for the same finite resources (time, energy, money) — a classic sociological role conflict."
+                    },
+                    {
+                        src: "I&S",
+                        q: "'Social Mobility through Sport' — as illustrated by Cirrus Rodriguez (Ref 8) — was disrupted by a knee injury. This scenario BEST illustrates:",
+                        opts: ["That genetic body type is the only determinant of athletic success", "That sport-based social mobility is precarious — a single event (injury) can permanently close an economic window of opportunity, reinforcing structural inequality", "That all athletes eventually face injury and this is a normal part of sport", "That South American athletes are less supported than North American athletes"],
+                        ans: 1,
+                        exp: "Cirrus's case shows the structural fragility of sport as a mobility pathway. His professional rugby contract would have transformed his economic situation. Without other income, savings, or nearby facilities, a knee injury doesn't just end sport — it ends the primary economic strategy, reinforcing the pre-existing social inequality."
+                    },
+                    {
+                        src: "I&S",
+                        q: "Historical occupational surnames (Baker, Carpenter, Smith) arose because trades were passed from parent to child. In Ref 2's analysis, the REVERSAL of this causal direction in modern nominative determinism claims would mean:",
+                        opts: ["Environment still causes the name, as it did historically", "The name now causes the path — the name precedes and potentially influences the career choice, reversing the medieval causal arrow", "Names and occupations are completely unrelated in modern society", "The relationship between names and careers is genetically determined"],
+                        ans: 1,
+                        exp: "This is the key historical insight in Ref 2. Medieval: occupation → name (the family was named AFTER the job). Modern nominative determinism: name → occupation (the person is supposedly drawn TO a career by their name). The causal arrow has reversed — and this reversal is precisely what makes the modern claim contested."
+                    }
+                ]
+            },
+            {
+                title: "Integration: Both Disciplines Together",
+                subtitle: "Criterion A & B style questions requiring Science + I&S · 10 questions",
+                questions: [
+                    {
+                        src: "Integration",
+                        q: "Which statement BEST represents genuine interdisciplinary integration for this IDU — using BOTH Science and I&S to explain identity?",
+                        opts: ["Genetics determines identity; social forces are irrelevant to the biologically determined self", "Social forces alone construct identity; genes are merely background", "Genetic predispositions (nature) interact with social structures like access, culture, and naming conventions (nurture) — neither alone is sufficient to explain who we become", "Science explains physical identity; I&S explains everything else — they do not overlap"],
+                        ans: 2,
+                        exp: "True interdisciplinary synthesis combines both. Genetics sets ranges and tendencies (Science), but social structures determine whether genetic potential is realised and how identity is labelled, valued, and enabled or constrained (I&S). Ref 6's twin study is the purest demonstration: identical genes, different dietary environment = different health identity."
+                    },
+                    {
+                        src: "Integration",
+                        q: "How do Refs 3 and 8 TOGETHER demonstrate the gap between genetic potential and social realisation?",
+                        opts: ["Ref 3 shows genetics are irrelevant; Ref 8 shows environment is all that matters", "Ref 3 quantifies that body traits like height and weight are highly heritable (genetic potential), while Ref 8 shows that social variables (access, income, injury) determine whether that potential is ever expressed as athletic success", "Ref 3 and Ref 8 both argue that genetics alone determine athletic outcomes", "They cannot be connected — they cover different topics"],
+                        ans: 1,
+                        exp: "Ref 3 establishes height (0.92 MZ) and weight maintenance (0.87 MZ) as highly heritable — the genetic potential. Ref 8's athletes all have appropriate somatotypes for their sports (genetic potential present). Yet Cirrus vs Victoria shows environment determines realisation. The gap between genetic potential and lived outcome is the central IDU insight."
+                    },
+                    {
+                        src: "Integration",
+                        q: "An IDU essay arguing that 'diet is both a scientific and social issue' would BEST use which combination of sources?",
+                        opts: ["Refs 1 and 2 only — conceptual framework and names", "Refs 5 (population health data), 6 (individual twin experiment), AND knowledge of food inequality research — Science provides the biological mechanism; I&S explains why some populations have no choice but to eat high-UPF diets", "Refs 7 and 8 only — body type and athlete access", "Ref 3 alone — heritability explains dietary preferences"],
+                        ans: 1,
+                        exp: "Ref 5 shows the health biology (dose-response, metabolic associations — Science). Ref 6 provides the experimental causal mechanism (Science). But the I&S dimension — that UPF consumption is highest in food-insecure, lower-income households — shows diet is a social justice issue, not just an individual choice. Neither discipline alone captures this."
+                    },
+                    {
+                        src: "Integration",
+                        q: "From an interdisciplinary perspective, the Baker twins (Ref 4) sharing the surname 'Baker' AND both loving baking is BEST interpreted as:",
+                        opts: ["Pure genetic coincidence — the surname is irrelevant to the hobby", "Proof that nominative determinism is scientifically valid and overrides genetics", "A fascinating intersection of possible genetic predisposition (enjoying certain activities), family naming tradition (I&S), and nominative determinism (I&S) — impossible to separate cause from coincidence without more data", "Evidence that separated twins always develop identical hobbies"],
+                        ans: 2,
+                        exp: "The Baker case sits at the intersection of Science (genetic behavioural predispositions, Ref 3) and I&S (nominative determinism, Ref 2). Did they love baking because of genes? Because 'Baker' shaped their self-concept? Or is it coincidence? This productive ambiguity is exactly what makes it a rich IDU example — it requires both lenses."
+                    },
+                    {
+                        src: "Integration",
+                        q: "Cirrus Rodriguez's knee injury (Ref 8) is interdisciplinary because it simultaneously has both a scientific AND a social consequence. These are:",
+                        opts: ["Science: knee injuries are painful. I&S: pain affects mood", "Science: musculoskeletal damage prevents training (body can no longer express somatotypic potential). I&S: without the income from professional rugby, socioeconomic position deteriorates, removing access to rehabilitation and facilities — a cascading structural disadvantage", "Science: the knee heals eventually. I&S: social attitudes toward injured athletes are negative", "Science: injury affects bone density. I&S: his name 'cloud' predicted this would happen"],
+                        ans: 1,
+                        exp: "This is genuine interdisciplinary analysis. The Science consequence: his 5-5-1 somatotype suited him for specific sports — a knee injury directly damages the musculoskeletal system that expressed his genetic athletic potential. The I&S consequence: without the contract, his income disappears, making the 50km journey impossible — the structural disadvantage compounds. Science and I&S create a cascading loop of disadvantage."
+                    },
+                    {
+                        src: "Integration",
+                        q: "The concept of 'Gene-Environment Interaction' (GEI) from Science most closely maps onto which I&S concept?",
+                        opts: ["Nominative determinism — names cause genetic changes", "Socialisation — the process by which genes and social environment interact to produce identity outcomes", "Biological determinism — genes interact with environment to produce fixed outcomes", "Cultural capital — social assets determine gene expression"],
+                        ans: 1,
+                        exp: "GEI (Science: genes and environment interact, affecting each other's outcomes) most closely maps onto Socialisation (I&S: the process by which individuals are shaped by social environments). Both concepts say the same thing in different disciplinary languages: the organism and its context are co-producers of identity. This is a key integration point for Criterion B synthesis."
+                    },
+                    {
+                        src: "Integration",
+                        q: "Why is Ref 6 (the Kingston twins UPF experiment) the SINGLE most useful source for demonstrating interdisciplinary integration?",
+                        opts: ["Because it's published in Newsweek — a reliable source", "Because identical genetics (Science: controls for nature) + different diets (I&S: social eating environments, convenience culture) = measurably different bodies — it shows both disciplines operating simultaneously in one experiment", "Because it involves twins, and twin studies are always interdisciplinary", "Because it proves UPF is harmful, which is both a scientific and social claim"],
+                        ans: 1,
+                        exp: "Ref 6 is the perfect IDU source because it literally controls for nature (100% shared DNA) while isolating nurture (different dietary environments shaped by social context — convenience culture, food marketing, chef-prepared meals). The measurable biological outcomes (weight, blood sugar) are the science. The social forces creating those diets (convenience, marketing, social norms) are the I&S."
+                    },
+                    {
+                        src: "Integration",
+                        q: "To reach the highest band (7–8) in Criterion A (Evaluating), a student would need to:",
+                        opts: ["Simply describe what each of the 8 sources says", "Explain how Science contributes to understanding identity separately from I&S", "Analyse how BOTH Science and I&S contribute to the same insight, evaluate what each adds that the other cannot, and draw a conclusion about the relative importance or necessity of each discipline", "List all the scientific concepts and all the I&S concepts without connecting them"],
+                        ans: 2,
+                        exp: "Criterion A band 7–8 requires: analysis of how disciplines are integrated (not just described), evaluation of each discipline's contribution (what does Science add that I&S cannot and vice versa?), and a conclusion synthesising the interdisciplinary insight. Simply describing sources = bands 1–4. Connecting them with some analysis = 5–6. Full evaluation with a reasoned conclusion = 7–8."
+                    },
+                    {
+                        src: "Integration",
+                        q: "A Criterion B (Synthesizing) response creating a 'sports development programme' for Ref 8's athletes would need to include:",
+                        opts: ["Only the somatotype data from Ref 7", "Only social equality measures to improve facility access", "Both scientific recommendations (training programme based on somatotype, dietary guidance from Refs 5/6) AND social recommendations (financial support, geographic access, scholarship like Victoria's) — showing how neither discipline alone solves the problem", "A historical review of professional sport development globally"],
+                        ans: 2,
+                        exp: "Criterion B requires synthesizing BOTH disciplines into a solution. Pure Science = training programme based on genetics/somatotype alone (fails Cirrus who can't access facilities). Pure I&S = access and financial support alone (ignores whether each athlete's body suits the sport). The synthesis — combining scientific body-matching with social access solutions — is what marks band 7–8."
+                    },
+                    {
+                        src: "Integration",
+                        q: "A Criterion C (Reflecting) question asking you to discuss the IDU from multiple perspectives on whether 'identity is chosen or given' would BEST be answered by:",
+                        opts: ["Arguing only from the science perspective that genetics determine identity", "Stating your personal opinion without using sources", "Presenting the genetic/scientific perspective (Refs 3, 4: identity has a heritable core), the social constructivist perspective (Refs 2, 5, 8: social forces assign and constrain identity), and evaluating how considering both perspectives changes or deepens understanding of the question", "Describing what all 8 sources say without connecting them to the question"],
+                        ans: 2,
+                        exp: "Criterion C asks for multiple perspectives that deepen understanding. Band 7–8: present the scientific perspective (identity has a biological core — Ref 3's 49% heritability), present the social perspective (identity is labelled, constrained, and enabled by social structures — Refs 2, 8), then evaluate: considering BOTH perspectives reveals identity is neither purely chosen nor purely given — it is a co-production. This is deeper than either perspective alone."
+                    }
+                ]
+            }
+        ];
+
+        let currentQuiz = 0;
+        let answers = {};
+        let submitted = false;
+        let scores = [null, null, null, null, null];
+
+        function loadQuiz(idx) {
+            currentQuiz = idx;
+            answers = {};
+            submitted = false;
+            document.querySelectorAll('.quiz-btn').forEach((b, i) => b.classList.toggle('selected', i === idx));
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            const q = QUIZZES[currentQuiz];
+            const container = document.getElementById('quizContainer');
+            let html = `
+    <div class="quiz-header">
+      <div>
+        <h2>${q.title}</h2>
+        <div class="qh-meta">${q.subtitle}</div>
+      </div>
+    </div>
+    <div class="quiz-progress-wrap">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="qProgressFill" style="width:0%"></div></div>
+      <div class="quiz-progress-lbl" id="qProgressLbl">0 / 10 answered</div>
+    </div>
+  `;
+            q.questions.forEach((item, i) => {
+                const letters = ['A', 'B', 'C', 'D'];
+                html += `<div class="question-block" id="qblock${i}">
+      <div class="q-num">Question ${i + 1} of 10</div>
+      <div class="q-source">${item.src}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="options" id="opts${i}">
+        ${item.opts.map((opt, j) => `
+          <div class="option" id="opt${i}_${j}" onclick="selectOption(${i},${j})">
+            <div class="opt-letter">${letters[j]}</div>
+            <div class="opt-text">${opt}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="explanation" id="exp${i}">
+        <p><strong>Explanation:</strong> ${item.exp}</p>
+      </div>
+    </div>`;
+            });
+            html += `
+    <div class="score-display" id="scoreDisplay">
+      <div class="score-label">Your Score</div>
+      <div class="score-big" id="scoreBig">—</div>
+      <div class="score-bar-wrap"><div class="score-bar-fill" id="scoreBarFill" style="width:0%"></div></div>
+      <div class="score-msg" id="scoreMsg"></div>
+    </div>
+    <div class="quiz-footer">
+      <button class="submit-btn" id="submitBtn" onclick="submitQuiz()">Submit Quiz</button>
+      <button class="reset-btn" onclick="resetQuiz()">Reset</button>
+    </div>
+  `;
+            container.innerHTML = html;
+            updateProgress();
+        }
+
+        function selectOption(qIdx, optIdx) {
+            if (submitted) return;
+            answers[qIdx] = optIdx;
+            const letters = ['A', 'B', 'C', 'D'];
+            for (let j = 0; j < 4; j++) {
+                const el = document.getElementById(`opt${qIdx}_${j}`);
+                if (el) el.classList.toggle('selected', j === optIdx);
+            }
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const total = QUIZZES[currentQuiz].questions.length;
+            const answered = Object.keys(answers).length;
+            const pct = (answered / total) * 100;
+            const fill = document.getElementById('qProgressFill');
+            const lbl = document.getElementById('qProgressLbl');
+            if (fill) fill.style.width = pct + '%';
+            if (lbl) lbl.textContent = `${answered} / ${total} answered`;
+            const btn = document.getElementById('submitBtn');
+            if (btn) btn.disabled = answered < total;
+        }
+
+        function submitQuiz() {
+            if (submitted) return;
+            submitted = true;
+            const q = QUIZZES[currentQuiz];
+            let correct = 0;
+            q.questions.forEach((item, i) => {
+                const chosen = answers[i];
+                for (let j = 0; j < 4; j++) {
+                    const el = document.getElementById(`opt${i}_${j}`);
+                    if (!el) continue;
+                    el.classList.add('disabled');
+                    if (j === item.ans) el.classList.add('reveal-correct');
+                    if (j === chosen && chosen !== item.ans) el.classList.add('incorrect');
+                }
+                const exp = document.getElementById(`exp${i}`);
+                if (exp) exp.classList.add('show');
+                if (chosen === item.ans) correct++;
+            });
+            scores[currentQuiz] = correct;
+            const pct = Math.round((correct / 10) * 100);
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            scoreDisplay.classList.add('show');
+            document.getElementById('scoreBig').textContent = `${correct}/10`;
+            const fill = document.getElementById('scoreBarFill');
+            setTimeout(() => { fill.style.width = pct + '%'; }, 100);
+            fill.style.background = pct >= 80 ? 'var(--teal)' : pct >= 60 ? 'var(--gold)' : 'var(--red)';
+            const msgs = ['Keep practising — review the concept pages and try again.', 'Decent foundation — focus on the explanations you missed.', 'Good work! Review any explanations you found surprising.', 'Strong performance — well above IB standard.', 'Perfect score — excellent IDU mastery!'];
+            document.getElementById('scoreMsg').textContent = pct >= 90 ? msgs[4] : pct >= 70 ? msgs[3] : pct >= 50 ? msgs[2] : pct >= 30 ? msgs[1] : msgs[0];
+            // Update selector button
+            const btn = document.getElementById(`qbtn${currentQuiz}`);
+            if (btn) { btn.classList.add('done'); const scoreSpan = document.createElement('div'); scoreSpan.className = 'qb-score'; scoreSpan.textContent = `${correct}/10`; btn.appendChild(scoreSpan); }
+            scoreDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function resetQuiz() {
+            answers = {};
+            submitted = false;
+            renderQuiz();
+        }
+
+        // Init
+        loadQuiz(0);
+
+        window.addEventListener('scroll', () => {
+            const p = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.getElementById('progress-bar').style.width = p + '%';
+        });
+    </script>
+</body>
+
+</html>

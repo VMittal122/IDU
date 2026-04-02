@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Humanities Concepts — IDU Study Hub</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0d1b2a;
+            --cream: #f5f0e8;
+            --cream-dark: #ede6d6;
+            --gold: #c9a84c;
+            --gold-light: #e8c97a;
+            --teal: #2a9d8f;
+            --teal-pale: #d4f0ed;
+            --amber: #e07b39;
+            --amber-light: #f0a060;
+            --amber-pale: #fdebd8;
+            --purple: #6c48b5;
+            --purple-pale: #ede8f8;
+            --red: #c0392b;
+            --red-pale: #fde8e6;
+            --border: #d4c9b0;
+            --border-light: #e8e0d0;
+            --text-primary: #0d1b2a;
+            --text-secondary: #3a4f63;
+            --text-muted: #6b7d8e;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Source Serif 4', Georgia, serif;
+            background: var(--cream);
+            color: var(--text-primary);
+        }
+
+        #pb {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--teal));
+            width: 0%;
+            z-index: 1001;
+        }
+
+        nav {
+            position: fixed;
+            top: 3px;
+            left: 0;
+            right: 0;
+            background: var(--navy);
+            height: 54px;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nb {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            color: var(--gold-light);
+            text-decoration: none;
+            margin-right: 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 0;
+            list-style: none;
+        }
+
+        nav a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            padding: 6px 10px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--gold-light);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        nav a.active {
+            color: var(--gold-light);
+            background: rgba(201, 168, 76, 0.12);
+        }
+
+        .wrap {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 80px 2rem 5rem;
+        }
+
+        .hero {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tag {
+            display: inline-flex;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: var(--amber-pale);
+            color: var(--amber);
+            padding: 3px 12px;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 44px;
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            color: var(--navy);
+            margin-bottom: 0.75rem;
+        }
+
+        h1 em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .sec-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 0.25rem;
+            margin-top: 3rem;
+        }
+
+        .sec-sub {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-family: 'DM Mono', monospace;
+            letter-spacing: 0.04em;
+            margin-bottom: 1.5rem;
+        }
+
+        .cg {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        @media(max-width:700px) {
+            .cg {
+                grid-template-columns: 1fr;
+            }
+
+            .wrap {
+                padding: 70px 1rem 4rem;
+            }
+        }
+
+        .cc {
+            background: #fff;
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 1.4rem;
+        }
+
+        .cc-num {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .cc h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--amber);
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .cc-src {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 10px;
+            background: var(--amber-pale);
+            color: var(--amber);
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .cc-thinker {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 10px;
+            background: var(--cream-dark);
+            color: var(--text-muted);
+            display: inline-block;
+            margin-bottom: 10px;
+            margin-left: 4px;
+        }
+
+        .cc p {
+            font-size: 13.5px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .cc-example {
+            background: var(--cream);
+            border-left: 3px solid var(--amber);
+            border-radius: 0 6px 6px 0;
+            padding: 8px 12px;
+            margin-top: 10px;
+        }
+
+        .cc-example-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 4px;
+        }
+
+        .cc-example p {
+            font-size: 12.5px;
+            color: var(--text-secondary);
+        }
+
+        .cc-link {
+            background: linear-gradient(135deg, var(--teal-pale), #d0ecf0);
+            border-radius: 6px;
+            padding: 8px 11px;
+            margin-top: 8px;
+        }
+
+        .cc-link-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 4px;
+        }
+
+        .cc-link p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .big-concept {
+            background: var(--navy);
+            color: #fff;
+            border-radius: 14px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .bc-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .bc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        @media(max-width:600px) {
+            .bc-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .bc-item {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .bc-item h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            color: var(--gold-light);
+            margin-bottom: 6px;
+        }
+
+        .bc-item p {
+            font-size: 12.5px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+
+        footer {
+            background: var(--navy);
+            color: rgba(255, 255, 255, 0.3);
+            text-align: center;
+            padding: 1.5rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="pb"></div>
+    <nav>
+        <a class="nb" href="index.html">IDU Study Hub</a>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="sources.html">Sources</a></li>
+            <li><a href="analysis.html">Analysis</a></li>
+            <li><a href="science.html">Science</a></li>
+            <li><a href="humanities.html" class="active">Humanities</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="questions.html">Question Bank</a></li>
+        </ul>
+    </nav>
+    <div class="wrap">
+        <div class="hero">
+            <div class="tag">🌍 Individuals &amp; Societies</div>
+            <h1>Humanities <em>Concepts</em></h1>
+            <p>Every I&S concept used across all 8 sources — with the thinker who coined it, its definition, IDU
+                application, and links to the science perspective.</p>
+        </div>
+
+        <!-- Identity Theory -->
+        <div class="sec-title">Identity Theory</div>
+        <div class="sec-sub">Refs 1, 2, 4, 6 · How identity is formed and constructed</div>
+        <div class="cg">
+
+            <div class="cc" id="nomd">
+                <div class="cc-num">Concept 01</div>
+                <h3>Nominative Determinism</h3><span class="cc-src">Ref 2</span><span class="cc-thinker">New Scientist,
+                    1994</span>
+                <p>The hypothesis that people tend to gravitate toward careers and life paths that match the meaning of
+                    their name. Originally an observation in psychology journals — researchers named "Mind" publishing
+                    neuroscience, or "Gold" publishing financial research.<br><br>Not a scientific law — weak and
+                    disputed evidence. But sociologically interesting because it raises the question of whether the
+                    social expectations attached to a name shape behaviour over time.</p>
+                <div class="cc-example">
+                    <div class="cc-example-label">IDU Application</div>
+                    <p><strong>Ref 2:</strong> Multiple athletes named Victoria (= winner/conqueror) became champions.
+                        <strong>Ref 4:</strong> Both Baker twins love baking. <strong>Ref 8:</strong> Victoria (winner)
+                        has every advantage; Cirrus (cloud) is adrift; Akira (brave warrior) has the resources to act on
+                        his warrior genetics.</p>
+                </div>
+                <div class="cc-link">
+                    <div class="cc-link-label">Science Bridge</div>
+                    <p>Neuroplasticity explains the mechanism: repeated social expectations shaped by a name can rewire
+                        neural pathways for confidence and aspiration over time — giving a biological pathway for a
+                        sociological phenomenon.</p>
+                </div>
+            </div>
+
+            <div class="cc">
+                <div class="cc-num">Concept 02</div>
+                <h3>Self-Fulfilling Prophecy</h3><span class="cc-src">Refs 2, 7, 8</span><span
+                    class="cc-thinker">Merton, 1948</span>
+                <p>A belief or prediction that, by being widely held, causes itself to become true through the actions
+                    it inspires. Robert Merton coined the term in 1948.<br><br><strong>Mechanism:</strong> label is
+                    applied → person internalises it → their behaviour changes to match the label → the prediction comes
+                    true → the label is "confirmed."<br><br>This can be positive (a child told they're gifted works
+                    harder and excels) or negative (a child told they'll fail becomes disengaged).</p>
+                <div class="cc-example">
+                    <div class="cc-example-label">IDU Application</div>
+                    <p>Victoria Johnson (Ref 8): name = "winner" → coaches invest more → scholarship obtained → access
+                        to elite training → success. Each step is a self-fulfilling cycle. Cirrus: name = "cloud" +
+                        perceived failure (lost contract) → potentially internalised as identity → reduced motivation to
+                        rebuild.</p>
+                </div>
+            </div>
+
+            <div class="cc">
+                <div class="cc-num">Concept 03</div>
+                <h3>Labelling Theory</h3><span class="cc-src">Refs 2, 8</span><span class="cc-thinker">Becker,
+                    1963</span>
+                <p>From Howard Becker's sociology: once a label is assigned to a person, it shapes how others treat them
+                    AND how they see themselves. Labels become self-defining.<br><br>Becker was writing about deviance
+                    (how labelling someone a "criminal" shapes their identity and behaviour) but the concept applies to
+                    any identity label — including names.<br><br><strong>Key insight:</strong> the label doesn't
+                    describe a pre-existing reality — it creates one. "Winner" and "Loser" as names created social
+                    realities through how others responded to each brother.</p>
+                <div class="cc-example">
+                    <div class="cc-example-label">IDU Application — Winner/Loser Paradox</div>
+                    <p>"Loser" Lane became a detective partly because the label triggered resistance (identity
+                        defiance). "Winner" Lane's criminal path may reflect the perverse pressure of an impossible
+                        name. The label influenced both outcomes — just not in the expected direction. This is Labelling
+                        Theory operating in two opposing directions simultaneously.</p>
+                </div>
+            </div>
+
+            <div class="cc">
+                <div class="cc-num">Concept 04</div>
+                <h3>Social Construction of Identity</h3><span class="cc-src">Refs 1, 2, 6</span><span
+                    class="cc-thinker">Berger &amp; Luckmann, 1966</span>
+                <p>The sociological position that identity is not biologically fixed or naturally given, but is
+                    constructed through social interactions, cultural practices, historical context, and
+                    language.<br><br>Contrasts with essentialism (identity has a fixed biological core — supported by
+                    Ref 3's heritability data) and sits at the heart of the nature/nurture debate.<br><br>Key evidence
+                    in the IDU: Aimee Kingston (Ref 6) thought she had a "healthy eater" identity — but post-study
+                    discovered this identity was socially constructed by food marketing, not by actual dietary
+                    behaviour.</p>
+                <div class="cc-link">
+                    <div class="cc-link-label">Science Bridge</div>
+                    <p>Ref 3's heritability data challenges pure social constructivism: if cognitive function and
+                        physical traits are ~50-90% heritable, then biology IS part of identity's foundation. The IDU
+                        synthesis: identity is co-constructed by both biological nature and social environment.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Social Structures -->
+        <div class="sec-title">Social Structures &amp; Inequality</div>
+        <div class="sec-sub">Refs 5, 8 · How society constrains and enables identity</div>
+        <div class="cg">
+
+            <div class="cc">
+                <div class="cc-num">Concept 05</div>
+                <h3>Intersectionality</h3><span class="cc-src">Ref 8</span><span class="cc-thinker">Crenshaw,
+                    1989</span>
+                <p>The concept that multiple social identities (gender, race, class, ability, geography, age) do not
+                    operate independently — they interact and compound to create unique experiences of privilege or
+                    disadvantage.<br><br>Kimberlé Crenshaw coined the term in the context of racial and gender
+                    discrimination. The key insight: you cannot fully understand someone's social position by looking at
+                    one identity dimension at a time.</p>
+                <div class="cc-example">
+                    <div class="cc-example-label">IDU Application — Uju Ogbonna</div>
+                    <p>Uju faces compounding disadvantages: female in sport (structural gender inequality) + African
+                        (geographic sport infrastructure deficit) + married with a child (family role demands) + age 24
+                        (narrowing athletic window). No single factor alone explains her constrained athletic potential
+                        — their intersection creates a unique compound disadvantage that Akira or Victoria simply do not
+                        face.</p>
+                </div>
+            </div>
+
+            <div class="cc">
+                <div class="cc-num">Concept 06</div>
+                <h3>Cultural Capital</h3><span class="cc-src">Refs 8, 2</span><span class="cc-thinker">Bourdieu,
+                    1986</span>
+                <p>Pierre Bourdieu's concept of non-financial social assets that promote social mobility. Three
+                    forms:<br><strong>Embodied:</strong> skills, knowledge, ways of
+                    speaking<br><strong>Institutionalised:</strong> academic qualifications, certifications,
+                    scholarships<br><strong>Objectified:</strong> books, equipment, access to facilities<br><br>Cultural
+                    capital explains why some individuals have structural advantages beyond just money — and why these
+                    advantages compound over time.</p>
+                <div class="cc-example">
+                    <div class="cc-example-label">IDU Application</div>
+                    <p>Victoria Johnson's sports scholarship = institutionalised cultural capital. Her 0.5km proximity
+                        to facilities = objectified capital. Her name meaning "winner" may confer subtle embodied
+                        capital (confidence, expected treatment from coaches). Cirrus lacks all three forms — his
+                        genetic potential (nature) is blocked by a cultural capital deficit (nurture).</p>
+                </div>
+            </div>
+
+            <div class="cc">
+                <div class="cc-num">Concept 07</div>
+                <h3>Social Mobility Through Sport</h3><span class="cc-src">Ref 8</span>
+                <p>Sport can function as a vehicle for upward social mobility — providing income, status, and networks
+                    to individuals from lower socioeconomic backgrounds. It is one of the few meritocratic pathways that
+                    can transcend class barriers.<br><br>However, sporting social mobility is structurally precarious: a
+                    single injury, loss of form, or contract failure can eliminate the pathway entirely — often leaving
+                    the athlete without educational qualifications or other income sources.</p>
+                <div class="cc-example">
+                    <div class="cc-example-label">IDU Application — Cirrus Rodriguez</div>
+                    <p>His professional rugby contract would have transformed his economic position. The knee injury
+                        didn't just end sport — it ended his primary economic strategy, likely reinforcing the
+                        pre-existing social inequality. The structural fragility of sport-based mobility is the IDU's
+                        clearest I&S critique of the "sport is meritocratic" narrative.</p>
+                </div>
+            </div>
+
+            <div class="cc">
+                <div class="cc-num">Concept 08</div>
+                <h3>Role Conflict</h3><span class="cc-src">Ref 8</span><span class="cc-thinker">Merton, 1957</span>
+                <p>Occurs when a person occupies multiple social roles (parent, professional, athlete) that demand
+                    incompatible behaviours or time commitments.<br><br>Unlike role strain (difficulty meeting the
+                    demands of one role), role conflict arises between different roles — the obligations of being a
+                    solicitor, wife, and mother directly conflict with the time demands of being an elite athlete.</p>
+                <div class="cc-example">
+                    <div class="cc-example-label">IDU Application — Uju Ogbonna</div>
+                    <p>Uju simultaneously holds three competing roles: solicitor (9–5 work demands), wife and mother
+                        (family time), and aspiring athlete (training time). All three compete for the same finite daily
+                        hours. The I&S analysis reveals that what appears to be a personal choice not to pursue sport is
+                        actually a structural role conflict — Uju is constrained by social role obligations that
+                        athletes like Victoria (18, single, scholarship-supported) simply don't have.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Socialisation -->
+        <div class="sec-title">Socialisation &amp; Identity Formation</div>
+        <div class="sec-sub">Refs 1, 2, 5 · How social processes shape who we become</div>
+        <div class="cg">
+
+            <div class="cc">
+                <div class="cc-num">Concept 09</div>
+                <h3>Socialisation</h3><span class="cc-src">Ref 1</span><span class="cc-thinker">Durkheim</span>
+                <p>The lifelong process by which individuals learn the norms, values, beliefs, and behaviours of their
+                    society.<br><br><strong>Primary socialisation:</strong> occurs in early childhood through the family
+                    — the most powerful agent of socialisation. Shapes language, values, habits, and basic
+                    identity.<br><strong>Secondary socialisation:</strong> through peers, school, media, religion, and
+                    work — expands and sometimes challenges primary socialisation. More relevant during adolescence and
+                    adulthood.</p>
+                <div class="cc-example">
+                    <div class="cc-example-label">IDU Application</div>
+                    <p>The adolescent UPF spike in Ref 5's Chart 3 is driven by secondary socialisation — peer groups,
+                        school canteens, and social eating norms replace parental food control. This is the I&S
+                        explanation for why UPF consumption peaks at ages 6–18 and then falls in adulthood — it tracks
+                        the secondary socialisation life stage.</p>
+                </div>
+            </div>
+
+            <div class="cc">
+                <div class="cc-num">Concept 10</div>
+                <h3>False Consciousness &amp; Food Marketing</h3><span class="cc-src">Ref 6</span><span
+                    class="cc-thinker">Marx-adjacent concept</span>
+                <p>False consciousness: when people are unaware of how social/economic systems are influencing their
+                    beliefs and behaviours. Applied to food: food companies market UPF as "whole grain," "natural,"
+                    "high fibre," or "artisan" — constructing a false "healthy eater" identity in consumers actually
+                    buying industrially processed products.<br><br>Aimee Kingston's central revelation in Ref 6: she
+                    believed her diet was balanced before the study, but she was actually consuming far more UPF than
+                    she realised — her healthy-eater identity was a marketing construction, not a nutritional reality.
+                </p>
+                <div class="cc-link">
+                    <div class="cc-link-label">Science Bridge</div>
+                    <p>The biological mechanism reinforces this: UPF are engineered to be hyperpalatable without
+                        triggering satiety signals — the body doesn't register fullness (Science), which is why people
+                        keep eating (I&S: mindless consumption) without conscious awareness of overconsumption.</p>
+                </div>
+            </div>
+
+            <div class="cc">
+                <div class="cc-num">Concept 11</div>
+                <h3>Essentialism vs Constructivism</h3><span class="cc-src">Refs 3, 4, 6</span>
+                <p><strong>Essentialism:</strong> identity has a fixed, biological core that exists prior to social
+                    experience. The "essential self" is natural and pre-social. Supported by Ref 3's heritability data
+                    and Ref 4's separated twins.<br><br><strong>Social Constructivism:</strong> identity is entirely
+                    built through social experience — there is no pre-social essential self. Supported by Ref 6's
+                    dietary experiment (identical genetics, divergent health identities) and Ref 5's social patterns of
+                    diet.<br><br>The IDU synthesis: neither extreme is correct. Ref 3 shows biology is real (~49%
+                    heritability). Ref 6 shows environment is real (identical twins diverge in 14 days). Identity is the
+                    ongoing interaction of both.</p>
+            </div>
+
+            <div class="cc">
+                <div class="cc-num">Concept 12</div>
+                <h3>Peer Group Influence &amp; Adolescent Identity</h3><span class="cc-src">Ref 5 Chart 3</span>
+                <p>During adolescence, peer groups become the dominant socialisation agent, displacing family influence.
+                    Adolescents construct identity through group membership — adopting the behaviours, tastes, and
+                    consumption patterns of their peer group as identity signals.<br><br>What you eat, what music you
+                    listen to, what brands you wear — all become identity markers in adolescence. UPF brands
+                    deliberately exploit this developmental psychology, marketing their products as youth identity
+                    markers.</p>
+                <div class="cc-example">
+                    <div class="cc-example-label">IDU Application</div>
+                    <p>Chart 3 (Ref 5) shows UPF consumption jumping sharply from young children (2–5) to children
+                        (6–12) as parental control gives way to peer influence. This age-based pattern is not genetic —
+                        it maps perfectly onto the sociology of adolescent identity formation.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Big picture -->
+        <div class="big-concept">
+            <div class="bc-label">The Three IDU Perspectives on Identity — A Summary</div>
+            <div class="bc-grid">
+                <div class="bc-item">
+                    <h4>🧬 Biological / Given</h4>
+                    <p>Ref 3: ~49% heritability. Ref 4: separated twins converge on habits, careers, and relationships
+                        despite different environments. Identity has a heritable biological core that precedes social
+                        experience.</p>
+                </div>
+                <div class="bc-item">
+                    <h4>🌍 Social / Assigned</h4>
+                    <p>Ref 2: names are socially assigned before any choice. Ref 8: socioeconomic access determines
+                        which genetic potential gets realised. Ref 5: social class and food systems determine diet
+                        identity. Society assigns and constrains identity.</p>
+                </div>
+                <div class="bc-item">
+                    <h4>⚡ Co-produced / Dynamic</h4>
+                    <p>Ref 6: identical genetics + different diet = different health identity in 14 days. Ref 1's GEI
+                        framework. Identity is neither purely given nor purely assigned — it is continuously co-produced
+                        by biological and social forces in interaction.</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>IDU Study Hub · Humanities Concepts · MYP Year 5 · 12 I&amp;S Concepts Explained</footer>
+    </div>
+    <script>window.addEventListener('scroll', () => { const p = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100; document.getElementById('pb').style.width = p + '%'; });</script>
+</body>
+
+</html>
