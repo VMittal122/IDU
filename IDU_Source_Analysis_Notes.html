@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDU Source Analysis — MYP 5</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Georgia, serif; font-size: 15px; line-height: 1.7; color: #1a1a1a; background: #faf9f7; padding: 2rem 1rem; }
+  .page { max-width: 860px; margin: 0 auto; }
+  h1 { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { font-size: 14px; color: #666; margin-bottom: 2rem; }
+  .gc-banner { background: #f0eefe; border-left: 4px solid #6c5ce7; padding: 12px 16px; border-radius: 4px; margin-bottom: 2rem; font-size: 14px; color: #3c3489; }
+  .source { background: #fff; border: 1px solid #e0ddd8; border-radius: 8px; margin-bottom: 1.5rem; overflow: hidden; }
+  .source-header { background: #f7f6f2; padding: 14px 20px; border-bottom: 1px solid #e0ddd8; }
+  .source-title { font-size: 17px; font-weight: 700; }
+  .source-meta { font-size: 12px; color: #888; margin-top: 2px; }
+  .badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .badge { font-size: 11px; padding: 2px 9px; border-radius: 12px; font-weight: 600; }
+  .b-sci { background: #d4f5e9; color: #0a6b4a; }
+  .b-is  { background: #fde8d8; color: #8b3a10; }
+  .b-gc  { background: #ede9fb; color: #4a35b0; }
+  .b-dat { background: #fef3cd; color: #7a4f00; }
+  .source-body { padding: 18px 20px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+  .section { margin-bottom: 1.2rem; }
+  .section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid #eee; font-family: Arial, sans-serif; }
+  ul { padding-left: 16px; }
+  li { font-size: 13.5px; margin-bottom: 4px; }
+  .gc-list { list-style: none; padding-left: 0; }
+  .gc-list li { padding-left: 18px; position: relative; color: #3c3489; font-size: 13.5px; }
+  .gc-list li::before { content: "→"; position: absolute; left: 0; color: #6c5ce7; }
+  .chart-box { background: #f7f6f2; border-radius: 6px; padding: 14px 16px; margin: 10px 0; }
+  .chart-title { font-size: 12px; font-weight: 700; font-family: Arial, sans-serif; color: #555; margin-bottom: 10px; }
+  .bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+  .bar-label { font-size: 11px; font-family: Arial, sans-serif; width: 130px; text-align: right; color: #666; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 13px; background: #e8e6e0; border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; }
+  .bar-val { font-size: 11px; font-family: Arial, sans-serif; color: #555; width: 32px; }
+  .trend-note { background: #fff; border-left: 3px solid #6c5ce7; padding: 8px 12px; margin-top: 10px; font-size: 13px; font-family: Arial, sans-serif; color: #444; }
+  .limitation { background: #fff5f5; border-radius: 4px; padding: 8px 12px; margin-top: 10px; font-size: 12.5px; font-family: Arial, sans-serif; color: #8b2020; }
+  .source-link { font-size: 11.5px; color: #185fa5; display: inline-block; margin-top: 6px; font-family: Arial, sans-serif; }
+  .athlete-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin: 10px 0; }
+  .athlete-card { background: #f7f6f2; border-radius: 6px; padding: 10px 12px; border: 1px solid #e0ddd8; }
+  .athlete-card.featured { border: 2px solid #185fa5; background: #edf4fd; }
+  .athlete-name { font-size: 13px; font-weight: 700; }
+  .athlete-meta { font-size: 11px; color: #888; margin-top: 2px; }
+  .sport-tag { font-size: 11px; background: #d4f5e9; color: #0a6b4a; padding: 2px 7px; border-radius: 10px; display: inline-block; margin-top: 5px; }
+  .cross-map { background: #f0eefe; border-radius: 6px; padding: 14px 16px; margin-top: 1.5rem; }
+  .cross-map-title { font-size: 13px; font-weight: 700; font-family: Arial, sans-serif; margin-bottom: 8px; color: #3c3489; }
+  .cross-line { font-size: 12.5px; color: #3c3489; line-height: 1.9; font-family: Arial, sans-serif; }
+  .legend-row { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; font-family: Arial, sans-serif; color: #666; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<h1>IDU Source Analysis — MYP 5</h1>
+<p class="subtitle">Detailed notes · Science + Individuals & Societies perspectives · Global context: Identities and relationships</p>
+
+<div class="gc-banner">
+  <strong>Global context:</strong> Identities and relationships — How do genetics, name, diet, body type and social environment work together to shape who we are and how we relate to others?
+</div>
+
+<!-- ======================== REF 1 ======================== -->
+<div class="source">
+  <div class="source-header">
+    <div class="source-title">Reference 1 — Nature and nurture (video)</div>
+    <div class="source-meta">Type: introductory explainer video / script</div>
+    <div class="badges">
+      <span class="badge b-sci">Science</span>
+      <span class="badge b-is">Individuals &amp; Societies</span>
+      <span class="badge b-gc">GC connection</span>
+    </div>
+  </div>
+  <div class="source-body">
+    <div class="two-col">
+      <div>
+        <div class="section">
+          <div class="section-title">Science perspective</div>
+          <ul>
+            <li>Nature = genetic inheritance; traits coded in DNA (eye colour, potential height, biological starting point)</li>
+            <li>Nurture = environmental inputs: relationships, schooling, culture, diet, social surroundings</li>
+            <li>The two always interact — genes set a ceiling of potential; environment determines how much of that potential is reached</li>
+            <li>Key scientific concept: phenotype = genotype + environment (gene–environment interaction, GEI)</li>
+            <li>Basketball analogy: height = genetic, but coaching + practice = environmental — elite performance needs both</li>
+          </ul>
+        </div>
+        <div class="section">
+          <div class="section-title">Individuals &amp; societies perspective</div>
+          <ul>
+            <li>Raises the question of agency vs biological determinism — are we free agents or pre-determined?</li>
+            <li>Cultural environment is a socially constructed force: schools, peer groups, media shape identity</li>
+            <li>Parental decisions are social choices with biological outcomes (diet, school, neighbourhood)</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="section">
+          <div class="section-title">GC — identities and relationships</div>
+          <ul class="gc-list">
+            <li>This is your theoretical framework for the whole unit — every other source tests either nature or nurture or both</li>
+            <li>Identity is co-produced: it's dynamic and relational, not fixed</li>
+            <li>Relationships (coaches, parents, friends) are environmental inputs that reshape biological potential</li>
+            <li>Use this as your anchor point in any essay: define nature/nurture here, then prove it with other sources</li>
+          </ul>
+        </div>
+        <div class="section">
+          <div class="section-title">Limitations to note</div>
+          <ul>
+            <li>Very simplified — doesn't address epigenetics, gene expression, or gene–environment correlations</li>
+            <li>Not peer-reviewed; designed for young learners</li>
+            <li>No data or citations to back up claims</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== REF 2 ======================== -->
+<div class="source">
+  <div class="source-header">
+    <div class="source-title">Reference 2 — Nominative determinism (video)</div>
+    <div class="source-meta">Type: explainer video / script · Core concept: your name shapes your life path</div>
+    <div class="badges">
+      <span class="badge b-is">Individuals &amp; Societies</span>
+      <span class="badge b-gc">GC connection</span>
+    </div>
+  </div>
+  <div class="source-body">
+    <div class="two-col">
+      <div>
+        <div class="section">
+          <div class="section-title">Core concept breakdown</div>
+          <ul>
+            <li>Nominative determinism: people gravitate towards a life path that matches the meaning of their name</li>
+            <li>Historical names (Baker, Carpenter, Painter) were literally caused by occupation — environment → name</li>
+            <li>Modern question: does the name now cause the path? Direction of causation reverses</li>
+            <li>Multiple athletes named Victoria (Latin: winner/conqueror) all became champions — pattern or coincidence?</li>
+            <li>Winner/Loser brothers: raised in the same family, same environment. "Loser" became a successful police detective; "Winner" ended up in prison. Their lives were the opposite of their names</li>
+          </ul>
+        </div>
+        <div class="section">
+          <div class="section-title">Individuals &amp; societies perspective</div>
+          <ul>
+            <li>Names are cultural identity markers assigned before any personal choice is possible</li>
+            <li>Self-fulfilling prophecy (sociology): believing you are a winner can generate winning behaviour</li>
+            <li>The Winner/Loser paradox shows identity can also resist or subvert expectation — names are not destiny</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="section">
+          <div class="section-title">GC — identities and relationships</div>
+          <ul class="gc-list">
+            <li>A name is the very first identity label — assigned by others (parents/culture) before any self-agency</li>
+            <li>Cross-reference with Ref 8: all four athlete profiles have meaningful names (Akira = brave warrior, Victoria = winner, Cirrus = cloud)</li>
+            <li>Cross-reference with Ref 4: twins Divia and Lilly share the surname Baker — connects name meaning to the blog case study</li>
+            <li>Challenges agency: is identity something you build, or something named into you from birth?</li>
+            <li>The Winner/Loser paradox is a great discussion point — shows the limits of environmental/nominal influence</li>
+          </ul>
+        </div>
+        <div class="section">
+          <div class="section-title">Limitations to note</div>
+          <ul>
+            <li>Entirely anecdotal — one sibling pair and a handful of athletes is not statistically valid</li>
+            <li>Confirmation bias: we remember the cases where name matches life and forget the counter-examples</li>
+            <li>No peer-reviewed evidence cited</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== REF 3 ======================== -->
+<div class="source">
+  <div class="source-header">
+    <div class="source-title">Reference 3 — Twin study meta-analysis (chart + data)</div>
+    <div class="source-meta">Source: Polderman et al. (2015), Nature Genetics 47(7):702–709 · 2,748 studies · 14.5 million twin pairs · 17,804 traits</div>
+    <div class="badges">
+      <span class="badge b-sci">Science</span>
+      <span class="badge b-dat">Data / chart</span>
+      <span class="badge b-gc">GC connection</span>
+    </div>
+  </div>
+  <div class="source-body">
+
+    <div class="chart-box">
+      <div class="chart-title">MZ vs DZ twin correlations — all traits from Ref 3 bar chart</div>
+
+      <div class="bar-row"><div class="bar-label">Height — MZ</div><div class="bar-track"><div class="bar-fill" style="width:92%;background:#e67e22"></div></div><div class="bar-val">0.92</div></div>
+      <div class="bar-row"><div class="bar-label">Height — DZ</div><div class="bar-track"><div class="bar-fill" style="width:47%;background:#3498db"></div></div><div class="bar-val">0.47</div></div>
+      <div class="bar-row"><div class="bar-label">Weight maint. — MZ</div><div class="bar-track"><div class="bar-fill" style="width:87%;background:#e67e22"></div></div><div class="bar-val">0.87</div></div>
+      <div class="bar-row"><div class="bar-label">Weight maint. — DZ</div><div class="bar-track"><div class="bar-fill" style="width:42%;background:#3498db"></div></div><div class="bar-val">0.42</div></div>
+      <div class="bar-row"><div class="bar-label">Mouth structure — MZ</div><div class="bar-track"><div class="bar-fill" style="width:75%;background:#e67e22"></div></div><div class="bar-val">0.75</div></div>
+      <div class="bar-row"><div class="bar-label">Mouth structure — DZ</div><div class="bar-track"><div class="bar-fill" style="width:38%;background:#3498db"></div></div><div class="bar-val">0.38</div></div>
+      <div class="bar-row"><div class="bar-label">General metabolic — MZ</div><div class="bar-track"><div class="bar-fill" style="width:78%;background:#e67e22"></div></div><div class="bar-val">0.78</div></div>
+      <div class="bar-row"><div class="bar-label">General metabolic — DZ</div><div class="bar-track"><div class="bar-fill" style="width:45%;background:#3498db"></div></div><div class="bar-val">0.45</div></div>
+      <div class="bar-row"><div class="bar-label">Higher cog. function — MZ</div><div class="bar-track"><div class="bar-fill" style="width:69%;background:#e67e22"></div></div><div class="bar-val">0.69</div></div>
+      <div class="bar-row"><div class="bar-label">Higher cog. function — DZ</div><div class="bar-track"><div class="bar-fill" style="width:38%;background:#3498db"></div></div><div class="bar-val">0.38</div></div>
+      <div class="bar-row"><div class="bar-label">Heart function — MZ</div><div class="bar-track"><div class="bar-fill" style="width:55%;background:#e67e22"></div></div><div class="bar-val">0.55</div></div>
+      <div class="bar-row"><div class="bar-label">Heart function — DZ</div><div class="bar-track"><div class="bar-fill" style="width:30%;background:#3498db"></div></div><div class="bar-val">0.30</div></div>
+      <div class="bar-row"><div class="bar-label">Immune system — MZ</div><div class="bar-track"><div class="bar-fill" style="width:70%;background:#e67e22"></div></div><div class="bar-val">0.70</div></div>
+      <div class="bar-row"><div class="bar-label">Immune system — DZ</div><div class="bar-track"><div class="bar-fill" style="width:41%;background:#3498db"></div></div><div class="bar-val">0.41</div></div>
+
+      <div class="legend-row">
+        <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div>Monozygotic / identical (MZ)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#3498db"></div>Dizygotic / non-identical (DZ)</div>
+      </div>
+
+      <div class="trend-note">
+        <strong>Trend analysis:</strong> MZ correlations are consistently roughly double DZ correlations across every single trait. This "≈2× rule" is the statistical fingerprint of genetic heritability — if traits were purely environmental, MZ and DZ correlations would be equal (both raised together). Physical traits (height 0.92, weight 0.87) show the strongest genetic signal. Internal functions (heart 0.55) show weaker but still significant genetic influence. Even higher cognitive function scores 0.69 MZ vs 0.38 DZ — thinking patterns and intelligence have a strong genetic component. The overall study finding: average heritability across all 17,804 human traits is approximately 49%.
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-top:14px">
+      <div>
+        <div class="section">
+          <div class="section-title">Science perspective</div>
+          <ul>
+            <li>MZ twins share 100% DNA; DZ twins share ~50% (like any siblings) but both share the same household environment</li>
+            <li>The MZ–DZ gap isolates genetic influence: the bigger the gap, the more heritable the trait</li>
+            <li>Meta-analysis of 2,748 studies = extremely high statistical power; most comprehensive twin data ever compiled</li>
+            <li>Published in Nature Genetics (top-tier, peer-reviewed) — your highest credibility source in the whole IDU</li>
+            <li>Key finding from the extended paper: 69% of traits show patterns consistent with purely additive genetic variation — shared environment adds little</li>
+            <li>Heritability tends to decrease with age for most traits</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="section">
+          <div class="section-title">GC — identities and relationships</div>
+          <ul class="gc-list">
+            <li>Quantifies exactly how much of "who we are" is genetically determined — the best scientific evidence for the nature side of Ref 1</li>
+            <li>Even higher cognitive function (thought, personality, decision-making) is ~69% correlated in identical twins — our inner identity has a biological core</li>
+            <li>But no trait reaches 1.0 — identical twins always differ somewhat. Environment always plays a role. Identity is never purely genetic</li>
+            <li>Use the numbers in essays: "Ref 3 shows height is 0.92 correlated in MZ twins vs 0.47 in DZ twins, confirming a strong genetic basis for physical identity"</li>
+            <li>Cross-reference with Ref 4 twins: Divia/Lilly and Fred/Callum are the real-life human stories behind these statistics</li>
+          </ul>
+        </div>
+        <div class="section">
+          <div class="section-title">Limitations to note</div>
+          <ul>
+            <li>Correlation ≠ causation. High MZ correlation shows genetic influence, not a specific gene causing the trait</li>
+            <li>"Equal environments assumption" (EEA): the model assumes MZ and DZ twins experience equally similar environments — this has been questioned</li>
+            <li>Study pool skewed toward European, North American and Australian participants — limited global representation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <a class="source-link" href="https://www.nature.com/articles/ng.3285">Full paper: nature.com/articles/ng.3285 (Polderman et al., Nature Genetics, 2015)</a>
+  </div>
+</div>
+
+<!-- ======================== REF 4 ======================== -->
+<div class="source">
+  <div class="source-header">
+    <div class="source-title">Reference 4 — Twins separated at birth (blog)</div>
+    <div class="source-meta">Type: anecdotal blog case studies · Two pairs: Divia &amp; Lilly / Fred &amp; Callum</div>
+    <div class="badges">
+      <span class="badge b-sci">Science</span>
+      <span class="badge b-is">Individuals &amp; Societies</span>
+      <span class="badge b-gc">GC connection</span>
+    </div>
+  </div>
+  <div class="source-body">
+    <div class="two-col">
+      <div>
+        <div class="section">
+          <div class="section-title">Case 1: Divia (India) and Lilly (South Africa)</div>
+          <ul>
+            <li>Separated at birth; different continents, different cultures; reunited after 34 years</li>
+            <li>Similarities: same hairstyle, identical laugh, same lipstick shade, same degree (Anthropology), same career (museum worker), same hobby (baking), same nail-biting habit, identical leg-crossing posture</li>
+            <li>Share the surname Baker — Ref 2 connection: nominative determinism</li>
+            <li>Key difference: music taste (Divia = rock, Lilly = classical) — a culturally driven divergence</li>
+            <li>Name meanings differ: Divia = divinely brilliant; Lilly = flower — yet their lives converged remarkably</li>
+          </ul>
+        </div>
+        <div class="section">
+          <div class="section-title">Case 2: Fred and Callum (both meaning: peace)</div>
+          <ul>
+            <li>Same height, weight, brown curly hair</li>
+            <li>Both married a woman named Jane; both divorced after exactly 12 years</li>
+            <li>Both love river fishing; both have won fishing contests</li>
+            <li>Both have the same unusual hammering headache type</li>
+            <li>Both named their dog Elvis; both dislike cats</li>
+            <li>Both in law enforcement (different fields) — slight environmental divergence in career path</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="section">
+          <div class="section-title">Science perspective</div>
+          <ul>
+            <li>Separated twin design is the gold standard for separating nature from nurture — no shared home environment</li>
+            <li>Any similarity when raised apart = strong genetic signal</li>
+            <li>Cases qualitatively support Ref 3: physical traits (height, weight, hair) AND behavioural traits (habits, hobbies, relationship patterns) both show strong MZ convergence even without shared environment</li>
+            <li>Music difference (Divia/Lilly) directly illustrates the role of cultural environment (nurture) even with identical genetics</li>
+            <li>Fred/Callum marrying women named Jane = fascinating, but could be coincidence; not peer-reviewed</li>
+          </ul>
+        </div>
+        <div class="section">
+          <div class="section-title">GC — identities and relationships</div>
+          <ul class="gc-list">
+            <li>If two people raised in entirely different countries/cultures end up nearly identical — what does individual identity mean?</li>
+            <li>Baker surname connection to Ref 2 is a strong essay link: did their name predict their shared love of baking?</li>
+            <li>The relationship patterns (both married Jane, both divorced) suggest genetics may influence who we are attracted to and how we bond</li>
+            <li>Music difference = the power of cultural environment to shape preference even when biology is identical</li>
+          </ul>
+        </div>
+        <div class="section">
+          <div class="section-title">Limitations to note</div>
+          <ul>
+            <li>Only two cases — not statistically representative</li>
+            <li>Blog format = not peer-reviewed; written for narrative impact, may exaggerate similarities</li>
+            <li>Some similarities may be coincidence (e.g. both calling dog "Elvis")</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== REF 5 ======================== -->
+<div class="source">
+  <div class="source-header">
+    <div class="source-title">Reference 5 — UPF impact on health (data + charts)</div>
+    <div class="source-meta">Source: Statistics Canada, CCHS 2015 · Chart 1 &amp; 2: N=13,608 adults (19+) · Chart 3: N=20,080 (ages 2+)</div>
+    <div class="badges">
+      <span class="badge b-sci">Science</span>
+      <span class="badge b-is">Individuals &amp; Societies</span>
+      <span class="badge b-dat">Data / 3 charts</span>
+      <span class="badge b-gc">GC connection</span>
+    </div>
+  </div>
+  <div class="source-body">
+
+    <div class="chart-box">
+      <div class="chart-title">Chart 1: Diet composition by UPF level (adults 19+, N=13,608)</div>
+      <div class="bar-row"><div class="bar-label">Low UPF — unprocessed</div><div class="bar-track"><div class="bar-fill" style="width:55%;background:#27ae60"></div></div><div class="bar-val">~55%</div></div>
+      <div class="bar-row"><div class="bar-label">Low UPF — UPF share</div><div class="bar-track"><div class="bar-fill" style="width:24%;background:#e67e22"></div></div><div class="bar-val">~24%</div></div>
+      <div class="bar-row"><div class="bar-label">Med UPF — unprocessed</div><div class="bar-track"><div class="bar-fill" style="width:40%;background:#27ae60"></div></div><div class="bar-val">~40%</div></div>
+      <div class="bar-row"><div class="bar-label">Med UPF — UPF share</div><div class="bar-track"><div class="bar-fill" style="width:50%;background:#e67e22"></div></div><div class="bar-val">~50%</div></div>
+      <div class="bar-row"><div class="bar-label">High UPF — unprocessed</div><div class="bar-track"><div class="bar-fill" style="width:20%;background:#27ae60"></div></div><div class="bar-val">~20%</div></div>
+      <div class="bar-row"><div class="bar-label">High UPF — UPF share</div><div class="bar-track"><div class="bar-fill" style="width:73%;background:#e67e22"></div></div><div class="bar-val">~73%</div></div>
+      <div class="legend-row">
+        <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div>Unprocessed / minimally processed</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div>Ultra-processed (UPF)</div>
+      </div>
+      <div class="trend-note"><strong>Trend:</strong> Clear inverse relationship. As UPF share rises, unprocessed food is almost entirely displaced. The high-UPF group gets 73% of daily calories from UPF — nearly 3× more than the low-UPF group (24%). This shows UPF doesn't just add to diet — it replaces nutritious food.</div>
+    </div>
+
+    <div class="chart-box" style="margin-top:12px">
+      <div class="chart-title">Chart 2: Health outcomes by UPF diet level (adults 19+, N=13,608)</div>
+      <div class="bar-row"><div class="bar-label">Obesity — Low UPF</div><div class="bar-track"><div class="bar-fill" style="width:42%;background:#27ae60"></div></div><div class="bar-val">~21%</div></div>
+      <div class="bar-row"><div class="bar-label">Obesity — High UPF</div><div class="bar-track"><div class="bar-fill" style="width:64%;background:#c0392b"></div></div><div class="bar-val">~32%</div></div>
+      <div class="bar-row"><div class="bar-label">Diabetes — Low UPF</div><div class="bar-track"><div class="bar-fill" style="width:14%;background:#27ae60"></div></div><div class="bar-val">~7%</div></div>
+      <div class="bar-row"><div class="bar-label">Diabetes — High UPF</div><div class="bar-track"><div class="bar-fill" style="width:20%;background:#c0392b"></div></div><div class="bar-val">~10%</div></div>
+      <div class="bar-row"><div class="bar-label">High BP — Low UPF</div><div class="bar-track"><div class="bar-fill" style="width:32%;background:#27ae60"></div></div><div class="bar-val">~16%</div></div>
+      <div class="bar-row"><div class="bar-label">High BP — High UPF</div><div class="bar-track"><div class="bar-fill" style="width:44%;background:#c0392b"></div></div><div class="bar-val">~22%</div></div>
+      <div class="bar-row"><div class="bar-label">Heart disease — Low UPF</div><div class="bar-track"><div class="bar-fill" style="width:8%;background:#27ae60"></div></div><div class="bar-val">~4%</div></div>
+      <div class="bar-row"><div class="bar-label">Heart disease — High UPF</div><div class="bar-track"><div class="bar-fill" style="width:12%;background:#c0392b"></div></div><div class="bar-val">~6%</div></div>
+      <div class="trend-note"><strong>Trend:</strong> Strong dose–response pattern across all four health conditions — every condition worsens consistently from low to medium to high UPF. Obesity shows the largest absolute increase (~11 percentage points). All associations remain significant after adjusting for age, sex, income, and physical activity. Important: this is cross-sectional (one time point) — shows association, not causation.</div>
+    </div>
+
+    <div class="chart-box" style="margin-top:12px">
+      <div class="chart-title">Chart 3: UPF share of daily energy by age group (N=20,080, ages 2+)</div>
+      <div class="bar-row"><div class="bar-label">Young children (2–5)</div><div class="bar-track"><div class="bar-fill" style="width:43%;background:#e67e22"></div></div><div class="bar-val">~43%</div></div>
+      <div class="bar-row"><div class="bar-label">Children (6–12)</div><div class="bar-track"><div class="bar-fill" style="width:52%;background:#e67e22"></div></div><div class="bar-val">~52%</div></div>
+      <div class="bar-row"><div class="bar-label">Adolescents (13–18)</div><div class="bar-track"><div class="bar-fill" style="width:51%;background:#e67e22"></div></div><div class="bar-val">~51%</div></div>
+      <div class="bar-row"><div class="bar-label">Adults (19–54)</div><div class="bar-track"><div class="bar-fill" style="width:44%;background:#e67e22"></div></div><div class="bar-val">~44%</div></div>
+      <div class="bar-row"><div class="bar-label">Adults (55+)</div><div class="bar-track"><div class="bar-fill" style="width:43%;background:#e67e22"></div></div><div class="bar-val">~43%</div></div>
+      <div class="trend-note"><strong>Trend:</strong> UPF consumption peaks sharply in the 6–18 age range (over 50% of daily calories). Young children (2–5) have the lowest proportion — parents control food access. As children gain independence in adolescence, UPF intake spikes. Adults 55+ showed an increase between 2004 and 2015 (the only group trending upward). On average across all Canadians, UPF = ~46% of total daily energy.</div>
+    </div>
+
+    <div class="two-col" style="margin-top:14px">
+      <div>
+        <div class="section">
+          <div class="section-title">Science perspective</div>
+          <ul>
+            <li>NOVA classification system (4 groups) is a widely accepted scientific framework for food processing</li>
+            <li>Large sample sizes (13,608 and 20,080) give high statistical power</li>
+            <li>Dose–response in Chart 2 strengthens the biological argument that UPF causes harm</li>
+            <li>Adolescent UPF spike (Chart 3) has a biological explanation: developing brains are more susceptible to reward-driven eating, and UPF exploits dopamine pathways</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="section">
+          <div class="section-title">GC — identities and relationships</div>
+          <ul class="gc-list">
+            <li>Diet = environmental nurture factor that biologically alters the body — directly connects to Ref 1 framework</li>
+            <li>Adolescent UPF spike shows how peer culture and social norms shape eating identity during identity formation years</li>
+            <li>Extended research shows UPF consumption highest in food-insecure households — identity shaped by socioeconomic inequality</li>
+            <li>Cross-reference with Ref 6 (Aimee Kingston): the population-level data here becomes lived individual experience there — use both together in essays</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="limitation">Limitation: Cross-sectional study = single snapshot in time, cannot prove causation. Self-reported 24-hour dietary recall is prone to underreporting. Conducted only in Canada's 10 provinces — excludes Indigenous communities, military, remote populations. May not generalise globally.</div>
+    <a class="source-link" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8076355/">Extended study with health outcomes: pmc.ncbi.nlm.nih.gov/articles/PMC8076355</a><br>
+    <a class="source-link" href="https://www150.statcan.gc.ca/n1/pub/82-003-x/2020011/article/00001-eng.htm">Statistics Canada original data: statcan.gc.ca</a>
+  </div>
+</div>
+
+<!-- ======================== REF 6 ======================== -->
+<div class="source">
+  <div class="source-header">
+    <div class="source-title">Reference 6 — Newsweek UPF twin article (Aimee Kingston)</div>
+    <div class="source-meta">Published: 27 June 2023 · Newsweek · Study by Prof. Tim Spector, King's College London / TwinsUK registry</div>
+    <div class="badges">
+      <span class="badge b-sci">Science</span>
+      <span class="badge b-is">Individuals &amp; Societies</span>
+      <span class="badge b-gc">GC connection</span>
+    </div>
+  </div>
+  <div class="source-body">
+    <div class="two-col">
+      <div>
+        <div class="section">
+          <div class="section-title">Study design — why it's powerful</div>
+          <ul>
+            <li>Identical twins share 100% DNA — the perfect genetic control group</li>
+            <li>Aimee: 100% UPF for 2 weeks</li>
+            <li>Nancy (twin): same calories, fat, sugar, fibre — but entirely non/low-processed foods</li>
+            <li>Any difference in outcomes is caused by food processing, not genetics, not calorie count</li>
+            <li>This isolates nurture (diet environment) from nature (genetics) perfectly</li>
+          </ul>
+        </div>
+        <div class="section">
+          <div class="section-title">Aimee's UPF results</div>
+          <ul>
+            <li>Weight gain; worsened blood sugar levels; worsened blood fat levels</li>
+            <li>Constant hunger despite eating more calories than her usual pre-study diet</li>
+            <li>Mood deterioration within about one week</li>
+            <li>Severe fatigue — visible to friends and family by end of two weeks</li>
+            <li>Difficulty concentrating at work in afternoons — cognitive impairment</li>
+            <li>Post-study: body still craved UPF — signs of behavioural dependency forming</li>
+          </ul>
+        </div>
+        <div class="section">
+          <div class="section-title">Nancy's non-UPF results</div>
+          <ul>
+            <li>Lost weight; improved blood results</li>
+            <li>Rarely hungry; often couldn't finish meals — healthy satiety signals working</li>
+            <li>Consistently better mood throughout</li>
+            <li>Tried new foods post-study (quinoa porridge) — expanded her food identity</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="section">
+          <div class="section-title">Science perspective</div>
+          <ul>
+            <li>UPF disrupts satiety hormone signalling (leptin/ghrelin pathway) — explains hunger despite adequate calories</li>
+            <li>Blood marker changes in only 2 weeks show rapid metabolic impact — supports and personalises the population data from Ref 5</li>
+            <li>Twin design eliminates genetic confounding — among the cleanest possible natural experiments</li>
+            <li>Prof. Spector's ZOE research also shows gut microbiome responses to UPF vary between individuals due to their unique genetic and microbial make-up</li>
+            <li>Very sweet refined carbohydrates caused worst mood/energy crashes — possible blood glucose spiking</li>
+          </ul>
+        </div>
+        <div class="section">
+          <div class="section-title">GC — identities and relationships</div>
+          <ul class="gc-list">
+            <li>Diet directly shapes how you feel, think, and relate to others — it's not just physical but profoundly relational and identity-altering</li>
+            <li>Aimee didn't realise how much UPF she was already eating — food identity can be unconscious and socially constructed</li>
+            <li>Convenience, social eating environments and marketing are societal forces that shape diet identity</li>
+            <li>Core GC argument: Aimee and Nancy have identical genetics, but 14 days of different environmental input (diet) produced measurably different health identities</li>
+            <li>Post-study behaviour change = identity shift: experience reshaped Aimee's relationship with food and her self-concept as a "healthy eater"</li>
+          </ul>
+        </div>
+        <div class="section">
+          <div class="section-title">Limitations to note</div>
+          <ul>
+            <li>N=1 pair — a single case study, not a population sample; cannot generalise</li>
+            <li>Published in Newsweek (journalism, not a peer-reviewed journal); narrative framing may amplify effects</li>
+            <li>Two-week period is very short for drawing long-term health conclusions</li>
+            <li>Meals were prepared by a chef — not reflective of typical UPF consumption patterns</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== REF 7 ======================== -->
+<div class="source">
+  <div class="source-header">
+    <div class="source-title">Reference 7 — Somatotyping (classification diagram)</div>
+    <div class="source-meta">Type: scientific classification system · Format: somatoplot diagram showing body types and associated sports</div>
+    <div class="badges">
+      <span class="badge b-sci">Science</span>
+      <span class="badge b-is">Individuals &amp; Societies</span>
+      <span class="badge b-gc">GC connection</span>
+    </div>
+  </div>
+  <div class="source-body">
+    <div class="two-col">
+      <div>
+        <div class="section">
+          <div class="section-title">What somatotyping is</div>
+          <ul>
+            <li>Three-dimensional body composition system: Endomorph (fat/round) — Mesomorph (muscular) — Ectomorph (lean/linear)</li>
+            <li>Scale: 1–7 for each component. Format: Endo-Meso-Ecto. Example: 4-5-2 = moderate fat, dominant muscle, low lean = Football</li>
+            <li>Mesomorph (centre top): wide shoulders, narrow hips — power sports (wrestling 4-7-1, weightlifting 2-7-2)</li>
+            <li>Ectomorph (right): narrow shoulders and hips — height/endurance sports (high jump 2-3-5, volleyball 3-3-6)</li>
+            <li>Endomorph (left): wide shoulders AND wide hips — sumo wrestling (5-5-1)</li>
+            <li>Swimming (2-4-4) = balanced mesomorph–ectomorph; sprinting (1-6-3) = dominant mesomorph with ectomorph lean</li>
+          </ul>
+        </div>
+        <div class="section">
+          <div class="section-title">Science perspective</div>
+          <ul>
+            <li>Body type is primarily genetically determined (Ref 3: height 0.92, weight maintenance 0.87 MZ correlations)</li>
+            <li>But somatotype is modifiable: diet (Refs 5/6) and training alter body composition — nurture acting on a genetic base</li>
+            <li>Used by sports scientists and coaches to match athletes to disciplines and design tailored training programmes</li>
+            <li>No somatotype is a guarantee of success — many elite athletes don't perfectly match the "ideal" somatotype for their sport (e.g. Michael Phelps has unusually long arms for his height)</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="section">
+          <div class="section-title">GC — identities and relationships</div>
+          <ul class="gc-list">
+            <li>Physical body shape is an identity marker that shapes athletic identity — and by extension social role, group membership, and self-perception</li>
+            <li>Being labelled a certain somatotype by a coach can become a self-fulfilling prophecy (directly mirrors Ref 2 nominative determinism)</li>
+            <li>Cross-reference with Ref 8: apply the somatoplot to each athlete profile, then ask whether environment (access, finances, injury, age) allows or prevents them from pursuing their genetic potential</li>
+            <li>Biological determinism question: is your athletic identity written in your body shape? Or can nurture overcome a non-ideal somatotype?</li>
+            <li>Diet (Refs 5/6) can shift somatotype — environment changes the nature baseline</li>
+          </ul>
+        </div>
+        <div class="section">
+          <div class="section-title">Limitations to note</div>
+          <ul>
+            <li>Somatotyping is descriptive, not predictive — correlates body type with sport, but does not determine success</li>
+            <li>Cultural and historical bias in sport selection: which sports are played where varies by country, access, and culture</li>
+            <li>Original system (Sheldon, 1940s) had problematic racial assumptions — modern use is more neutral but worth noting</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== REF 8 ======================== -->
+<div class="source">
+  <div class="source-header">
+    <div class="source-title">Reference 8 — Profiles of aspiring athletes</div>
+    <div class="source-meta">4 fictional profiles: Akira Luwi · Uju Ogbonna · Cirrus Rodriguez · Victoria Johnson — each with name meaning, somatotype, location and socioeconomic context</div>
+    <div class="badges">
+      <span class="badge b-sci">Science</span>
+      <span class="badge b-is">Individuals &amp; Societies</span>
+      <span class="badge b-gc">GC connection</span>
+    </div>
+  </div>
+  <div class="source-body">
+
+    <div class="athlete-grid">
+      <div class="athlete-card">
+        <div class="athlete-name">Akira Luwi</div>
+        <div class="athlete-meta">Meaning: brave warrior · Asia · Male · Age 19</div>
+        <div style="margin-top:6px;font-size:12px">Somatotype: <strong>3-7-2</strong> (very high mesomorph)</div>
+        <div class="sport-tag">Wrestling / Weightlifting</div>
+        <div style="margin-top:6px;font-size:12px;color:#555">Facility: 1 km · Affluent family · Only child</div>
+        <div style="margin-top:4px;font-size:11px;color:#888">Advantage: genetics + access + name = stacked in his favour</div>
+      </div>
+      <div class="athlete-card">
+        <div class="athlete-name">Uju Ogbonna</div>
+        <div class="athlete-meta">Meaning: plenty · Africa · Female · Age 24</div>
+        <div style="margin-top:6px;font-size:12px">Somatotype: <strong>2-4-4</strong> (balanced mesomorph/ectomorph)</div>
+        <div class="sport-tag">Swimming</div>
+        <div style="margin-top:6px;font-size:12px;color:#555">Facility: 4 km · Solicitor · Family commitments</div>
+        <div style="margin-top:4px;font-size:11px;color:#888">Moderate barriers: access OK, but career + family pull against athletic identity</div>
+      </div>
+      <div class="athlete-card">
+        <div class="athlete-name">Cirrus Rodriguez</div>
+        <div class="athlete-meta">Meaning: cloud · South America · Male · Age 20</div>
+        <div style="margin-top:6px;font-size:12px">Somatotype: <strong>5-5-1</strong> (high endo + meso)</div>
+        <div class="sport-tag">Sumo / Football</div>
+        <div style="margin-top:6px;font-size:12px;color:#555">Facility: 50 km · Unemployed · Knee injury</div>
+        <div style="margin-top:4px;font-size:11px;color:#888">Major barriers: geography, finances, injury — genetics can't overcome environment here</div>
+      </div>
+      <div class="athlete-card featured">
+        <div class="athlete-name">Victoria Johnson ★</div>
+        <div class="athlete-meta">Meaning: winner · North America · Female · Age 18</div>
+        <div style="margin-top:6px;font-size:12px">Somatotype: <strong>1-6-2</strong> (dominant mesomorph)</div>
+        <div class="sport-tag">Sprinting / Power sports</div>
+        <div style="margin-top:6px;font-size:12px;color:#555">Facility: 0.5 km · Sports scholarship · University</div>
+        <div style="margin-top:4px;font-size:11px;color:#888">Everything aligned: name = winner, body = ideal, access = excellent, support = institutional</div>
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-top:14px">
+      <div>
+        <div class="section">
+          <div class="section-title">Science — applying the somatoplot (Ref 7)</div>
+          <ul>
+            <li>Akira (3-7-2): near-identical to wrestling (4-7-1) and weightlifting (2-7-2) profiles. Strong genetic match. Environmental conditions fully support pursuit</li>
+            <li>Uju (2-4-4): exact match to swimming on the somatoplot. Body genetics align, but location (4 km) and life stage (married, child, career) create competing demands</li>
+            <li>Cirrus (5-5-1): sumo/football profile. The genetics are there — but 50 km to facilities, unemployment, and a knee injury create an almost insurmountable environmental barrier. Name = cloud = his dreams remain out of reach</li>
+            <li>Victoria (1-6-2): near-match for sprinting (1-6-3). Close to perfect alignment of genetics, name, access and structural support (scholarship)</li>
+          </ul>
+        </div>
+        <div class="section">
+          <div class="section-title">Individuals &amp; societies perspective</div>
+          <ul>
+            <li>Access to sports facilities is unequally distributed — social inequality constrains biological potential</li>
+            <li>Akira vs Cirrus: same life stage, similar athletic genetic potential (both high mesomorph) — but completely different socioeconomic environments. The clearest nature vs nurture comparison in the unit</li>
+            <li>Gender intersections: Victoria (N. America, scholarship) has institutional support that Uju (Africa, family, career at 24) does not</li>
+            <li>Age matters: at 24 with a family and career, Uju's athletic window may be narrowing — social life stage constrains biological potential</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="section">
+          <div class="section-title">GC — identities and relationships</div>
+          <ul class="gc-list">
+            <li>Victoria is the strongest nominative determinism case in the entire IDU: name means winner, body type is ideal, scholarship provides institutional identity — ask "does she succeed because of her name, her genes, or her environment?"</li>
+            <li>Cirrus = cloud: his athletic aspiration is literally "floating" — name metaphor aligns with his situation (inaccessible, unreachable)</li>
+            <li>This source is the synthesis of the entire unit: names (Ref 2), genetics/heritability (Refs 3 + 7), environment and access (Ref 1), diet and health (Refs 5/6), separated-twin comparisons (Ref 4)</li>
+            <li>Best exam question you can ask from this source: "Which athlete is most likely to achieve their potential, and is that determined more by their nature or their nurture?"</li>
+            <li>Uju raises the question of competing identity roles — professional identity vs athletic identity vs family identity — how do we choose which to prioritise?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cross-source map -->
+<div class="cross-map">
+  <div class="cross-map-title">Cross-source connections map</div>
+  <div class="cross-line">
+    Ref 1 (theory framework) ↔ Ref 3 (quantifies heritability) ↔ Ref 4 (illustrates it with real twins) ↔ Ref 6 (controls for it experimentally)<br>
+    Ref 2 (name → identity) ↔ Ref 4 (Baker twins, baking hobby) ↔ Ref 8 (Victoria, Akira, Cirrus name meanings)<br>
+    Ref 5 (population-level diet data) ↔ Ref 6 (individual-level diet experiment) — macro statistics meets lived micro experience<br>
+    Ref 7 (body type science) ↔ Ref 8 (applying somatoplot to real profiles) ↔ Ref 3 (weight/height heritability 0.87–0.92)<br>
+    Ref 3 (heritability numbers) ↔ Ref 6 (twin experiment) — both use twin design; Ref 6 is the human story version of Ref 3's statistics<br><br>
+    All sources → GC: Identity is the product of genetics (nature) interacting with name, diet, body, culture, access and relationships (nurture) — none alone is enough to explain who we become.
+  </div>
+</div>
+
+<p style="font-size:12px;color:#aaa;margin-top:2rem;text-align:center">IDU Source Analysis · MYP 5 · GC: Identities and Relationships</p>
+</div>
+</body>
+</html>
